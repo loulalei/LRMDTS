@@ -124,4 +124,8 @@ type (
 		EndorseFile   string `json:"endorseFile"`
 		SPResFile     string `json:"SPresFile"`
 	}
+
+	Notification struct {
+		DocId int `json:"docId"`
+	}
 )

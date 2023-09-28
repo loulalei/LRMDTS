@@ -1,0 +1,111 @@
+{{template "header" .}}
+<!-- DATATABLE -->
+<!-- ONLINE -->
+<link rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<!-- OFFLINE -->
+<link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border">
+    <div class="container-fluid">
+        <small class="fw-bold">REGISTER NEW DOCUMENT - RECEIVING</small>
+    </div>
+</nav>
+
+<div class="container-fluid py-2 shadow">
+    <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data">
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="trackingNumber"
+                    name="trackingNumber" required>
+                <label for="trackingNumber">Tracking Number</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="receiveDate"
+                    name="receiveDate">
+                <label for="receiveDate">Date</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="time" class="form-control" id="receiveTime"
+                    name="receiveTime" required>
+                <label for="receiveTime">Time</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receiver"
+                    name="receiver" required>
+                <label for="receiver">Receiver</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="sender"
+                    name="sender" required>
+                <label for="sender">Sender</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="summary" name="summary"
+                    style="height: 100px" required></textarea>
+                <label for="summary">Summary</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" size="4" id="documentTag"
+                name="documentTag" required>
+                <option disabled>Select Document Tag</option>
+                <option value="1">For Agenda</option>
+                <option value="2">For Info - Admin</option>
+                <option value="3">For Info - Dept. Head</option>
+                <option value="4">For Filing</option>
+            </select>
+        </div>
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label for="receiving_file" class="form-label">Attach received
+                    file</label>
+                <input class="form-control form-control-sm" id="filename"
+                    name="filename"
+                    type="file" accept="application/pdf" required>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="remarks"
+                    name="remarks" required readonly>
+                <label for="remarks">Remarks</label>
+            </div>
+        </div>
+        <hr>
+        <div class="col-md-12 mb-2">
+            <small><button class="btn btn-success fw-bold btn-sm"><i
+                        class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#documentTag").click(function(){
+            var selectedValue = document.getElementById("documentTag").value
+            if(selectedValue == "1"){
+                document.getElementById("remarks").value = "Forwarded to Secretariat";
+            }else if(selectedValue == "2"){
+                document.getElementById("remarks").value = "Forwarded to Admin Div.";
+            }else if(selectedValue == "3"){
+                document.getElementById("remarks").value = "Forwarded to Dept. Head";
+            }else if(selectedValue == "4"){
+                document.getElementById("remarks").value = "Kept in Records";
+            }
+        });
+    });
+</script>
+
+{{template "footer" .}}

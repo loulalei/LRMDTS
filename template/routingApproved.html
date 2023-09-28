@@ -1,0 +1,295 @@
+{{template "header" .}}
+<!-- DATATABLE -->
+<!-- ONLINE -->
+<link rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<!-- OFFLINE -->
+<link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border">
+    <div class="container-fluid">
+        <small class="fw-bold">ROUTING - APPROVED</small>
+    </div>
+</nav>
+
+<div class="container-fluid py-2 shadow">
+    <form class="row" action="/api/routing/update_filing" method="post"
+        enctype="multipart/form-data">
+   
+        <input type="text" id="id" name="id" value="{{.Id}}" hidden>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="trackingNumber"
+                    name="trackingNumber" value="{{.TrackingNumber}}" disabled>
+                <label for="trackingNumber">Tracking Number</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="receiveDate"
+                    name="receiveDate" value="{{.ReceiveDate}}" disabled>
+                <label for="receiveDate">Date</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="time" class="form-control" id="receiveTime"
+                    name="receiveTime" value="{{.ReceiveTime}}" disabled>
+                <label for="receiveTime">Time</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receiver"
+                    name="receiver" value="{{.Receiver}}" disabled>
+                <label for="receiver">Receiver</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="sender"
+                    name="sender" value="{{.Sender}}" disabled>
+                <label for="sender">Sender</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="summary" name="summary"
+                    style="height: 100px" disabled>{{.Summary}}"</textarea>
+                <label for="summary">Summary</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" size="4" id="documentTag"
+                name="documentTag" disabled>
+                <option disabled>For Agenda</option>
+                
+            </select>
+        </div>
+        <hr>
+        <!-- Secretariat -->
+        
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        <label for="date_calendared">URGENT</label>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Item No." disabled>
+                  </div>
+                
+            </div>      
+            
+            <div class="col-md-4">          
+                  <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="date_calendared"
+                        placeholder="name@example.com">
+                    <label for="date_calendared">Date Calendared</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="date_reported"
+                        placeholder="name@example.com">
+                    <label for="date_reported">Date Reported</label>
+                </div>
+            </div>
+        
+        
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">Source</span>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Select Source</option>
+                            <option value="1">Other Dept</option>
+                            <option value="2">Priviledged Speech</option>
+                            <option value="3">Proposed</option>
+                          </select>
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">Department</span>
+                         <select class="form-select" aria-label="Default select example">
+                            <option selected>Select Dept</option>
+                            <option value="1">Agriculture Office</option>
+                            <option value="2">Assessor</option>
+                            <option value="3">Business Permit & Licensing</option>
+                          </select>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-6">
+                    <div class="input-group">
+                        <span class="input-group-text">Document Tag</span>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Select Action</option>
+                            <option value="1">For information of the whole body</option>
+                            <option value="2">Referred to Committee</option>
+                            <option value="3">Approved</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+        
+
+                <div class="col-md-3">
+                    
+                        
+                            <div class="form-floating mb-3">
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-outline-secondary" type="button">ADD</button>
+                                    <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                                      <option selected>Select Committee</option>
+                                      <option value="1">Agriculture And Economic Productivity</option>
+                                      <option value="2">Anti-Drug Abuse</option>
+                                      <option value="3">Barangay Affairs</option>
+                                    </select>
+                                  </div>
+                           </div> 
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table table-striped table-hover border">
+        
+                                <th colspan="2">COMMITTEE LIST</th>
+                                <tr><td>Government Contracts, Legal Matters, Engineering, Public Works and Zonification</td><td>
+                                    
+                                    <div class="d-grid gap-2 mx-auto">
+                                    <!-- download -->
+                                    <a href="" class="btn btn-danger btn-sm fw-bold"
+                                        type="button"><i class="fa-solid fa-trash"></i>
+                                        </a>
+                                </div>
+                            </td></tr>
+                                <tr><td>testing</td><td>
+                                    <div class="d-grid gap-2 mx-auto">
+                                        <!-- download -->
+                                        <a href="" class="btn btn-danger btn-sm fw-bold"
+                                            type="button"><i class="fa-solid fa-trash"></i>
+                                            </a>
+                                    </div>
+                                </td></tr>
+                            </table>
+                        </div>
+                    
+      
+            <hr>
+        <!-- Secretariat -->
+
+        <!-- Approved -->
+        
+            <div class="col-md-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="LawType"
+                        name="LawType" disabled>
+                    <label for="LawType">Legislative Measure</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="LawNo"
+                        name="LawNo" disabled>
+                    <label for="LawNo">No.</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="Series"
+                        name="Series" disabled>
+                    <label for="Series">Series</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="dateEnacted"
+                        name="dateEnacted" disabled>
+                    <label for="Series">Date Enacted</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-12">
+                    <label for="receiving_file" class="form-label">Attach Res/Ord File</label>
+                    <input class="form-control form-control-sm" id="filename"
+                        name="filename"
+                        type="file" accept="application/pdf" required>
+                </div>
+            </div>
+        
+        
+            <div class="col-md-3">
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="motionedBy" name="motionedBy">
+                        <option selected disabled>Select</option>
+                        {{ range .proponents}}
+                        <option value="{{.Name}}">{{.Name}}</option>
+                        {{end}}
+                    </select>
+                    <label for="yearReceived">Motioned By</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="author" name="author">
+                        <option selected disabled>Select</option>
+                        {{ range .proponents}}
+                        <option value="{{.Name}}">{{.Name}}</option>
+                        {{end}}
+                    </select>
+                    <label for="yearReceived">Author</label>
+                </div>
+            </div>
+           <div class="col-md-9">
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="Title" name="Title"
+                    style="height: 200px" required></textarea>
+                <label for="summary">Title/Body</label>
+            </div>
+           </div>
+        
+        <!-- Approved -->
+        <hr>
+        <div class="col-md-12 mb-2">
+            <small><button class="btn btn-success fw-bold btn-sm"><i
+                        class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        document.getElementById("remarks").value = "On file";
+
+        $("#documentTag").click(function(){
+            var selectedValue = document.getElementById("documentTag").value
+            if(selectedValue == "1"){
+                document.getElementById("remarks").value = "Forwarded to Secretariat";
+            }else if(selectedValue == "2"){
+                document.getElementById("remarks").value = "Forwarded to Admin Div.";
+            }else if(selectedValue == "3"){
+                document.getElementById("remarks").value = "Forwarded to Dept. Head";
+            }else if(selectedValue == "4"){
+                document.getElementById("remarks").value = "Kept in Records";
+            }
+        });
+
+        $("#isBorrowed").change(function(){
+            if ($('#isBorrowed').is(":checked")){
+                document.getElementById("isBorrowed").value = "true";
+                document.getElementById("remarks").value = "Borrowed";
+            }else{
+                document.getElementById("isBorrowed").value = "false";
+                document.getElementById("remarks").value = "On file";
+            }
+        });
+    });
+    
+</script>
+
+
+{{template "footer" .}}

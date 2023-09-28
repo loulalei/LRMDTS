@@ -1,0 +1,18 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+a.no-underline {
+    text-decoration: none;
+}
+
+.dashboard-img {
+    width: 75px;
+    height: 75px;
+}

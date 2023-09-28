@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ----------------------- -->
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- BOOTSTRAP ICON -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- DATATABLES CSS
+    <link rel="stylesheet" href="/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="/jquery.dataTables.min.css"> -->
+    <!-- OWN STYLE -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- JS -->
+    <!-- FONT AWESOME JS -->
+    <script src="https://kit.fontawesome.com/12d2c54188.js" crossorigin="anonymous"></script>
+    <!-- BOOTSTRAP JS -->
+    <script type="text/javascript" charset="utf8" src="/popper.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/bootstrap.min.js"></script>
+    <!-- JQuery -->
+    <script type="text/javascript" charset="utf8" src="/jquery.min.js"></script>
+    <!-- SWEET ALERT -->
+    <script type="text/javascript" charset="utf8" src="/sweetalert2.all.min.js"></script>
+
+    <title>{{.pageTitle}}</title>
+</head>
+
+<body>
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-bottom-dark">
+            <div class="container-fluid">
+                <img src="/SPC_LOGO200px.png" style="height:75px; width:75px; float:left;" alt="SPSPC" class="m-2">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            {{if eq .userLogged "SPCRD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/dashboard"><i class="fa-solid fa-gauge"></i> DASHBOARD</a>
+                            {{end}}
+                            {{if eq .userLogged "SPCSD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/dashboard/secretariat"><i class="fa-solid fa-gauge"></i> DASHBOARD</a>
+                            {{end}}
+                        </li>
+                        <li class="nav-item">
+                            {{if eq .userLogged "SPCRD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/routing"><i class="fa-solid fa-folder-tree"></i> DOCUMENT ROUTING</a>
+                            {{end}}
+                            {{if eq .userLogged "SPCSD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/routing/secretariat"><i class="fa-solid fa-folder-tree"></i> DOCUMENT ROUTING</a>
+                            {{end}}
+                        </li>
+                        <li class="nav-item">
+                            {{if eq .userLogged "SPCRD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/tracking"><i class="fa-regular fa-folder-open"></i> TRACKING</a>
+                            {{end}}
+                            {{if eq .userLogged "SPCSD"}}
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/tracking"><i class="fa-regular fa-folder-open"></i> TRACKING</a>
+                            {{end}}
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <li class="nav-item dropdown d-flex">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"> {{ .greetings}} {{ .user}} </i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item fw-bold" href="#"><i class="bi bi-person-bounding-box"></i>
+                                        PROFILE</a></li>
+                                <li><a class="dropdown-item fw-bold pe-auto" id="logout"><i class="bi bi-box-arrow-left"></i>
+                                        LOGOUT</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <script>
+            $('#logout').click(function () {
+                Swal.fire({
+                    icon: "question",
+                    title: "Are you sure, do you want to logout?",
+                    showCancelButton: true,
+                    toast: true,
+                    confirmButtonTest: 'Logout',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            $(location).attr('href', '/')
+                        )
+                    }
+                })
+            });
+        </script>

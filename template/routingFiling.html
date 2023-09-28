@@ -1,0 +1,170 @@
+{{template "header" .}}
+<!-- DATATABLE -->
+<!-- ONLINE -->
+<link rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<!-- OFFLINE -->
+<link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border">
+    <div class="container-fluid">
+        <small class="fw-bold">ROUTING - FILING</small>
+    </div>
+</nav>
+
+<div class="container-fluid py-2 shadow">
+    <form class="row" action="/api/routing/update_filing" method="post"
+        enctype="multipart/form-data">
+        {{range .receivings}}
+        <input type="text" id="id" name="id" value="{{.Id}}" hidden>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="trackingNumber"
+                    name="trackingNumber" value="{{.TrackingNumber}}" disabled>
+                <label for="trackingNumber">Tracking Number</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="receiveDate"
+                    name="receiveDate" value="{{.ReceiveDate}}" disabled>
+                <label for="receiveDate">Date</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3">
+                <input type="time" class="form-control" id="receiveTime"
+                    name="receiveTime" value="{{.ReceiveTime}}" disabled>
+                <label for="receiveTime">Time</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receiver"
+                    name="receiver" value="{{.Receiver}}" disabled>
+                <label for="receiver">Receiver</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="sender"
+                    name="sender" value="{{.Sender}}" disabled>
+                <label for="sender">Sender</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="summary" name="summary"
+                    style="height: 100px" disabled>{{.Summary}}"</textarea>
+                <label for="summary">Summary</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" size="4" id="documentTag"
+                name="documentTag" disabled>
+                <option disabled>Select Document Tag</option>
+                <option value="1" {{if eq .DocumentTag "For Agenda" }} selected
+                    {{end}}>For Agenda</option>
+                <option value="2" {{if eq .DocumentTag "For Info - Admin" }}
+                    selected {{end}}>For Info - Admin</option>
+                <option value="3" {{if eq .DocumentTag "For Info - Dept. Head"
+                    }} selected {{end}}>For Info - Dept. Head</option>
+                <option value="4" {{if eq .DocumentTag "For Filing" }} selected
+                    {{end}}>For Filing</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="remarks"
+                    name="remarks" readonly>
+                <label for="remarks">Remarks</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="cabinet"
+                    name="cabinet" required>
+                <label for="cabinet">File Folder / Cabinet Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="folder"
+                    name="folder" required>
+                <label for="folder">Folder Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="DateFiled"
+                    name="DateFiled" required>
+                <label for="DateFiled">Date Filed</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="form-floating mb-3 ">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                        id="isBorrowed" name="isBorrowed">
+                    <label class="form-check-label" for="isBorrowed">
+                        Is borrowed?
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="dateBorrowed"
+                    name="dateBorrowed">
+                <label for="dateBorrowed">Date Borrowed</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="borrower"
+                    name="borrower">
+                <label for="borrower">Borrower</label>
+            </div>
+        </div>
+        <hr>
+        <div class="col-md-12 mb-2">
+            <small><button class="btn btn-success fw-bold btn-sm"><i
+                        class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
+        </div>
+        {{end}}
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        document.getElementById("remarks").value = "On file";
+
+        $("#documentTag").click(function(){
+            var selectedValue = document.getElementById("documentTag").value
+            if(selectedValue == "1"){
+                document.getElementById("remarks").value = "Forwarded to Secretariat";
+            }else if(selectedValue == "2"){
+                document.getElementById("remarks").value = "Forwarded to Admin Div.";
+            }else if(selectedValue == "3"){
+                document.getElementById("remarks").value = "Forwarded to Dept. Head";
+            }else if(selectedValue == "4"){
+                document.getElementById("remarks").value = "Kept in Records";
+            }
+        });
+
+        $("#isBorrowed").change(function(){
+            if ($('#isBorrowed').is(":checked")){
+                document.getElementById("isBorrowed").value = "true";
+                document.getElementById("remarks").value = "Borrowed";
+            }else{
+                document.getElementById("isBorrowed").value = "false";
+                document.getElementById("remarks").value = "On file";
+            }
+        });
+    });
+    
+</script>
+
+
+{{template "footer" .}}

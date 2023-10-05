@@ -17,6 +17,7 @@ func AppRoutes(app *fiber.App) {
 	userEndpoint.Post("/save", controller.RegisterUser)
 	userEndpoint.Get("/login", controller.ViewLogin).Name("login_page")
 	userEndpoint.Post("/verify", controller.VerifyUser)
+	userEndpoint.Get("/profile", controller.ViewProfile)
 
 	dashboardEndpoint := apiEndpoint.Group("/dashboard")
 	dashboardEndpoint.Get("/", controller.ViewDashboard)

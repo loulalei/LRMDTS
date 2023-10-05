@@ -17,7 +17,7 @@
     <form class="row" action="/api/routing/update_filing" method="post"
         enctype="multipart/form-data">
         {{range .receivings}}
-        <input type="text" id="id" name="id" value="{{.Id}}" hidden>
+        <input type="text" id="id" name="id" value="{{.DocId}}" hidden>
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumber"

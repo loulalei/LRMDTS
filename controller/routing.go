@@ -71,8 +71,9 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	}
 
 	id := c.Params("id")
+
 	receiving := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND id = ?", id).Scan(receiving)
+	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND doc_id = ?", id).Scan(receiving)
 	return c.Render("routingForAgenda", fiber.Map{
 		"pageTitle":  "For Agenda",
 		"title":      "SECRETARIAT - FOR AGENDA",
@@ -112,10 +113,6 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	if receivingData.DocumentTag == "1" {
 		receivingData.DocumentTag = "For Agenda"
 	} else if receivingData.DocumentTag == "2" {
-		receivingData.DocumentTag = "For Information - Admin Division"
-	} else if receivingData.DocumentTag == "3" {
-		receivingData.DocumentTag = "For Information - Dept. Head"
-	} else if receivingData.DocumentTag == "4" {
 		receivingData.DocumentTag = "For Filing"
 	}
 
@@ -150,7 +147,7 @@ func GetForFiling(c *fiber.Ctx) error {
 	id := c.Params("id")
 	receiving := &[]model.Routings{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE id=?", id).Scan(receiving)
+	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
 	return c.Render("routingFiling", fiber.Map{
 		"pageTitle":  "forFiling",
 		"title":      "FOR FILING",
@@ -167,7 +164,7 @@ func UpdateForFiling(c *fiber.Ctx) error {
 	c.BodyParser(receiving)
 
 	fmt.Println("Receiving:", receiving.Remarks)
-	database.DBConn.Debug().Exec("UPDATE routings SET cabinet=?, folder=?, is_borrowed=?, date_borrowed=?, borrower=?, remarks=? WHERE id=?", receiving.Cabinet, receiving.Folder, receiving.IsBorrowed, receiving.DateBorrowed, receiving.Borrower, receiving.Remarks, receiving.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET cabinet=?, folder=?, is_borrowed=?, date_borrowed=?, borrower=?, remarks=? WHERE doc_id=?", receiving.Cabinet, receiving.Folder, receiving.IsBorrowed, receiving.DateBorrowed, receiving.Borrower, receiving.Remarks, receiving.DocId)
 
 	//------------------
 	receivings := &[]model.Routings{}

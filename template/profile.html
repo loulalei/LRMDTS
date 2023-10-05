@@ -1,51 +1,96 @@
 {{template "header" .}}
+<!-- DATATABLE -->
+<!-- ONLINE -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<!-- end -->
 <div class="container-fluid py-4 my-2">
   <div class="row gx-2">
-  <div class="col-md-4 p-2">
-    <div class="card mb-4">
-      <div class="card-body text-center">
-        <img src="/SPC_LOGO200px.png" alt="SP Logo"
-          class="rounded-circle img-fluid" style="width: 150px;">
-        <h5 class="my-3">Marie Louise Bago</h5>
-        <p class="text-muted mb-1">Records Division</p>
-        <p class="text-muted mb-4">Sangguniang Panlungsod ng San Pablo</p>
-        <div class="d-flex justify-content-center mb-2">
-        </div>
+    <div class="col-md-4 p-2">
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <img src="/sp-logo-300x300.png" alt="SP Logo" class="rounded-circle img-fluid" style="width: 150px;">
+          <h5 class="my-3">{{.user}}</h5>
+          {{if eq .userLogged "SPCRD"}}
+          <p class="text-muted mb-1">Records Division</p>
+          {{end}}
+          {{if eq .userLogged "SPCSD"}}
+          <p class="text-muted mb-1">Secretariat Division</p>
+          {{end}}
+          <p class="text-muted mb-4">Sangguniang Panlungsod ng San Pablo</p>
+          <div class="d-flex justify-content-center mb-2">
+          </div>
         </div>
       </div>
     </div>
     <div class="col-md-8 p-2 border-start">
       <div class="container-fluid py-2 table-responsive">
         <div class="text-center pb-md-2"><small><i class="fa-solid fa-book"></i> ACTIVITY LOGS</small></div>
-        <table id="notif_table" class="table table-hover table-sm table-borderless"
-            style="width:100%">
-             <tbody>
-                {{range .notifs}}
-                <tr class="border-bottom py-2">
-                    <td >{{if eq .DocumentTag "For Agenda"}}<i class="fa-solid fa-business-time"></i>{{end}}
-                      {{if eq .DocumentTag "For Information - Admin Div"}}<i class="fa-solid fa-circle-info"></i>{{end}}
-                      {{if eq .DocumentTag "For Information - Dept. Head"}}<i class="fa-solid fa-circle-info"></i>{{end}}
-                      {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
-                      {{ .Summary}} is {{.Remarks}} {{.DocumentTag}} </td>
-                    <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceiveDate}} </td>
-                </tr>
-                {{end}}
-            </tbody>
+        <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
+          <tbody>
+            {{range .logs}}
+            <tr class="border-bottom py-2">
+              <td>{{if eq .DocumentTag "For Agenda"}}<i class="fa-solid fa-business-time"></i>{{end}}
+                {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
+                {{ .Summary}} is {{.Remarks}} {{.DocumentTag}} </td>
+              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceiveDate}} </td>
+            </tr>
+            {{end}}
+          </tbody>
         </table>
+      </div>
     </div>
-    </div>
-  
-</div>
-<div class="row gx-2">
-  <div class="col-md-12 p-2">
-    <div class="text-center pb-md-2"><small><i class="fa-solid fa-line-chart"></i> EMPLOYEE PERFORMANCE</small></div>
+
   </div>
-  
+  <div class="row gx-2">
+    <div class="col-md-12 p-2">
+      <div class="text-center pb-md-2"><small><i class="fa-solid fa-line-chart"></i> EMPLOYEE PERFORMANCE</small></div>
+      <table id="example" class="table table-striped table-hover table-sm" style="width:100%">
+        <thead>
+          <tr>
+            <th class="text-center">DATE</th>
+            <th class="text-center">RECORDS CAPTURED</th>
+            <th class="text-center">RECORDS RETRIEVED</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>2023-10-05</td>
+            <td>2</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>2023-10-04</td>
+            <td>5</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>2023-10-03</td>
+            <td>7</td>
+            <td>2</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 </div>
-</div>
+<script>
+  $(document).ready(function () {
+    $('#example').DataTable({
+      order: [[0, 'desc']],
+      columnDefs: [
+        {
+          className: 'dt-body-center',
+          targets: "_all"
+        }
+      ]
 
-  
+    });
+  });
+</script>
 
-  {{template "footer" .}}
 
-  
+{{template "footer" .}}

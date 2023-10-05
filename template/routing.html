@@ -46,10 +46,11 @@
                     <div class="d-grid col-md-4 mx-auto">
                         <!-- encode -->
                         {{if eq .DocumentTag "For Filing"}}
-                        <a href="/api/routing/for_filing/{{.Id}}" class="btn btn-primary btn-sm fw-bold"
+                        <a href="/api/routing/for_filing/{{.DocId}}" class="btn btn-primary btn-sm fw-bold"
                             type="button"><i class="fa-solid fa-file-pen"></i>
                         </a>
                         {{end}}
+                        
                     </div>
                     <div class="d-grid col-md-4 mx-auto">
                         <!-- view -->
@@ -71,7 +72,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+    order: [[1, 'desc']]
+});
     });
 </script>
 

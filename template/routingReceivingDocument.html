@@ -62,9 +62,8 @@
                 name="documentTag" required>
                 <option disabled>Select Document Tag</option>
                 <option value="1">For Agenda</option>
-                <option value="2">For Info - Admin</option>
-                <option value="3">For Info - Dept. Head</option>
-                <option value="4">For Filing</option>
+                <option value="2">For Filing</option>
+                
             </select>
         </div>
         <div class="col-md-8">
@@ -98,10 +97,6 @@
             if(selectedValue == "1"){
                 document.getElementById("remarks").value = "Forwarded to Secretariat";
             }else if(selectedValue == "2"){
-                document.getElementById("remarks").value = "Forwarded to Admin Div.";
-            }else if(selectedValue == "3"){
-                document.getElementById("remarks").value = "Forwarded to Dept. Head";
-            }else if(selectedValue == "4"){
                 document.getElementById("remarks").value = "Kept in Records";
             }
         });

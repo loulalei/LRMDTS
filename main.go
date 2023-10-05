@@ -15,6 +15,7 @@ func main() {
 	// Connect to DB
 	database.ConnectPostgres()
 	controller.InitializeTables()
+
 	app := fiber.New(fiber.Config{
 		Views: html.New("./template", ".html"),
 	})

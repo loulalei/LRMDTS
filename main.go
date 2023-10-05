@@ -26,9 +26,6 @@ func main() {
 		logger.New(logger.Config{}),
 	)
 
-	// Register the session manager middleware
-	// app.Use(model.SessionManager)
-
 	// Dito iloload lahat ng path dun sa assets
 	app.Static("/", "./assets/css")
 	app.Static("/", "./assets/js")
@@ -42,5 +39,5 @@ func main() {
 	}))
 
 	routes.AppRoutes(app)
-	app.Listen(":5000")
+	app.Listen(":4343")
 }

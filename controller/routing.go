@@ -14,9 +14,9 @@ func ViewRouting(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
-	tracking := &[]model.Document{}
+	tracking := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routing", fiber.Map{
 		"pageTitle":  "Routing",
@@ -49,9 +49,9 @@ func ViewRoutingSecretariat(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
-	tracking := &[]model.Document{}
+	tracking := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routingSecretariat", fiber.Map{
 		"pageTitle":  "Secretariat",
@@ -71,7 +71,7 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	}
 
 	id := c.Params("id")
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND id = ?", id).Scan(receiving)
 	return c.Render("routingForAgenda", fiber.Map{
 		"pageTitle":  "For Agenda",
@@ -102,7 +102,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	receivingData := &model.Document{}
+	receivingData := &model.Routings{}
 	if parsErr := c.BodyParser(receivingData); parsErr != nil {
 		return c.JSON(fiber.Map{
 			"error": parsErr,
@@ -131,7 +131,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 
 	database.DBConn.Debug().Exec("INSERT INTO routings (tracking_number,item_number,receive_date,receive_time,receiver,sender,summary,document_tag,remarks,received_file) VALUES (?,?,?,?,?,?,?,?,?,?)", receivingData.TrackingNumber, receivingData.ItemNumber, receivingData.ReceiveDate, receivingData.ReceiveTime, receivingData.Receiver, receivingData.Sender, receivingData.Summary, receivingData.DocumentTag, receivingData.Remarks, file.Filename)
 
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("routing", fiber.Map{
@@ -148,7 +148,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 
 func GetForFiling(c *fiber.Ctx) error {
 	id := c.Params("id")
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 
 	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE id=?", id).Scan(receiving)
 	return c.Render("routingFiling", fiber.Map{
@@ -163,14 +163,14 @@ func GetForFiling(c *fiber.Ctx) error {
 }
 
 func UpdateForFiling(c *fiber.Ctx) error {
-	receiving := &model.Document{}
+	receiving := &model.Routings{}
 	c.BodyParser(receiving)
 
 	fmt.Println("Receiving:", receiving.Remarks)
 	database.DBConn.Debug().Exec("UPDATE routings SET cabinet=?, folder=?, is_borrowed=?, date_borrowed=?, borrower=?, remarks=? WHERE id=?", receiving.Cabinet, receiving.Folder, receiving.IsBorrowed, receiving.DateBorrowed, receiving.Borrower, receiving.Remarks, receiving.DocId)
 
 	//------------------
-	receivings := &[]model.Document{}
+	receivings := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
 	return c.Render("routing", fiber.Map{
 		"pageTitle":  "Routing",

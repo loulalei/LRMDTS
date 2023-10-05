@@ -12,7 +12,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
 
@@ -32,7 +32,7 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	receiving := &[]model.Document{}
+	receiving := &[]model.Routings{}
 
 	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
 

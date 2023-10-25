@@ -59,7 +59,7 @@
             <label for="yearReceived">Year Received</label>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
         <div class="form-floating">
             <select class="form-select" id="author" name="author">
                 <option selected disabled>Select</option>
@@ -78,15 +78,6 @@
                 <option value="Resolution">Resolution</option>
             </select>
             <label for="yearReceived">Legislative Measure</label>
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="col-md-12 mb-3">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="LawNo" name="LawNo">
-                <label for="LawNo">Law No.</label>
-            </div>
         </div>
     </div>
     <!-- <div class="col-md-1">
@@ -158,6 +149,12 @@
                                 class="btn btn-secondary btn-sm fw-bold"><i class="fa-solid fa-download"></i>
                             </a>
                         </div>
+                        <div class="d-grid col-md-4 mx-auto my-1">
+                            <!-- download -->
+                            <a href="/api/routing/download/{{.ReceivedFile}}"
+                                class="btn btn-secondary btn-sm fw-bold"><i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {{end}}
@@ -167,7 +164,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#example').DataTable({
+            $('#tracking-table').DataTable({
         order: [[3, 'desc']]
     });
         });

@@ -74,14 +74,27 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 
 	receiving := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND doc_id = ?", id).Scan(receiving)
+
+	departments := &[]model.Departments{}
+	database.DBConn.Debug().Raw("SELECT * FROM departments").Scan(departments)
+
+	proponents := &[]model.Proponents{}
+	database.DBConn.Debug().Raw("SELECT * FROM proponents").Scan(proponents)
+
+	committees := &[]model.Committees{}
+	database.DBConn.Debug().Raw("SELECT * FROM committees").Scan(committees)
+
 	return c.Render("routingForAgenda", fiber.Map{
-		"pageTitle":  "For Agenda",
-		"title":      "SECRETARIAT - FOR AGENDA",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"receivings": receiving,
-		"greetings":  utils.GetGreetings(),
+		"pageTitle":   "For Agenda",
+		"title":       "SECRETARIAT - FOR AGENDA",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"receivings":  receiving,
+		"departments": departments,
+		"proponents":  proponents,
+		"committees":  committees,
+		"greetings":   utils.GetGreetings(),
 	})
 }
 
@@ -89,13 +102,19 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
+
+	departments := &[]model.Departments{}
+
+	database.DBConn.Debug().Raw("SELECT * FROM departments").Scan(departments)
+
 	return c.Render("routingReceivingDocument", fiber.Map{
-		"pageTitle":  "Receiving Document",
-		"title":      "RECORDS DEPARTMENT",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
+		"pageTitle":   "Receiving Document",
+		"title":       "RECORDS DEPARTMENT",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"departments": departments,
+		"greetings":   utils.GetGreetings(),
 	})
 }
 

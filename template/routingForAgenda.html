@@ -6,88 +6,81 @@
 </nav>
 
 <div class="container-fluid py-2 shadow mb-3">
-    <form class="row" action="/api/routing/update_filing" method="post"
-        enctype="multipart/form-data">
+    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data">
         {{range .receivings}}
         <input type="text" id="id" name="id" value="{{.DocId}}" hidden>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumber"
-                    name="trackingNumber" value="{{.TrackingNumber}}" disabled>
+                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
+                    value="{{.TrackingNumber}}" disabled>
                 <label for="trackingNumber">Tracking Number</label>
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="receiveDate"
-                    name="receiveDate" value="{{.ReceiveDate}}" disabled>
+                <input type="date" class="form-control" id="receiveDate" name="receiveDate" value="{{.ReceiveDate}}"
+                    disabled>
                 <label for="receiveDate">Date</label>
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-3">
-                <input type="time" class="form-control" id="receiveTime"
-                    name="receiveTime" value="{{.ReceiveTime}}" disabled>
+                <input type="time" class="form-control" id="receiveTime" name="receiveTime" value="{{.ReceiveTime}}"
+                    disabled>
                 <label for="receiveTime">Time</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receiver"
-                    name="receiver" value="{{.Receiver}}" disabled>
+                <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}" disabled>
                 <label for="receiver">Receiver</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="sender"
-                    name="sender" value="{{.Sender}}" disabled>
+                <input type="text" class="form-control" id="sender" name="sender" value="{{.Sender}}" disabled>
                 <label for="sender">Sender</label>
             </div>
         </div>
         <div class="col-md-8">
             <div class="form-floating mb-3">
-                <textarea class="form-control" id="summary" name="summary"
-                    style="height: 100px" disabled>{{.Summary}}"</textarea>
+                <textarea class="form-control" id="summary" name="summary" style="height: 100px"
+                    disabled>{{.Summary}}"</textarea>
                 <label for="summary">Summary</label>
             </div>
         </div>
         <div class="col-md-4">
-            <select class="form-select" size="4" id="documentTag"
-                name="documentTag" disabled>
+            <select class="form-select" size="4" id="documentTag" name="documentTag" disabled>
                 <option disabled>Select Document Tag</option>
-                <option value="1" {{if eq .DocumentTag "For Agenda" }} selected
-                    {{end}}>For Agenda</option>
-                <option value="2" {{if eq .DocumentTag "For Info - Admin" }}
-                    selected {{end}}>For Info - Admin</option>
-                <option value="3" {{if eq .DocumentTag "For Info - Dept. Head"
-                    }} selected {{end}}>For Info - Dept. Head</option>
-                <option value="4" {{if eq .DocumentTag "For Filing" }} selected
-                    {{end}}>For Filing</option>
+                <option value="1" {{if eq .DocumentTag "For Agenda" }} selected {{end}}>For Agenda</option>
+                <option value="2" {{if eq .DocumentTag "For Info - Admin" }} selected {{end}}>For Info - Admin</option>
+                <option value="3" {{if eq .DocumentTag "For Info - Dept. Head" }} selected {{end}}>For Info - Dept. Head
+                </option>
+                <option value="4" {{if eq .DocumentTag "For Filing" }} selected {{end}}>For Filing</option>
             </select>
         </div>
+        {{end}}
         <hr>
         <div class="col-md-4">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="date_calendared">URGENT</label>
-                  </div>
+                    <div class="input-group-text">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        <label for="item_no">URGENT</label>
+                    </div>
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Item No.">
+                <input type="text" class="form-control" id="item_no" aria-label="Text input with checkbox" placeholder="Item No.">
             </div>
-        </div>    
-        <div class="col-md-4">          
-              <div class="form-floating mb-3">
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
                 <input type="date" class="form-control" id="date_calendared">
                 <label for="date_calendared">Date Calendared</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="date_reported"
-                    placeholder="name@example.com">
+                <input type="date" class="form-control" id="date_reported" placeholder="name@example.com">
                 <label for="date_reported">Date Reported</label>
             </div>
         </div>
@@ -95,26 +88,39 @@
             <div class="form-floating mb-3">
                 <div class="input-group">
                     <span class="input-group-text">Source</span>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Select Source</option>
-                        <option value="1">Other Dept</option>
+                    <select class="form-select" id="source" name="source">
+                        <option disabled>Select Source</option>
+                        <option selected value="1">Other Department</option>
                         <option value="2">Priviledged Speech</option>
                         <option value="3">Proposed</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 src" id="cb_department">
             <div class="form-floating mb-3">
                 <div class="input-group">
                     <span class="input-group-text">Department</span>
-                     <select class="form-select" aria-label="Default select example">
-                        <option selected disabled>Select Dept</option>
-                        <option value="1">Agriculture Office</option>
-                        <option value="2">Assessor</option>
-                        <option value="3">Business Permit & Licensing</option>
-                      </select>
-                  </div>
+                    <select class="form-select" id="department" name="department">
+                        <option selected disabled>Select Department</option>
+                        {{range .departments}}
+                        <option value={{.Name}}>{{.Name}}</option>
+                        {{end}}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 src" id="cb_proponent">
+            <div class="form-floating mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">Proponent</span>
+                    <select class="form-select" id="proponent" name="proponent">
+                        <option selected disabled>Select Proponent</option>
+                        {{range .proponents}}
+                        <option value={{.Name}}>{{.Name}}</option>
+                        {{end}}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -126,52 +132,76 @@
                         <option value="1">For information of the whole body</option>
                         <option value="2">Referred to Committee</option>
                         <option value="3">Approved</option>
-                      </select>
+                    </select>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">   
+        <div class="col-md-3">
             <div class="form-floating mb-3">
                 <div class="input-group mb-3">
                     <button class="btn btn-outline-secondary" type="button">ADD</button>
-                    <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
-                      <option selected>Select Committee</option>
-                      <option value="1">Agriculture And Economic Productivity</option>
-                      <option value="2">Anti-Drug Abuse</option>
-                      <option value="3">Barangay Affairs</option>
+                    <select class="form-select" id="committees" name="committees">
+                        <option selected disabled>Select Committee</option>
+                        {{range .committees}}
+                        <option value={{.Name}}>{{.Name}}</option>
+                        {{end}}
                     </select>
                 </div>
-           </div> 
+            </div>
         </div>
         <div class="col-md-9">
             <table class="table table-striped table-hover border">
                 <th colspan="2">COMMITTEE LIST</th>
-                <tr><td>Government Contracts, Legal Matters, Engineering, Public Works and Zonification</td><td>
-                    <div class="d-grid gap-2 mx-auto">
-                    <!-- download -->
-                    <a href="" class="btn btn-danger btn-sm fw-bold"
-                        type="button"><i class="fa-solid fa-trash"></i>
-                        </a>
-                </div>
-            </td></tr>
-                <tr><td>testing</td><td>
-                    <div class="d-grid gap-2 mx-auto">
-                        <!-- download -->
-                        <a href="" class="btn btn-danger btn-sm fw-bold"
-                            type="button"><i class="fa-solid fa-trash"></i>
+                <tr>
+                    <td>Government Contracts, Legal Matters, Engineering, Public Works and Zonification</td>
+                    <td>
+                        <div class="d-grid gap-2 mx-auto">
+                            <!-- download -->
+                            <a href="" class="btn btn-danger btn-sm fw-bold" type="button"><i
+                                    class="fa-solid fa-trash"></i>
                             </a>
-                    </div>
-                </td></tr>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>testing</td>
+                    <td>
+                        <div class="d-grid gap-2 mx-auto">
+                            <!-- download -->
+                            <a href="" class="btn btn-danger btn-sm fw-bold" type="button"><i
+                                    class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
-        
+
         <hr>
         <div class="col-md-12 mb-2">
-            <small><a class="btn btn-success fw-bold btn-sm" href="/api/routing"><i class="fa-solid fa-floppy-disk"></i> SAVE  DOCUMENT</a></small>
+            <small><a class="btn btn-success fw-bold btn-sm" href="/api/routing"><i class="fa-solid fa-floppy-disk"></i>
+                    SAVE DOCUMENT</a></small>
         </div>
-        {{end}}
     </form>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $("#cb_proponent").hide();
+        $('#source').on('change', function () {
+            var sourceValue = $(this).val();
+            if (sourceValue == '1'){
+                $("#cb_proponent").hide();
+                $("#cb_department").show();
+            }else if (sourceValue == '2'){
+                $("#cb_proponent").show();
+                $("#cb_department").hide();
+            }else if (sourceValue == '3'){
+                $("#cb_proponent").show();
+                $("#cb_department").hide();
+            }
+        });
+    });
+</script>
 
 {{template "footer" .}}

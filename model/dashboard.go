@@ -177,4 +177,9 @@ type (
 	Notification struct {
 		DocId int `json:"docId"`
 	}
+
+	Folders struct {
+		Id   int    `json:"id"`
+		Name string `json:"name"`
+	}
 )

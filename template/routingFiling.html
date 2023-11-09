@@ -74,6 +74,7 @@
                     {{end}}>For Filing</option>
             </select>
         </div>
+        {{end}}
         <div class="col-md-3">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="remarks"
@@ -81,18 +82,27 @@
                 <label for="remarks">Remarks</label>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="cabinet"
                     name="cabinet" required>
-                <label for="cabinet">File Folder / Cabinet Name</label>
+                <label for="cabinet">File Folder/Cabinet No.</label>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+            <select class="form-select mb-3" size="2" id="folders" name="folders" required>
+                <option disabled>Select Folder</option>
+                {{range .folders}}
+                <option value={{.Name}}>{{.Name}}</option>
+                {{end}}
+                <option value="new">ADD NEW</option>
+            </select>
+        </div>
+        <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="folder"
-                    name="folder" required>
-                <label for="folder">Folder Name</label>
+                <input type="text" class="form-control" id="folders"
+                    name="cabinet">
+                <label for="cabinet">New Folder Name</label>
             </div>
         </div>
         <div class="col-md-3">
@@ -132,7 +142,7 @@
             <small><button class="btn btn-success fw-bold btn-sm"><i
                         class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
         </div>
-        {{end}}
+
     </form>
 </div>
 

@@ -152,5 +152,4 @@ func GetGreetings() string {
 		greeting = "Good evening,"
 	}
 	return greeting
-
 }

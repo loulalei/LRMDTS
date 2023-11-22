@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"tech_tubbies/controller"
 	"tech_tubbies/middleware/database"
+	utils "tech_tubbies/middleware/util"
 	"tech_tubbies/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,5 +42,7 @@ func main() {
 	}))
 
 	routes.AppRoutes(app)
-	app.Listen(":4343")
+
+	listen := fmt.Sprintf(":%v", utils.GetEnv("PORT"))
+	app.Listen(listen)
 }

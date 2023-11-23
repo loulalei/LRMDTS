@@ -36,6 +36,8 @@ func InitializeTables() {
 	fmt.Println("Committee done")
 	database.CreateTable(model.Departments{})
 	fmt.Println("Departments done")
+	database.CreateTable(model.CommitteeList{})
+	fmt.Println("Committee List done")
 
 	// Insert Default Divisions
 	var divCount int

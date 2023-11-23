@@ -84,17 +84,21 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	committees := &[]model.Committees{}
 	database.DBConn.Debug().Raw("SELECT * FROM committees").Scan(committees)
 
+	viewCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees").Scan(viewCommittees)
 	return c.Render("routingForAgenda", fiber.Map{
-		"pageTitle":   "For Agenda",
-		"title":       "SECRETARIAT - FOR AGENDA",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"receivings":  receiving,
-		"departments": departments,
-		"proponents":  proponents,
-		"committees":  committees,
-		"greetings":   utils.GetGreetings(),
+		"pageTitle":      "For Agenda",
+		"title":          "SECRETARIAT - FOR AGENDA",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"userId":         model.UserID,
+		"receivings":     receiving,
+		"departments":    departments,
+		"proponents":     proponents,
+		"committees":     committees,
+		"viewCommittees": viewCommittees,
+		"greetings":      utils.GetGreetings(),
 	})
 }
 
@@ -203,7 +207,6 @@ func UpdateForFiling(c *fiber.Ctx) error {
 }
 
 func ViewApproved(c *fiber.Ctx) error {
-
 	return c.Render("routingApproved", fiber.Map{
 		"pageTitle":  "Routing - Approved",
 		"title":      "ROUTING APPROVED",
@@ -211,5 +214,17 @@ func ViewApproved(c *fiber.Ctx) error {
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
+	})
+}
+
+func InsertCommitteeForAgenda(c *fiber.Ctx) error {
+	itemNo := c.Params("itemNo")
+	committeeId := c.Params("committeeId")
+	userId := c.Params("userId")
+	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId)
+	return c.JSON(fiber.Map{
+		"ItemNo":      itemNo,
+		"CommitteeId": committeeId,
+		"UserId":      userId,
 	})
 }

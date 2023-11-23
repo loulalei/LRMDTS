@@ -41,6 +41,7 @@ func VerifyUser(c *fiber.Ctx) error {
 	if isExist > 0 {
 		model.Fullname = userCredentials.Fullname
 		model.UserCodeLogged = userCredentials.DivisionCode
+		model.UserID = userCredentials.Id
 		if userCredentials.DivisionCode == "SPCRD" { //Records
 			return c.Redirect("/api/dashboard")
 		} else if userCredentials.DivisionCode == "SPCSD" { //Secretariat

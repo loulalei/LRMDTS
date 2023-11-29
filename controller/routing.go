@@ -190,20 +190,21 @@ func UpdateForFiling(c *fiber.Ctx) error {
 	receiving := &model.Routings{}
 	c.BodyParser(receiving)
 
-	fmt.Println("Receiving:", receiving.Remarks)
-	database.DBConn.Debug().Exec("UPDATE routings SET cabinet=?, folder=?, is_borrowed=?, date_borrowed=?, borrower=?, remarks=? WHERE doc_id=?", receiving.Cabinet, receiving.Folder, receiving.IsBorrowed, receiving.DateBorrowed, receiving.Borrower, receiving.Remarks, receiving.DocId)
-	//------------------
-	receivings := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
-	return c.Render("routing", fiber.Map{
-		"pageTitle":  "Routing",
-		"title":      "ROUTING MAIN",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"receivings": receivings,
-	})
+	return c.JSON(receiving)
+	// fmt.Println("Receiving:", receiving.Remarks)
+	// database.DBConn.Debug().Exec("UPDATE routings SET cabinet=?, folder=?, is_borrowed=?, date_borrowed=?, borrower=?, remarks=? WHERE doc_id=?", receiving.Cabinet, receiving.Folder, receiving.IsBorrowed, receiving.DateBorrowed, receiving.Borrower, receiving.Remarks, receiving.DocId)
+	// //------------------
+	// receivings := &[]model.Routings{}
+	// database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
+	// return c.Render("routing", fiber.Map{
+	// 	"pageTitle":  "Routing",
+	// 	"title":      "ROUTING MAIN",
+	// 	"yearNow":    model.YearNow,
+	// 	"user":       model.Fullname,
+	// 	"userLogged": model.UserCodeLogged,
+	// 	"greetings":  utils.GetGreetings(),
+	// 	"receivings": receivings,
+	// })
 }
 
 func ViewApproved(c *fiber.Ctx) error {
@@ -221,11 +222,14 @@ func InsertCommitteeForAgenda(c *fiber.Ctx) error {
 	itemNo := c.Params("itemNo")
 	committeeId := c.Params("committeeId")
 	userId := c.Params("userId")
-	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId)
+
+	viewCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId).Find(viewCommittees)
 	return c.JSON(fiber.Map{
 		"ItemNo":      itemNo,
 		"CommitteeId": committeeId,
 		"UserId":      userId,
+		"data":        viewCommittees,
 	})
 }
 

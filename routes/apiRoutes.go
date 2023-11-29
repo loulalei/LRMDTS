@@ -34,6 +34,7 @@ func AppRoutes(app *fiber.App) {
 	routingEndpoint.Post("/update_filing", controller.UpdateForFiling)
 	routingEndpoint.Get("/routingApproved", controller.ViewApproved)
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
+	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
 
 	trackingEndpoint := apiEndpoint.Group("/tracking")
 	trackingEndpoint.Get("/", controller.ViewTracking)

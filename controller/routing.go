@@ -233,6 +233,23 @@ func InsertCommitteeForAgenda(c *fiber.Ctx) error {
 	})
 }
 
+func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
+	requestBody := &model.RequestCommittee{}
+	if parsErr := c.BodyParser(requestBody); parsErr != nil {
+		return c.JSON(fiber.Map{
+			"message": "error parsing",
+			"data":    parsErr.Error(),
+		})
+	}
+
+	viewCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", requestBody.ItemNumber, requestBody.CommitteeId, requestBody.UserId).Find(viewCommittees)
+	return c.JSON(fiber.Map{
+		"message": "success",
+		"data":    viewCommittees,
+	})
+}
+
 func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
 	itemNo := c.Params("itemNo")
 	committeeId := c.Params("committeeId")

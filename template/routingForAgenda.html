@@ -203,7 +203,7 @@
         var itemNumber = $('#item_no').val();
         var userId = $('#userId').val();
         var href = "#"
-        alert(itemNumber)
+
         if (itemNumber == "") {
             Swal.fire(
                 'Adding Error',
@@ -212,19 +212,18 @@
             )
         } else {
 
-            var endpoint = "http://127.0.0.1:4343/api/routing/add_committee/"
-            path = endpoint.concat(itemNumber, "/", committeeId, "/", userId)
-            $.ajax({
-                url: path,
-                type: "GET",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var rjson = JSON.parse(data);
-                    alert(rjson)
-                }
-            });
-    location.reload();
+            $.post('http://127.0.0.1:4343/api/routing/add_committee',
+                {
+                    itemNumber: itemNumber,
+                    committeeId: committeeId,
+                    userId: userId
+                },
+                function (response, status) {
+                    alert("data: " + response.data[0].name + "\nstatus: " + status);
+                    // $("#mypar").html(response.amount);
+                });
+
+
         }
     });
 </script>

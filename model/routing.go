@@ -1,6 +1,11 @@
 package model
 
 type (
+	RequestCommittee struct {
+		ItemNumber  string `json:"itemNumber"`
+		CommitteeId int    `json:"committeeId"`
+		UserId      int    `json:"userId"`
+	}
 	CommitteeList struct {
 		ListId      int    `json:"ListId,omitempty" gorm:"primary key"`
 		ItemNumber  string `json:"itemNumber"`

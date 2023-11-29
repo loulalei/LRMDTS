@@ -228,3 +228,13 @@ func InsertCommitteeForAgenda(c *fiber.Ctx) error {
 		"UserId":      userId,
 	})
 }
+
+func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
+	itemNo := c.Params("itemNo")
+	committeeId := c.Params("committeeId")
+	database.DBConn.Debug().Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ?", committeeId, itemNo)
+	return c.JSON(fiber.Map{
+		"message": "successs",
+		"ItemNo":  itemNo,
+	})
+}

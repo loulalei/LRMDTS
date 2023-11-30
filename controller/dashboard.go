@@ -17,15 +17,15 @@ func ViewDashboard(c *fiber.Ctx) error {
 	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("dashboard", fiber.Map{
-		"pageTitle":          "Dashboard",
-		"title":              "DASHBOARD",
-		"yearNow":            model.YearNow,
-		"user":               model.Fullname,
-		"userLogged":         model.UserCodeLogged,
-		"greetings":          utils.GetGreetings(),
-		"notifs":             receiving,
-		"filings":            CountForFiling(),
-		"registrationStatus": 100,
+		"pageTitle":   "Dashboard",
+		"title":       "DASHBOARD",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"notifs":      receiving,
+		"filings":     CountForFiling(),
+		"loginStatus": 100,
 	})
 }
 
@@ -38,15 +38,15 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	database.DBConn.Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
 
 	return c.Render("dashboard_secretarial", fiber.Map{
-		"pageTitle":          "Dashboard - Secretariat",
-		"title":              "DASHBOARD - SECRETARIAT",
-		"yearNow":            model.YearNow,
-		"user":               model.Fullname,
-		"userLogged":         model.UserCodeLogged,
-		"greetings":          utils.GetGreetings(),
-		"notifs":             receiving,
-		"agendas":            CountForAgenda(),
-		"registrationStatus": 100,
+		"pageTitle":   "Dashboard - Secretariat",
+		"title":       "DASHBOARD - SECRETARIAT",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"notifs":      receiving,
+		"agendas":     CountForAgenda(),
+		"loginStatus": 100,
 	})
 }
 

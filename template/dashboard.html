@@ -189,7 +189,7 @@
     <!-- END OF CALENDAR -->
   </div>
 
-  {{if eq .registrationStatus 100}}
+  {{if eq .loginStatus 100}}
   <script>
     Swal.fire(
       '{{.greetings}}',
@@ -199,12 +199,7 @@
   </script>
   {{end}}
 
-<<<<<<< HEAD
-  {{template "footer" .}}
 
-=======
- 
->>>>>>> d1c3c9840e5337afff86ab641e23359ed9fb5fb9
   <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.js'></script>
   <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.2.0/main.js'></script>
   <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.2.0/main.js'></script>
@@ -445,4 +440,4 @@
     });
   </script>
 
-{{template "footer" .}}
+  {{template "footer" .}}

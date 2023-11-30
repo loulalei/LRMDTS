@@ -21,15 +21,16 @@ func ViewTracking(c *fiber.Ctx) error {
 	months := utils.GetMonths()
 	years := utils.GetYears()
 	return c.Render("tracking", fiber.Map{
-		"pageTitle":  "Tracking",
-		"title":      "TRACKING",
-		"monthLists": months,
-		"yearLists":  years,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"proponents": proponents,
-		"tracking":   tracking,
+		"pageTitle":   "Tracking",
+		"title":       "TRACKING",
+		"monthLists":  months,
+		"yearLists":   years,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"proponents":  proponents,
+		"tracking":    tracking,
+		"loginStatus": 101,
 	})
 }
 

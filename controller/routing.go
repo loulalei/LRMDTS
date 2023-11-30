@@ -19,14 +19,15 @@ func ViewRouting(c *fiber.Ctx) error {
 	tracking := &[]model.Routings{}
 	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routing", fiber.Map{
-		"pageTitle":  "Routing",
-		"title":      "ROUTING MAIN",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"receivings": receiving,
-		"tracking":   tracking,
+		"pageTitle":   "Routing",
+		"title":       "ROUTING MAIN",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"receivings":  receiving,
+		"tracking":    tracking,
+		"loginStatus": 101,
 	})
 }
 
@@ -35,12 +36,13 @@ func ViewRoutingRecords(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 	return c.Render("routingRecords", fiber.Map{
-		"pageTitle":  "Records",
-		"title":      "RECORDS DEPARTMENT",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
+		"pageTitle":   "Records",
+		"title":       "RECORDS DEPARTMENT",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"loginStatus": 101,
 	})
 }
 
@@ -54,14 +56,15 @@ func ViewRoutingSecretariat(c *fiber.Ctx) error {
 	tracking := &[]model.Routings{}
 	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routingSecretariat", fiber.Map{
-		"pageTitle":  "Secretariat",
-		"title":      "SECRETARIAT DEPARTMENT",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"receivings": receiving,
-		"tracking":   tracking,
+		"pageTitle":   "Secretariat",
+		"title":       "SECRETARIAT DEPARTMENT",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"receivings":  receiving,
+		"tracking":    tracking,
+		"loginStatus": 101,
 	})
 }
 
@@ -99,6 +102,7 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 		"committees":     committees,
 		"viewCommittees": viewCommittees,
 		"greetings":      utils.GetGreetings(),
+		"loginStatus":    101,
 	})
 }
 
@@ -119,6 +123,7 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 		"userLogged":  model.UserCodeLogged,
 		"departments": departments,
 		"greetings":   utils.GetGreetings(),
+		"loginStatus": 101,
 	})
 }
 
@@ -155,14 +160,14 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("routing", fiber.Map{
-		"pageTitle":          "Routing",
-		"title":              "ROUTING MAIN",
-		"yearNow":            model.YearNow,
-		"user":               model.Fullname,
-		"userLogged":         model.UserCodeLogged,
-		"greetings":          utils.GetGreetings(),
-		"receivings":         receiving,
-		"registrationStatus": 100,
+		"pageTitle":   "Routing",
+		"title":       "ROUTING MAIN",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"receivings":  receiving,
+		"loginStatus": 101,
 	})
 }
 
@@ -175,14 +180,15 @@ func GetForFiling(c *fiber.Ctx) error {
 	folders := &[]model.Folders{}
 	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
 	return c.Render("routingFiling", fiber.Map{
-		"pageTitle":  "forFiling",
-		"title":      "FOR FILING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"receivings": receiving,
-		"folders":    folders,
+		"pageTitle":   "forFiling",
+		"title":       "FOR FILING",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"receivings":  receiving,
+		"folders":     folders,
+		"loginStatus": 101,
 	})
 }
 
@@ -209,12 +215,13 @@ func UpdateForFiling(c *fiber.Ctx) error {
 
 func ViewApproved(c *fiber.Ctx) error {
 	return c.Render("routingApproved", fiber.Map{
-		"pageTitle":  "Routing - Approved",
-		"title":      "ROUTING APPROVED",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
+		"pageTitle":   "Routing - Approved",
+		"title":       "ROUTING APPROVED",
+		"yearNow":     model.YearNow,
+		"user":        model.Fullname,
+		"userLogged":  model.UserCodeLogged,
+		"greetings":   utils.GetGreetings(),
+		"loginStatus": 101,
 	})
 }
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
 )
@@ -37,6 +38,11 @@ func main() {
 	app.Static("/", "./assets/js")
 	app.Static("/", "./assets/images")
 	app.Static("/", "./assets/files")
+
+	// Initialize default config
+	app.Use(favicon.New(favicon.Config{
+		File: "./assets/images/favicon.ico",
+	}))
 
 	// Configure application CORS
 	app.Use(cors.New(cors.Config{

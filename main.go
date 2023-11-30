@@ -15,6 +15,8 @@ import (
 )
 
 func main() {
+	// load env
+	envRouting.LoadEnv()
 	// Connect to DB
 	database.ConnectPostgres()
 	controller.InitializeTables()
@@ -43,6 +45,10 @@ func main() {
 	}))
 
 	routes.AppRoutes(app)
+
+	fmt.Println("SSL:", envRouting.SSL)
+	fmt.Println("CERT:", envRouting.SSLCertificate)
+	fmt.Println("KEY:", envRouting.SSLKey)
 
 	if envRouting.SSL == "enabled" {
 		log.Fatal(app.ListenTLS(

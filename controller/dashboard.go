@@ -14,7 +14,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 	}
 	receiving := &[]model.Routings{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("dashboard", fiber.Map{
 		"pageTitle":          "Dashboard",
@@ -35,7 +35,7 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	}
 	receiving := &[]model.Routings{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
 
 	return c.Render("dashboard_secretarial", fiber.Map{
 		"pageTitle":          "Dashboard - Secretariat",
@@ -51,11 +51,11 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 }
 
 func CountForAgenda() int64 {
-	total := database.DBConn.Debug().Exec("SELECT * FROM routings WHERE document_tag = 'For Agenda'").RowsAffected
+	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Agenda'").RowsAffected
 	return total
 }
 
 func CountForFiling() int64 {
-	total := database.DBConn.Debug().Exec("SELECT * FROM routings WHERE document_tag = 'For Filing'").RowsAffected
+	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Filing'").RowsAffected
 	return total
 }

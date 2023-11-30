@@ -10,7 +10,7 @@ import (
 
 func ViewLogin(c *fiber.Ctx) error {
 	divisions := &[]model.Divisions{}
-	database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
+	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
 
 	return c.Render("login", fiber.Map{
 		"pageTitle": "Login",
@@ -37,7 +37,7 @@ func VerifyUser(c *fiber.Ctx) error {
 	}
 
 	encryptedPass, _ := utils.Encrypt(userCredentials.Password, utils.GetEnv("SECRET_KEY"))
-	isExist := database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHERE division_code = ? AND password = ?", userCredentials.DivisionCode, encryptedPass).Scan(userCredentials).RowsAffected
+	isExist := database.DBConn.Raw("SELECT * FROM user_credentials WHERE division_code = ? AND password = ?", userCredentials.DivisionCode, encryptedPass).Scan(userCredentials).RowsAffected
 	if isExist > 0 {
 		model.Fullname = userCredentials.Fullname
 		model.UserCodeLogged = userCredentials.DivisionCode
@@ -64,7 +64,7 @@ func ViewRegistration(c *fiber.Ctx) error {
 
 	divisions := &[]model.Divisions{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
+	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
 
 	return c.Render("userManagement", fiber.Map{
 		"pageTitle": "Registration",

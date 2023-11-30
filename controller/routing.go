@@ -15,9 +15,9 @@ func ViewRouting(c *fiber.Ctx) error {
 	}
 
 	receiving := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 	tracking := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(tracking)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routing", fiber.Map{
 		"pageTitle":  "Routing",
 		"title":      "ROUTING MAIN",
@@ -50,9 +50,9 @@ func ViewRoutingSecretariat(c *fiber.Ctx) error {
 	}
 
 	receiving := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
 	tracking := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(tracking)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routingSecretariat", fiber.Map{
 		"pageTitle":  "Secretariat",
 		"title":      "SECRETARIAT DEPARTMENT",
@@ -73,19 +73,19 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	receiving := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND doc_id = ?", id).Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda' AND doc_id = ?", id).Scan(receiving)
 
 	departments := &[]model.Departments{}
-	database.DBConn.Debug().Raw("SELECT * FROM departments").Scan(departments)
+	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
 
 	proponents := &[]model.Proponents{}
-	database.DBConn.Debug().Raw("SELECT * FROM proponents").Scan(proponents)
+	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
 
 	committees := &[]model.Committees{}
-	database.DBConn.Debug().Raw("SELECT * FROM committees").Scan(committees)
+	database.DBConn.Raw("SELECT * FROM committees").Scan(committees)
 
 	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_committees").Scan(viewCommittees)
+	database.DBConn.Raw("SELECT * FROM view_committees").Scan(viewCommittees)
 	return c.Render("routingForAgenda", fiber.Map{
 		"pageTitle":      "For Agenda",
 		"title":          "SECRETARIAT - FOR AGENDA",
@@ -109,7 +109,7 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 
 	departments := &[]model.Departments{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM departments").Scan(departments)
+	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
 
 	return c.Render("routingReceivingDocument", fiber.Map{
 		"pageTitle":   "Receiving Document",
@@ -149,10 +149,10 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	fmt.Println("FILENAME:", file.Filename)
 	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
 
-	database.DBConn.Debug().Exec("INSERT INTO routings (tracking_number,item_number,receive_date,receive_time,receiver,sender,summary,document_tag,remarks,received_file) VALUES (?,?,?,?,?,?,?,?,?,?)", receivingData.TrackingNumber, receivingData.ItemNumber, receivingData.ReceiveDate, receivingData.ReceiveTime, receivingData.Receiver, receivingData.Sender, receivingData.Summary, receivingData.DocumentTag, receivingData.Remarks, file.Filename)
+	database.DBConn.Exec("INSERT INTO routings (tracking_number,item_number,receive_date,receive_time,receiver,sender,summary,document_tag,remarks,received_file) VALUES (?,?,?,?,?,?,?,?,?,?)", receivingData.TrackingNumber, receivingData.ItemNumber, receivingData.ReceiveDate, receivingData.ReceiveTime, receivingData.Receiver, receivingData.Sender, receivingData.Summary, receivingData.DocumentTag, receivingData.Remarks, file.Filename)
 
 	receiving := &[]model.Routings{}
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("routing", fiber.Map{
 		"pageTitle":          "Routing",
@@ -170,10 +170,10 @@ func GetForFiling(c *fiber.Ctx) error {
 	id := c.Params("id")
 	receiving := &[]model.Routings{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
 
 	folders := &[]model.Folders{}
-	database.DBConn.Debug().Raw("SELECT * FROM folders").Scan(folders)
+	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
 	return c.Render("routingFiling", fiber.Map{
 		"pageTitle":  "forFiling",
 		"title":      "FOR FILING",
@@ -224,7 +224,7 @@ func InsertCommitteeForAgenda(c *fiber.Ctx) error {
 	userId := c.Params("userId")
 
 	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId).Find(viewCommittees)
+	database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId).Find(viewCommittees)
 	return c.JSON(fiber.Map{
 		"ItemNo":      itemNo,
 		"CommitteeId": committeeId,
@@ -243,7 +243,7 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 	}
 
 	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Debug().Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", requestBody.ItemNumber, requestBody.CommitteeId, requestBody.UserId).Find(viewCommittees)
+	database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", requestBody.ItemNumber, requestBody.CommitteeId, requestBody.UserId).Find(viewCommittees)
 	return c.JSON(fiber.Map{
 		"message": "success",
 		"data":    viewCommittees,
@@ -253,7 +253,7 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
 	itemNo := c.Params("itemNo")
 	committeeId := c.Params("committeeId")
-	database.DBConn.Debug().Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ?", committeeId, itemNo)
+	database.DBConn.Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ?", committeeId, itemNo)
 	return c.JSON(fiber.Map{
 		"message": "successs",
 		"ItemNo":  itemNo,

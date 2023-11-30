@@ -15,7 +15,7 @@ func ViewProfile(c *fiber.Ctx) error {
 
 	receiving := &[]model.Routings{}
 
-	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("profile", fiber.Map{
 		"pageTitle":  "Profile",

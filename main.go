@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"tech_tubbies/controller"
 	"tech_tubbies/middleware/database"
-	utils "tech_tubbies/middleware/util"
+	"tech_tubbies/middleware/envRouting"
 	"tech_tubbies/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -43,6 +44,13 @@ func main() {
 
 	routes.AppRoutes(app)
 
-	listen := fmt.Sprintf(":%v", utils.GetEnv("PORT"))
-	app.Listen(listen)
+	if envRouting.SSL == "enabled" {
+		log.Fatal(app.ListenTLS(
+			fmt.Sprintf(":%s", envRouting.Port),
+			envRouting.SSLCertificate,
+			envRouting.SSLKey,
+		))
+	} else {
+		log.Fatal(app.Listen(fmt.Sprintf(":%s", envRouting.Port)))
+	}
 }

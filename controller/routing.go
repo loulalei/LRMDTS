@@ -27,6 +27,7 @@ func ViewRouting(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
 		"tracking":   tracking,
+		"baseURL":    c.BaseURL(),
 	})
 }
 
@@ -41,6 +42,7 @@ func ViewRoutingRecords(c *fiber.Ctx) error {
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
+		"baseURL":    c.BaseURL(),
 	})
 }
 
@@ -62,6 +64,7 @@ func ViewRoutingSecretariat(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
 		"tracking":   tracking,
+		"baseURL":    c.BaseURL(),
 	})
 }
 
@@ -99,6 +102,7 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 		"committees":     committees,
 		"viewCommittees": viewCommittees,
 		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
 	})
 }
 
@@ -119,6 +123,7 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 		"userLogged":  model.UserCodeLogged,
 		"departments": departments,
 		"greetings":   utils.GetGreetings(),
+		"baseURL":     c.BaseURL(),
 	})
 }
 
@@ -162,6 +167,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 		"userLogged": model.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
+		"baseURL":    c.BaseURL(),
 	})
 }
 
@@ -182,6 +188,7 @@ func GetForFiling(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
 		"folders":    folders,
+		"baseURL":    c.BaseURL(),
 	})
 }
 
@@ -214,6 +221,7 @@ func ViewApproved(c *fiber.Ctx) error {
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
+		"baseURL":    c.BaseURL(),
 	})
 }
 

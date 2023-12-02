@@ -26,6 +26,7 @@ func ViewProfile(c *fiber.Ctx) error {
 		"greetings":   utils.GetGreetings(),
 		"logs":        receiving,
 		"loginStatus": 101,
+		"baseURL":     c.BaseURL(),
 	})
 
 }

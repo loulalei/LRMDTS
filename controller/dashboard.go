@@ -26,6 +26,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 		"notifs":      receiving,
 		"filings":     CountForFiling(),
 		"loginStatus": c.Response().StatusCode(),
+		"baseURL":     c.BaseURL(),
 	})
 }
 
@@ -46,6 +47,7 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"notifs":     receiving,
 		"agendas":    CountForAgenda(),
+		"baseURL":    c.BaseURL(),
 	})
 }
 

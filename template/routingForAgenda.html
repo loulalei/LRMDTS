@@ -1,4 +1,5 @@
 {{template "header" .}}
+<input type="text" id="baseURL" value="{{.baseURL}}">
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/api/routing"><i class="bi bi-calendar-week"></i> FOR AGENDA</a>
@@ -208,8 +209,9 @@
             var committeeName = $('#committees').find(":selected").text();
             var itemNumber = $('#item_no').val();
             var userId = $('#userId').val();
-            var href = "#"
-
+            var baseURL = $('#baseURL').val();
+            var endpoint = baseURL + "/api/routing/add_committee"
+            alert("BASE URL:"+endpoint)
             if (itemNumber == "") {
                 Swal.fire(
                     'Adding Error',
@@ -217,6 +219,7 @@
                     'info'
                 )
             } else {
+                
                 $.post('http://127.0.0.1:4343/api/routing/add_committee',
                     {
                         itemNumber: itemNumber,

@@ -275,9 +275,10 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 	// count if over 5 committees
 	var count int64
 	if dbErr := database.DBConn.Raw("SELECT COUNT(*) FROM view_committees WHERE item_number = ?", requestBody.ItemNumber).Scan(&count); dbErr.Error != nil {
+		message := fmt.Sprintf("Error database: %v", dbErr.Error)
 		return c.JSON(model.ResponseBody{
 			Status:  101,
-			Message: "Error database",
+			Message: message,
 		})
 	}
 	if count > 2 {

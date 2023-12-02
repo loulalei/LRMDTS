@@ -29,6 +29,7 @@ func Logout(c *fiber.Ctx) error {
 }
 
 func VerifyUser(c *fiber.Ctx) error {
+
 	userCredentials := &model.UserCredentials{}
 	if parsErr := c.BodyParser(userCredentials); parsErr != nil {
 		return c.JSON(fiber.Map{

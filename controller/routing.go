@@ -19,15 +19,14 @@ func ViewRouting(c *fiber.Ctx) error {
 	tracking := &[]model.Routings{}
 	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routing", fiber.Map{
-		"pageTitle":   "Routing",
-		"title":       "ROUTING MAIN",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"receivings":  receiving,
-		"tracking":    tracking,
-		"loginStatus": 101,
+		"pageTitle":  "Routing",
+		"title":      "ROUTING MAIN",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"receivings": receiving,
+		"tracking":   tracking,
 	})
 }
 
@@ -36,13 +35,12 @@ func ViewRoutingRecords(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 	return c.Render("routingRecords", fiber.Map{
-		"pageTitle":   "Records",
-		"title":       "RECORDS DEPARTMENT",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"loginStatus": 101,
+		"pageTitle":  "Records",
+		"title":      "RECORDS DEPARTMENT",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
 	})
 }
 
@@ -56,15 +54,14 @@ func ViewRoutingSecretariat(c *fiber.Ctx) error {
 	tracking := &[]model.Routings{}
 	database.DBConn.Raw("SELECT * FROM routings").Scan(tracking)
 	return c.Render("routingSecretariat", fiber.Map{
-		"pageTitle":   "Secretariat",
-		"title":       "SECRETARIAT DEPARTMENT",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"receivings":  receiving,
-		"tracking":    tracking,
-		"loginStatus": 101,
+		"pageTitle":  "Secretariat",
+		"title":      "SECRETARIAT DEPARTMENT",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"receivings": receiving,
+		"tracking":   tracking,
 	})
 }
 
@@ -102,7 +99,6 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 		"committees":     committees,
 		"viewCommittees": viewCommittees,
 		"greetings":      utils.GetGreetings(),
-		"loginStatus":    101,
 	})
 }
 
@@ -123,7 +119,6 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 		"userLogged":  model.UserCodeLogged,
 		"departments": departments,
 		"greetings":   utils.GetGreetings(),
-		"loginStatus": 101,
 	})
 }
 
@@ -160,14 +155,13 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
 
 	return c.Render("routing", fiber.Map{
-		"pageTitle":   "Routing",
-		"title":       "ROUTING MAIN",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"receivings":  receiving,
-		"loginStatus": 101,
+		"pageTitle":  "Routing",
+		"title":      "ROUTING MAIN",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"receivings": receiving,
 	})
 }
 
@@ -180,15 +174,14 @@ func GetForFiling(c *fiber.Ctx) error {
 	folders := &[]model.Folders{}
 	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
 	return c.Render("routingFiling", fiber.Map{
-		"pageTitle":   "forFiling",
-		"title":       "FOR FILING",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"receivings":  receiving,
-		"folders":     folders,
-		"loginStatus": 101,
+		"pageTitle":  "forFiling",
+		"title":      "FOR FILING",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"receivings": receiving,
+		"folders":    folders,
 	})
 }
 
@@ -215,13 +208,12 @@ func UpdateForFiling(c *fiber.Ctx) error {
 
 func ViewApproved(c *fiber.Ctx) error {
 	return c.Render("routingApproved", fiber.Map{
-		"pageTitle":   "Routing - Approved",
-		"title":       "ROUTING APPROVED",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"greetings":   utils.GetGreetings(),
-		"loginStatus": 101,
+		"pageTitle":  "Routing - Approved",
+		"title":      "ROUTING APPROVED",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
 	})
 }
 
@@ -230,14 +222,37 @@ func InsertCommitteeForAgenda(c *fiber.Ctx) error {
 	committeeId := c.Params("committeeId")
 	userId := c.Params("userId")
 
-	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId).Find(viewCommittees)
-	return c.JSON(fiber.Map{
-		"ItemNo":      itemNo,
-		"CommitteeId": committeeId,
-		"UserId":      userId,
-		"data":        viewCommittees,
-	})
+	// count if over 5 committees
+	var count int64
+	if dbErr := database.DBConn.Raw("SELECT COUNT(*) FROM view_committees").Scan(&count); dbErr.Error != nil {
+		fmt.Println("error:", dbErr.Error)
+	}
+
+	fmt.Println("Count:", count)
+	if count > 5 {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "error adding committee",
+		})
+	} else {
+
+		// Insert new committees
+		database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", itemNo, committeeId, userId)
+
+		// Get all committees
+		committeesLists := &model.ViewCommittees{}
+		database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ? ORDER BY list_id DESC", itemNo).Scan(committeesLists)
+		return c.JSON(model.ResponseBody{
+			Status:  100,
+			Message: "show added committees",
+			Request: fiber.Map{
+				"itemNo":      itemNo,
+				"committeeId": committeeId,
+				"userId":      userId,
+			},
+			Data: committeesLists,
+		})
+	}
 }
 
 func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
@@ -249,12 +264,48 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 		})
 	}
 
-	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", requestBody.ItemNumber, requestBody.CommitteeId, requestBody.UserId).Find(viewCommittees)
-	return c.JSON(fiber.Map{
-		"message": "success",
-		"data":    viewCommittees,
-	})
+	// count if over 5 committees
+	var count int64
+	if dbErr := database.DBConn.Raw("SELECT COUNT(*) FROM view_committees WHERE item_number = ?", requestBody.ItemNumber).Scan(&count); dbErr.Error != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "Error database",
+		})
+	}
+	if count > 2 {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "Maximum of 3 committees only",
+		})
+	} else {
+		committeesLists := &model.ViewCommittees{}
+		// check if existing in the view committee
+		database.DBConn.Raw("SELECT COUNT(*) FROM view_committees WHERE id = ?", requestBody.CommitteeId).Scan(&count)
+		if count > 0 {
+			return c.JSON(model.ResponseBody{
+				Status:  101,
+				Message: "This committee is already in the list",
+			})
+		} else {
+			// Insert new committees
+			database.DBConn.Exec("INSERT INTO committee_lists (item_number, committee_id, user_id) VALUES (?,?,?)", requestBody.ItemNumber, requestBody.CommitteeId, requestBody.UserId)
+
+			// Get all committees
+			database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ? ORDER BY list_id DESC", requestBody.ItemNumber).Scan(committeesLists)
+			message := fmt.Sprintf("%v has been added", committeesLists.Name)
+			return c.JSON(model.ResponseBody{
+				Status:  100,
+				Message: message,
+				Request: fiber.Map{
+					"itemNo":      requestBody.ItemNumber,
+					"committeeId": requestBody.CommitteeId,
+					"userId":      requestBody.UserId,
+					"listId":      committeesLists.ListId,
+				},
+				Data: committeesLists,
+			})
+		}
+	}
 }
 
 func RemoveCommitteeForAgenda(c *fiber.Ctx) error {

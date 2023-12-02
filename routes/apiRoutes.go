@@ -4,9 +4,10 @@ import (
 	"tech_tubbies/controller"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 )
 
-func AppRoutes(app *fiber.App) {
+func AppRoutes(app *fiber.App, sess *session.Store) {
 	// ROOT ENDPOINT
 	app.Get("/", controller.ViewLogin)
 

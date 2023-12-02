@@ -12,10 +12,13 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 )
 
 func main() {
+	store := session.New()
+
 	// load env
 	envRouting.LoadEnv()
 	// Connect to DB
@@ -50,7 +53,7 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 	}))
 
-	routes.AppRoutes(app)
+	routes.AppRoutes(app, store)
 
 	fmt.Println("SSL:", envRouting.SSL)
 	fmt.Println("CERT:", envRouting.SSLCertificate)

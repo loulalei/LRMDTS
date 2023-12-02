@@ -152,20 +152,25 @@
         </div>
         <div class="col-md-8">
             <table class="table table-striped table-hover border">
-                <th colspan="2">COMMITTEE LIST</th>
-                {{range .viewCommittees}}
-                <tr>
-                    {{if .ListId}}
-                    <td>{{.Name}}</td>
-                    <td>
-                        <div class="d-grid gap-2 mx-auto"><a href="{{.ListId}}" class="btn btn-danger btn-sm fw-bold"
-                                type="button"><i class="fa-solid fa-trash"></i></a></div>
-                    </td>
-                    {{else}}
-                    <td>COMMITTEE IS EMPTY</td>
-                    {{end}}
-                </tr>
-                {{end}}
+                <thead>
+                    <tr>
+                        <th colspan="2">COMMITTEE LIST</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- {{range .viewCommittees}}
+                    <tr>
+                        <td>{{.Name}}</td>
+                        <td>
+                            <div class="d-grid gap-3 mx-auto">
+                                <button id="remove_committee" class="btn btn-danger btn-sm fw-bold" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {{end}} -->
+                </tbody>
             </table>
         </div>
 
@@ -197,33 +202,87 @@
 </script>
 
 <script>
-    $("#add_committee").click(function () {
-        var committeeId = $('#committees').find(":selected").val();
-        var committeeName = $('#committees').find(":selected").text();
-        var itemNumber = $('#item_no').val();
-        var userId = $('#userId').val();
-        var href = "#"
+    $(document).ready(function () {
+        $("#add_committee").click(function () {
+            var committeeId = $('#committees').find(":selected").val();
+            var committeeName = $('#committees').find(":selected").text();
+            var itemNumber = $('#item_no').val();
+            var userId = $('#userId').val();
+            var href = "#"
 
-        if (itemNumber == "") {
-            Swal.fire(
-                'Adding Error',
-                'Item number is empty',
-                'info'
-            )
-        } else {
+            if (itemNumber == "") {
+                Swal.fire(
+                    'Adding Error',
+                    'Item number is empty',
+                    'info'
+                )
+            } else {
+                $.post('http://127.0.0.1:4343/api/routing/add_committee',
+                    {
+                        itemNumber: itemNumber,
+                        committeeId: committeeId,
+                        userId: userId
+                    },
+                    function (response, status) {
+                        if (response.status == 100) {
+                            // alert("Response:"+response.request['listId'])
+                            // alert("data: " + response.data[0].listId + "\nstatus: " + status);
+                            var markup =
+                                `<tr>
+                                <td>` + response.data['name'] + `</td>
+                                <td>
+                                    <div class="d-grid gap-3 mx-auto">
+                                        <button id="remove_committee" class="btn btn-danger btn-sm fw-bold" type="button">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>`;
+                            $("table tbody").append(markup);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: response.message,
+                            });
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: response.message,
+                            });
+                        }
 
-            $.post('http://127.0.0.1:4343/api/routing/add_committee',
-                {
-                    itemNumber: itemNumber,
-                    committeeId: committeeId,
-                    userId: userId
-                },
-                function (response, status) {
-                    alert("data: " + response.data[0].name + "\nstatus: " + status);
-                    // $("#mypar").html(response.amount);
-                });
+                    });
+            }
+        });
 
+    });
 
-        }
+    $(document).ready(function () {
+        $("#remove_committee").click(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            Toast.fire({
+                icon: "success",
+                title: response.message,
+            });
+        });
     });
 </script>

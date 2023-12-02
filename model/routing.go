@@ -14,9 +14,10 @@ type (
 	}
 
 	ViewCommittees struct {
-		ListId     int    `json:"listId"`
-		ItemNumber string `json:"itemNumber"`
-		Name       string `json:"name"`
-		Fullname   string `json:"fullname"`
+		Id         int    `json:"committeeId,omitempty"`
+		ListId     int    `json:"listId,omitempty"`
+		ItemNumber string `json:"itemNumber,omitempty"`
+		Name       string `json:"name,omitempty"`
+		Fullname   string `json:"fullname,omitempty"`
 	}
 )

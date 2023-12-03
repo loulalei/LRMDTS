@@ -25,14 +25,14 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="receiveDate" name="receiveDate">
-                <label for="receiveDate">Date</label>
+                <input type="date" class="form-control" id="receivedDate" name="receivedDate">
+                <label for="receivedDate">Date</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="time" class="form-control" id="receiveTime" name="receiveTime" required>
-                <label for="receiveTime">Time</label>
+                <input type="time" class="form-control" id="receivedTime" name="receivedTime" required>
+                <label for="receivedTime">Time</label>
             </div>
         </div>
         <div class="col-md-2">
@@ -64,7 +64,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             </div>
         </div>
         <div class="col-md-4">
-            <select class="form-select" size="4" id="documentTag" name="documentTag" required>
+            <select class="form-select" size="4" id="receivingTag" name="receivingTag" required>
                 <option disabled>Select Document Tag</option>
                 <option value="1">For Agenda</option>
                 <option value="2">For Filing</option>
@@ -72,16 +72,16 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
         <div class="col-md-8">
             <div class="mb-3">
-                <label for="receiving_file" class="form-label">Attach received
+                <label for="receivedFile" class="form-label">Attach received
                     file</label>
-                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                <input class="form-control form-control-sm" id="receivedFile" name="receivedFile" type="file"
                     accept="application/pdf" required>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="remarks" name="remarks" required readonly>
-                <label for="remarks">Remarks</label>
+                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" required readonly>
+                <label for="receivingRemarks">Remarks</label>
             </div>
         </div>
         <hr>
@@ -94,12 +94,12 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
     $(document).ready(function () {
-        $("#documentTag").click(function () {
-            var selectedValue = document.getElementById("documentTag").value
+        $("#receivingTag").click(function () {
+            var selectedValue = document.getElementById("receivingTag").value
             if (selectedValue == "1") {
-                document.getElementById("remarks").value = "Forwarded to Secretariat";
+                document.getElementById("receivingRemarks").value = "Forwarded to Secretariat";
             } else if (selectedValue == "2") {
-                document.getElementById("remarks").value = "Kept in Records";
+                document.getElementById("receivingRemarks").value = "Kept in Records";
             }
         });
 

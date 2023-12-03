@@ -1,42 +1,105 @@
 {{template "header" .}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
-integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/api/routing"><i class="bi bi-calendar-week"></i> FOR AGENDA</a>
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> FOR AGENDA</a>
     </div>
 </nav>
 
 <div class="container-fluid py-2 shadow mb-3">
-    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data">
-        <div class="col-md-2">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                        <label for="item_no">URGENT</label>
-                    </div>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="item_no" placeholder="yyyy-0000" autocomplete="false">
-                    <label for="item_no">Item Number</label>
-                </div>
-                <!-- <input type="text" class="form-control" id="item_no" aria-label="Text input with checkbox"
-                    placeholder="Item No."> -->
+    <!-- RECEIVING -->
+    <div class="row">
+        {{range .viewRoutings}}
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
+                    value="{{ .TrackingNumber}}" disabled>
+                <label for="trackingNumber">Tracking Number</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="date_calendared">
+                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="{{.ReceivedDate}}" disabled>
+                <label for="receivedDate">Date</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receivedTime" name="receivedTime" value="{{.ReceivedTime}}" disabled>
+                <label for="receivedTime">Time</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}" disabled>
+                <label for="receiver">Receiver</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="sender" name="sender" value="{{.Sender}}" disabled>
+                <label for="sender">Sender</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="summary" name="summary" value="{{.Summary}}" disabled>
+                <label for="summary">Summary</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag" value="{{.DocumentTag}}" disabled>
+                <label for="recevingDocumentTag">Document Tag</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receivedFile" name="receivedFile" value="{{.ReceivedFile}}" disabled>
+                <label for="receivedFile">Received File</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" value="{{.Remarks}}" disabled>
+                <label for="receivingRemarks">Receiving Remarks</label>
+            </div>
+        </div>
+        <hr>
+    </div>
+    {{end}}
+    <!-- FOR AGENDA -->
+    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data">
+        <input type="text" id="docId" name="docId" value="{{ .docId}}" hidden readonly>
+        <div class="col-md-1">
+            <div class="input-group mb-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="is_urgent" name="isUrgent">
+                    <label class="form-check-label" for="is_urgent">Urgent Document</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="input-group mb-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="item_no" name="ItemNumber" autocomplete="false" required>
+                    <label for="item_no">Item Number</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="date_calendared" name="dateCalendared" required>
                 <label for="date_calendared">Date Calendared</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="date_reported" placeholder="name@example.com">
+                <input type="date" class="form-control" id="date_reported" name="dateReported" required>
                 <label for="date_reported">Date Reported</label>
             </div>
         </div>
@@ -76,19 +139,19 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </div>
         <div class="col-md-3">
             <div class="form-floating">
-                <select class="form-select" id="documentTag" name="documentTag" aria-label="Default select example">
+                <select class="form-select" id="agendaTag" name="agendaTag">
                     <option selected disabled>Select Action</option>
                     <option value="1">For information of the whole body</option>
                     <option value="2">Referred to Committee</option>
                     <option value="3">Approved</option>
                 </select>
-                <label for="documentTag">Document Tag</label>
+                <label for="agendaTag">Document Tag</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="remarks" name="remarks" required readonly disabled>
-                <label for="remarks">Remarks</label>
+                <input type="text" class="form-control" id="agendaRemarks" name="agendaRemarks" required readonly>
+                <label for="agendaRemarks">Remarks</label>
             </div>
         </div>
         <div class="col-md-5">
@@ -99,20 +162,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     <option value={{.Id}}>{{.Name}}</option>
                     {{end}}
                 </select>
-                <label for="committees">Document Tag</label>
+                <label for="committees">Committees</label>
             </div>
-
-            <!-- <div class="form-floating mb-6">
-                <div class="input-group mb-3">
-                    <button id="add_committee" class="btn btn-success" type="button">ADD</button>
-                    <select class="form-select" id="committees" name="committees">
-                        <option selected disabled>Select Committee</option>
-                        {{range .committees}}
-                        <option value={{.Id}}>{{.Name}}</option>
-                        {{end}}
-                    </select>
-                </div>
-            </div> -->
         </div>
         <div class="col-md-1 py-1">
             <div class="d-grid gap-2">
@@ -144,13 +195,10 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 </tbody>
             </table>
         </div>
-
-
-
         <hr>
         <div class="col-md-12 mb-2">
-            <small><a class="btn btn-success fw-bold btn-sm" href="/api/routing"><i class="fa-solid fa-floppy-disk"></i>
-                    SAVE DOCUMENT</a></small>
+            <small><button class="btn btn-success fw-bold btn-sm"><i class="fa-solid fa-floppy-disk"></i>SAVE
+                    DOCUMENT</button></small>
         </div>
     </form>
 
@@ -177,15 +225,15 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
     $(document).ready(function () {
-        $("#documentTag").click(function () {
-            var selectedValue = document.getElementById("documentTag").value
+        $("#agendaTag").click(function () {
+            var selectedValue = document.getElementById("agendaTag").value
             if (selectedValue == "1") {
-                document.getElementById("remarks").value = "Forwarded to Records";
+                document.getElementById("agendaRemarks").value = "Forwarded to Records";
             } else if (selectedValue == "2") {
-                document.getElementById("remarks").value = "Kept in Secretariat";
+                document.getElementById("agendaRemarks").value = "Kept in Secretariat";
             }
             else if (selectedValue == "3") {
-                document.getElementById("remarks").value = "Forwarded to Records";
+                document.getElementById("agendaRemarks").value = "Forwarded to Records";
             }
         });
 

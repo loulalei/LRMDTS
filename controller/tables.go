@@ -8,24 +8,6 @@ import (
 
 func InitializeTables() {
 	fmt.Println("Initializing database tables")
-	database.CreateTable(model.Routings{})
-	fmt.Println("Routings done")
-	database.CreateTable(model.Document{})
-	fmt.Println("Documents done")
-	database.CreateTable(model.Receiving{})
-	fmt.Println("Receiving done")
-	database.CreateTable(model.ForAgenda{})
-	fmt.Println("For Agenda done")
-	database.CreateTable(model.ResOrd{})
-	fmt.Println("ResOrd done")
-	database.CreateTable(model.Forward{})
-	fmt.Println("Forward done")
-	database.CreateTable(model.Releasing{})
-	fmt.Println("Releasing done")
-	database.CreateTable(model.Filing{})
-	fmt.Println("Filing done")
-	database.CreateTable(model.DocumentFilepath{})
-	fmt.Println("Document Filepath done")
 	database.CreateTable(model.UserCredentials{})
 	fmt.Println("User Credentials done")
 	database.CreateTable(model.Divisions{})
@@ -36,8 +18,6 @@ func InitializeTables() {
 	fmt.Println("Committee done")
 	database.CreateTable(model.Departments{})
 	fmt.Println("Departments done")
-	database.CreateTable(model.CommitteeList{})
-	fmt.Println("Committee List done")
 
 	// Insert Default Divisions
 	var divCount int

@@ -12,9 +12,9 @@ func ViewDashboard(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	receiving := &[]model.Routings{}
 
-	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
+	routings := &[]model.Routings{}
+	database.DBConn.Raw("SELECT * FROM view_routings").Scan(routings)
 
 	return c.Render("dashboard", fiber.Map{
 		"pageTitle":   "Dashboard",
@@ -23,7 +23,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 		"user":        model.Fullname,
 		"userLogged":  model.UserCodeLogged,
 		"greetings":   utils.GetGreetings(),
-		"notifs":      receiving,
+		"notifs":      routings,
 		"filings":     CountForFiling(),
 		"loginStatus": c.Response().StatusCode(),
 		"baseURL":     c.BaseURL(),

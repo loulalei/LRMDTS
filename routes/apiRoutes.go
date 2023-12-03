@@ -27,7 +27,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	routingEndpoint.Get("/", controller.ViewRouting)
 	routingEndpoint.Get("/records", controller.ViewRoutingRecords)
 	routingEndpoint.Get("/secretariat", controller.ViewRoutingSecretariat)
-	routingEndpoint.Get("/foragenda/:id", controller.ViewRoutingForAgenda)
+	routingEndpoint.Get("/foragenda/:docId", controller.ViewRoutingForAgenda)
 	routingEndpoint.Get("/receiving", controller.ViewReceivingRoute)
 	routingEndpoint.Get("/download/:filename", controller.DownloadAttachment)
 	routingEndpoint.Post("/register_receiving", controller.RegisterReceiving)

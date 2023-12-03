@@ -34,14 +34,18 @@
             </tr>
         </thead>
         <tbody>
-            {{range .receivings}}
+            {{range .viewRoutings}}
             <tr>
-                <td>{{ .ReceiveDate}}</td>
-                <td>{{ .TrackingNumber}}</td>
-                <td>{{ .ItemNumber}}</td>
-                <td>{{ .Summary}}</td>
-                <td>{{ .DocumentTag}}</td>
-                <td>{{ .Remarks}}</td>
+                <td>{{.ReceivedDate}}</td>
+                <td>{{.TrackingNumber}}</td>
+                 {{if .ItemNumber}}
+                    <td>{{.ItemNumber}}</td>
+                {{else}}
+                    <td>None</td>
+                {{end}}
+                <td>{{.Summary}}</td>
+                <td>{{.DocumentTag}}</td>
+                <td>{{.Remarks}}</td>
                 <td class="row">
                     <div class="d-grid col-md-4 mx-auto">
                         <!-- encode -->
@@ -50,7 +54,6 @@
                             type="button"><i class="fa-solid fa-file-pen"></i>
                         </a>
                         {{end}}
-                        
                     </div>
                     <div class="d-grid col-md-4 mx-auto">
                         <!-- view -->
@@ -73,8 +76,8 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
-    order: [[1, 'desc']]
-});
+            order: [[1, 'desc']]
+        });
     });
 </script>
 

@@ -2,7 +2,6 @@ package model
 
 type (
 	Routings struct {
-		DocId          int    `json:"docId" gorm:"primary key"`
 		TrackingNumber string `json:"trackingNumber"`
 		ItemNumber     string `json:"itemNumber"`
 		ReceiveDate    string `json:"receiveDate"`
@@ -112,18 +111,6 @@ type (
 		Receiver       string `json:"receiver"`
 		Sender         string `json:"Sender"`
 		Summary        string `json:"summary"`
-	}
-
-	ForAgenda struct {
-		DocId          int    `json:"docId"`
-		ItemNumber     string `json:"itemNumber"`
-		IsUrgent       bool   `json:"isUrgent"`
-		DateCalendared string `json:"dateCalendared"`
-		DateReported   string `json:"dateReported"`
-		Source         string `json:"source"`
-		Department     string `json:"department"`
-		Proponent      string `json:"proponent"`
-		Committee      string `json:"committee"`
 	}
 
 	ResOrd struct {

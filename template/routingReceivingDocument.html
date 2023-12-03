@@ -1,6 +1,9 @@
 {{template "header" .}}
 <!-- DATATABLE -->
 <!-- ONLINE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
+integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <!-- OFFLINE -->
@@ -99,15 +102,9 @@
                 document.getElementById("remarks").value = "Kept in Records";
             }
         });
-    });
-</script>
 
-<script>
-    function trackingFormat() {
-        var num = $(this).val().replace(/\D/g, '');
-        $(this).val(num.substring(0, 4) + '-' + num.substring(4, 8) + '-' + num.substring(8, 10) + '-' + num.substring(10, 14));
-    }
-    $('#trackingNumber').keyup(trackingFormat);
+        $("#trackingNumber").inputmask("9999-9999-99-9999");
+    });
 </script>
 
 {{template "footer" .}}

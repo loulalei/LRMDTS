@@ -1,4 +1,8 @@
 {{template "header" .}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
+integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
@@ -8,61 +12,7 @@
 
 <div class="container-fluid py-2 shadow mb-3">
     <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data">
-        {{range .receivings}}
-        <input type="text" id="id" name="id" value="{{.DocId}}" hidden>
         <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
-                    value="{{.TrackingNumber}}" disabled>
-                <label for="trackingNumber">Tracking Number</label>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="receiveDate" name="receiveDate" value="{{.ReceiveDate}}"
-                    disabled>
-                <label for="receiveDate">Date</label>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-floating mb-3">
-                <input type="time" class="form-control" id="receiveTime" name="receiveTime" value="{{.ReceiveTime}}"
-                    disabled>
-                <label for="receiveTime">Time</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}" disabled>
-                <label for="receiver">Receiver</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="sender" name="sender" value="{{.Sender}}" disabled>
-                <label for="sender">Sender</label>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="summary" name="summary" style="height: 100px"
-                    disabled>{{.Summary}}"</textarea>
-                <label for="summary">Summary</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select" size="4" id="documentTag" name="documentTag" disabled>
-                <option disabled>Select Document Tag</option>
-                <option value="1" {{if eq .DocumentTag "For Agenda" }} selected {{end}}>For Agenda</option>
-                <option value="2" {{if eq .DocumentTag "For Info - Admin" }} selected {{end}}>For Info - Admin</option>
-                <option value="3" {{if eq .DocumentTag "For Info - Dept. Head" }} selected {{end}}>For Info - Dept. Head
-                </option>
-                <option value="4" {{if eq .DocumentTag "For Filing" }} selected {{end}}>For Filing</option>
-            </select>
-        </div>
-        {{end}}
-        <hr>
-        <div class="col-md-4">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -70,72 +20,69 @@
                         <label for="item_no">URGENT</label>
                     </div>
                 </div>
-                <input type="text" class="form-control" id="item_no" aria-label="Text input with checkbox"
-                    placeholder="Item No.">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="item_no" placeholder="yyyy-0000">
+                    <label for="item_no">Item Number</label>
+                </div>
+                <!-- <input type="text" class="form-control" id="item_no" aria-label="Text input with checkbox"
+                    placeholder="Item No."> -->
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-floating mb-3">
                 <input type="date" class="form-control" id="date_calendared">
                 <label for="date_calendared">Date Calendared</label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-floating mb-3">
                 <input type="date" class="form-control" id="date_reported" placeholder="name@example.com">
                 <label for="date_reported">Date Reported</label>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="form-floating mb-3">
-                <div class="input-group">
-                    <span class="input-group-text">Source</span>
-                    <select class="form-select" id="source" name="source">
-                        <option disabled>Select Source</option>
-                        <option selected value="1">Other Department</option>
-                        <option value="2">Priviledged Speech</option>
-                        <option value="3">Proposed</option>
-                    </select>
-                </div>
+        <div class="col-md-2">
+            <div class="form-floating">
+                <select class="form-select" id="source" name="source">
+                    <option disabled>Select Source</option>
+                    <option selected value="1">Other Department</option>
+                    <option value="2">Priviledged Speech</option>
+                    <option value="3">Proposed</option>
+                </select>
+                <label for="source">Source</label>
             </div>
         </div>
-        <div class="col-md-3 src" id="cb_department">
-            <div class="form-floating mb-3">
-                <div class="input-group">
-                    <span class="input-group-text">Department</span>
-                    <select class="form-select" id="department" name="department">
-                        <option selected disabled>Select Department</option>
-                        {{range .departments}}
-                        <option value={{.Name}}>{{.Name}}</option>
-                        {{end}}
-                    </select>
-                </div>
+        <div class="col-md-4 src" id="cb_department">
+            <div class="form-floating">
+                <select class="form-select" id="department" name="department">
+                    <option selected disabled>Select Department</option>
+                    {{range .departments}}
+                    <option value={{.Name}}>{{.Name}}</option>
+                    {{end}}
+                </select>
+                <label for="department">Department</label>
             </div>
         </div>
-        <div class="col-md-3 src" id="cb_proponent">
-            <div class="form-floating mb-3">
-                <div class="input-group">
-                    <span class="input-group-text">Proponent</span>
-                    <select class="form-select" id="proponent" name="proponent">
-                        <option selected disabled>Select Proponent</option>
-                        {{range .proponents}}
-                        <option value={{.Name}}>{{.Name}}</option>
-                        {{end}}
-                    </select>
-                </div>
+        <div class="col-md-4 src" id="cb_proponent">
+            <div class="form-floating">
+                <select class="form-select" id="proponent" name="proponent">
+                    <option selected disabled>Select Proponent</option>
+                    {{range .proponents}}
+                    <option value={{.Name}}>{{.Name}}</option>
+                    {{end}}
+                </select>
+                </select>
+                <label for="proponent">Proponent</label>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="form-floating mb-6">
-                <div class="input-group">
-                    <span class="input-group-text">Document Tag</span>
-                    <select class="form-select" id="documentTag" name="documentTag" aria-label="Default select example">
-                        <option selected disabled>Select Action</option>
-                        <option value="1">For information of the whole body</option>
-                        <option value="2">Referred to Committee</option>
-                        <option value="3">Approved</option>
-                    </select>
-                </div>
+            <div class="form-floating">
+                <select class="form-select" id="documentTag" name="documentTag" aria-label="Default select example">
+                    <option selected disabled>Select Action</option>
+                    <option value="1">For information of the whole body</option>
+                    <option value="2">Referred to Committee</option>
+                    <option value="3">Approved</option>
+                </select>
+                <label for="documentTag">Document Tag</label>
             </div>
         </div>
         <div class="col-md-3">
@@ -144,10 +91,20 @@
                 <label for="remarks">Remarks</label>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-floating mb-3">
+        <div class="col-md-5">
+            <div class="form-floating">
+                <select class="form-select" id="committees" name="committees">
+                    <option selected disabled>Select Committee</option>
+                    {{range .committees}}
+                    <option value={{.Id}}>{{.Name}}</option>
+                    {{end}}
+                </select>
+                <label for="committees">Document Tag</label>
+            </div>
+
+            <!-- <div class="form-floating mb-6">
                 <div class="input-group mb-3">
-                    <button id="add_committee" class="btn btn-secondary" type="button">ADD</button>
+                    <button id="add_committee" class="btn btn-success" type="button">ADD</button>
                     <select class="form-select" id="committees" name="committees">
                         <option selected disabled>Select Committee</option>
                         {{range .committees}}
@@ -155,8 +112,15 @@
                         {{end}}
                     </select>
                 </div>
+            </div> -->
+        </div>
+        <div class="col-md-1 py-1">
+            <div class="d-grid gap-2">
+                <button id="add_committee" class="btn btn-success btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i></button>
             </div>
         </div>
+        <hr>
         <div class="col-md-12">
             <table class="table table-striped table-hover border">
                 <thead>
@@ -181,7 +145,7 @@
             </table>
         </div>
 
-        
+
 
         <hr>
         <div class="col-md-12 mb-2">
@@ -189,7 +153,7 @@
                     SAVE DOCUMENT</a></small>
         </div>
     </form>
-    
+
 </div>
 
 <script>
@@ -224,6 +188,8 @@
                 document.getElementById("remarks").value = "Forwarded to Records";
             }
         });
+
+        $("#item_no").inputmask("9999-9999");
     });
 </script>
 
@@ -244,7 +210,7 @@
                     'info'
                 )
             } else {
-                
+
                 $.post(endpoint,
                     {
                         itemNumber: itemNumber,
@@ -259,9 +225,9 @@
                                 `<tr>
                                 <td>` + response.data['name'] + `</td>
                                 <td>
-                                    <div class="d-grid gap-3 mx-auto">
-                                        <button id="remove_committee" class="btn btn-danger btn-sm fw-bold" type="button">
-                                            <i class="fa-solid fa-trash"></i>
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button id="remove_committee" name="remove_committee" class="btn btn-danger btn-sm fw-bold" type="button">
+                                            <i class="fa-solid fa-trash" id="remove_committee"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -296,9 +262,6 @@
             }
         });
 
-    });
-
-    $(document).ready(function () {
         $("#remove_committee").click(function () {
             const Toast = Swal.mixin({
                 toast: true,
@@ -309,8 +272,10 @@
             });
             Toast.fire({
                 icon: "success",
-                title: response.message,
+                title: "Testing response",
             });
         });
+
     });
+
 </script>

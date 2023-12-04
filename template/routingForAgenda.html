@@ -23,13 +23,15 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="{{.ReceivedDate}}" disabled>
+                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="{{.ReceivedDate}}"
+                    disabled>
                 <label for="receivedDate">Date</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedTime" name="receivedTime" value="{{.ReceivedTime}}" disabled>
+                <input type="text" class="form-control" id="receivedTime" name="receivedTime" value="{{.ReceivedTime}}"
+                    disabled>
                 <label for="receivedTime">Time</label>
             </div>
         </div>
@@ -53,19 +55,22 @@
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag" value="{{.DocumentTag}}" disabled>
+                <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag"
+                    value="{{.DocumentTag}}" disabled>
                 <label for="recevingDocumentTag">Document Tag</label>
             </div>
         </div>
         <div class="col-md-8">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedFile" name="receivedFile" value="{{.ReceivedFile}}" disabled>
+                <input type="text" class="form-control" id="receivedFile" name="receivedFile" value="{{.ReceivedFile}}"
+                    disabled>
                 <label for="receivedFile">Received File</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" value="{{.Remarks}}" disabled>
+                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks"
+                    value="{{.Remarks}}" disabled>
                 <label for="receivingRemarks">Receiving Remarks</label>
             </div>
         </div>
@@ -73,7 +78,8 @@
     </div>
     {{end}}
     <!-- FOR AGENDA -->
-    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data">
+    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data" id="forAgenda"
+        name="forAgenda">
         <input type="text" id="docId" name="docId" value="{{ .docId}}" hidden readonly>
         <div class="col-md-1">
             <div class="input-group mb-3">
@@ -86,7 +92,8 @@
         <div class="col-md-1">
             <div class="input-group mb-3">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="item_no" name="ItemNumber" autocomplete="false" required>
+                    <input type="text" class="form-control" id="item_no" name="ItemNumber" autocomplete="false"
+                        required>
                     <label for="item_no">Item Number</label>
                 </div>
             </div>
@@ -197,7 +204,8 @@
         </div>
         <hr>
         <div class="col-md-12 mb-2">
-            <small><button class="btn btn-success fw-bold btn-sm"><i class="fa-solid fa-floppy-disk"></i>SAVE
+            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
+                        class="fa-solid fa-floppy-disk"></i>SAVE
                     DOCUMENT</button></small>
         </div>
     </form>
@@ -235,6 +243,23 @@
             else if (selectedValue == "3") {
                 document.getElementById("agendaRemarks").value = "Forwarded to Records";
             }
+        });
+        $("#submitBtn").click(function () {
+            Swal.fire({
+                title: "Do you want to save this record?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Save"
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $("#forAgenda").submit(); // Submit the form
+                } else if (result.isDenied) {
+                    Swal.fire("Cancel saving record", "", "info");
+                }
+            });
         });
 
         $("#item_no").inputmask("9999-9999");

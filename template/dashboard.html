@@ -8,7 +8,6 @@
 <div class="container-fluid py-4 my-2">
   <!-- badges -->
   <div class="row p-2 gx-2">
-    <label for="">{{.loginStatus}}</label>
     <!-- MAYOR -->
     <div class="col-md-2">
       <div class="p-3 bg-white shadow-sm  rounded shadow border border-1 h-100">
@@ -18,7 +17,7 @@
             <p class="fs-5 text-end">TO MAYOR</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/mayor.png">
+            <img class="img-fluid" src="/mayor.png" alt="mayor">
           </div>
         </div>
       </div>
@@ -31,7 +30,7 @@
             <p class="fs-5 text-end">TO STA. CRUZ</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/panlalawigan.png">
+            <img class="img-fluid" src="/panlalawigan.png" alt="panlalawigan">
           </div>
         </div>
       </div>
@@ -44,7 +43,7 @@
             <p class="fs-5 text-end">FOR RELEASE</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/group.png">
+            <img class="img-fluid" src="/group.png" alt="group">
           </div>
         </div>
       </div>
@@ -57,7 +56,7 @@
             <p class="fs-5 text-end">FOR FILING</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/filing-cabinet.png">
+            <img class="img-fluid" src="/filing-cabinet.png" alt="filing-cabinet">
           </div>
         </div>
       </div>
@@ -70,7 +69,7 @@
             <p class="fs-5 text-end">ORDINANCES</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/ordinance.png">
+            <img class="img-fluid" src="/ordinance.png" alt="ordinance">
           </div>
         </div>
       </div>
@@ -83,7 +82,7 @@
             <p class="fs-5 text-end">RESOLUTIONS</p>
           </div>
           <div class="col-md-3 p-3">
-            <img class="img-fluid" src="/resolution.png">
+            <img class="img-fluid" src="/resolution.png" alt="resolution">
           </div>
         </div>
       </div>
@@ -91,7 +90,7 @@
     <!-- bdges end -->
   </div>
   <div class="row p-2 gx-2">
-    <div class="col-md-2 p-2 pt-md-5 text-center">
+    <div class="col-md-1 p-2 pt-md-5 text-center">
       <div class="pb-md-5"><small><i class="fa-solid fa-share-from-square"></i> QUICK ACCESS</small></div>
       <a class="nav-link fw-bold" href="/api/routing/receiving" role="button"><img src="/add-file.png" alt="..."
           class="dashboard-img"><br />
@@ -102,23 +101,24 @@
         <h5 class="mb-md-3">SEARCH</h5>
       </a>
     </div>
-    <div class="col-md-5 p-2 border-start">
+    <div class="col-md-6 p-3 border-start">
       <div class="container-fluid py-2 table-responsive">
-        <div class="text-center pb-md-2">
-          <small><i class="fa-solid fa-bell"></i> NOTIFICATIONS</small>
-        </div>
         <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
+          <thead>
+            <th class="text-center"><i class="fa-solid fa-bell"></i> NOTIFICATIONS</th>
+          </thead>
           <tbody>
             {{range .notifs}}
             <tr class="border-bottom py-2">
               <td>
+                {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-solid fa-business-time"></i>{{end}}
                 {{if eq .DocumentTag "For Agenda"}}<i class="fa-solid fa-business-time"></i>{{end}}
                 {{if eq .DocumentTag "For Information - Admin Div"}}<i class="fa-solid fa-circle-info"></i>{{end}}
                 {{if eq .DocumentTag "For Information - Dept. Head"}}<i class="fa-solid fa-circle-info"></i>{{end}}
                 {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
                 {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
               </td>
-              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceiveDate}} </td>
+              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceivedDate}} </td>
             </tr>
             {{end}}
           </tbody>

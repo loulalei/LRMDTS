@@ -13,7 +13,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	routings := &[]model.Routings{}
+	routings := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(routings)
 
 	return c.Render("dashboard", fiber.Map{
@@ -34,9 +34,9 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	receiving := &[]model.Routings{}
+	routings := &[]model.ViewRoutings{}
 
-	database.DBConn.Raw("SELECT * FROM routings WHERE document_tag = 'For Agenda'").Scan(receiving)
+	database.DBConn.Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Referred to Committee'").Scan(routings)
 
 	return c.Render("dashboard_secretarial", fiber.Map{
 		"pageTitle":  "Dashboard - Secretariat",
@@ -45,7 +45,7 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
-		"notifs":     receiving,
+		"notifs":     routings,
 		"agendas":    CountForAgenda(),
 		"baseURL":    c.BaseURL(),
 	})

@@ -114,6 +114,46 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	})
 }
 
+func ViewForAgenda(c *fiber.Ctx) error {
+	fmt.Println("Process: View Routing for Agenda")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	departments := &[]model.Departments{}
+	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
+
+	proponents := &[]model.Proponents{}
+	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
+
+	committees := &[]model.Committees{}
+	database.DBConn.Raw("SELECT * FROM committees").Scan(committees)
+
+	viewCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Raw("SELECT * FROM view_committees").Scan(viewCommittees)
+	return c.Render("routingViewForAgenda", fiber.Map{
+		"pageTitle":      "For Agenda",
+		"title":          "SECRETARIAT - FOR AGENDA",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"userId":         model.UserID,
+		"viewRoutings":   viewRoutings,
+		"departments":    departments,
+		"proponents":     proponents,
+		"committees":     committees,
+		"viewCommittees": viewCommittees,
+		"docId":          docId,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
+	})
+}
+
 func ViewReceivingRoute(c *fiber.Ctx) error {
 	fmt.Println("Process: View Receiving Route")
 	if model.Fullname == "" {
@@ -167,8 +207,8 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	receivingData.ReceivedFile = file.Filename
 
 	// INSERT NEW RECEIVING RECORD
-	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, sender, summary, receiving_tag, receiving_remarks, received_file) VALUES (?,?,?,?,?,?,?,?,?)",
-		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver, receivingData.Sender,
+	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file) VALUES (?,?,?,?,?,?,?,?)",
+		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver,
 		receivingData.Summary, receivingData.ReceivingTag, receivingData.ReceivingRemarks, receivingData.ReceivedFile)
 
 	// SEARCH RECEIVING ID
@@ -281,6 +321,19 @@ func ViewApproved(c *fiber.Ctx) error {
 	return c.Render("routingApproved", fiber.Map{
 		"pageTitle":  "Routing - Approved",
 		"title":      "ROUTING APPROVED",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"baseURL":    c.BaseURL(),
+	})
+}
+
+func ViewReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: View Releasing")
+	return c.Render("routingReleasing", fiber.Map{
+		"pageTitle":  "Routing - Releasing",
+		"title":      "ROUTING RELEASING",
 		"yearNow":    model.YearNow,
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,

@@ -7,7 +7,7 @@ type (
 		UserId      int    `json:"userId"`
 	}
 	CommitteeList struct {
-		ListId      int    `json:"ListId,omitempty" gorm:"primary key"`
+		ListId      uint   `json:"ListId,omitempty" gorm:"primaryKey;autoIncrement:true"`
 		ItemNumber  string `json:"itemNumber"`
 		CommitteeId int    `json:"committeeId"`
 		UserId      int    `json:"userId"`
@@ -54,7 +54,6 @@ type (
 		ReceivedDate     string `json:"receivedDate"`
 		ReceivedTime     string `json:"receivedTime"`
 		Receiver         string `json:"receiver"`
-		Sender           string `json:"sender"`
 		Summary          string `json:"summary"`
 		ReceivingTag     string `json:"receivingTag"`
 		ReceivingRemarks string `json:"receivingRemarks"`

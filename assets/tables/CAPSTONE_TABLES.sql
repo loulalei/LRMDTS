@@ -20,7 +20,6 @@ CREATE TABLE receivings(
 	received_date text,
 	received_time text,
 	receiver text,
-	sender text,
 	summary text,
 	receiving_tag text,
 	receiving_remarks text,
@@ -67,14 +66,14 @@ ORDER BY cmtl.list_id DESC
 
 CREATE VIEW view_routings AS
 SELECT route.doc_id, route.item_number, route.document_tag, route.remarks,
-	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.sender, rcv.summary, rcv.received_file
+	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
 ORDER BY route.updated_at DESC
 
 CREATE VIEW view_agendas AS
-SELECT agd.agenda_id, agd.item_number, agd.isUrgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_remarks,
+SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_remarks,
  vcmt."name"
 FROM agendas agd
 INNER JOIN view_committees vcmt

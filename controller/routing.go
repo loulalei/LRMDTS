@@ -353,7 +353,7 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 	} else {
 		committeesLists := &model.ViewCommittees{}
 		// check if existing in the view committee
-		database.DBConn.Raw("SELECT COUNT(*) FROM view_committees WHERE id = ?", requestBody.CommitteeId).Scan(&count)
+		database.DBConn.Debug().Raw("SELECT COUNT(*) FROM view_committees WHERE committee_id = ?", requestBody.CommitteeId).Scan(&count)
 		if count > 0 {
 			return c.JSON(model.ResponseBody{
 				Status:  101,

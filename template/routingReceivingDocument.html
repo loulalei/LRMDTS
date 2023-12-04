@@ -2,8 +2,8 @@
 <!-- DATATABLE -->
 <!-- ONLINE -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
-integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <!-- OFFLINE -->
@@ -16,10 +16,12 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </nav>
 
 <div class="container-fluid py-2 shadow">
-    <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data" id="forReceiving" name="forReceiving">
+    <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data"
+        id="forReceiving" name="forReceiving">
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" placeholder="1111-1111-11-1111" required>
+                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
+                    placeholder="1111-1111-11-1111" required>
                 <label for="trackingNumber">Tracking Number</label>
             </div>
         </div>
@@ -42,6 +44,13 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <label for="receiver">Receiver</label>
             </div>
         </div>
+        <div class="col-md-4 mb-3">
+            <select class="form-select" size="4" id="receivingTag" name="receivingTag" required>
+                <option disabled>Select Document Tag</option>
+                <option value="1">For Agenda</option>
+                <option value="2">For Filing</option>
+            </select>
+        </div>
         <div class="col-md-8">
             <div class="form-floating mb-3">
                 <textarea class="form-control" id="summary" name="summary" style="height: 100px" required></textarea>
@@ -49,11 +58,10 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             </div>
         </div>
         <div class="col-md-4">
-            <select class="form-select" size="4" id="receivingTag" name="receivingTag" required>
-                <option disabled>Select Document Tag</option>
-                <option value="1">For Agenda</option>
-                <option value="2">For Filing</option>
-            </select>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" required readonly>
+                <label for="receivingRemarks">Remarks</label>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="mb-3">
@@ -63,15 +71,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     accept="application/pdf" required>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" required readonly>
-                <label for="receivingRemarks">Remarks</label>
-            </div>
-        </div>
+
         <hr>
         <div class="col-md-12 mb-2">
-            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i class="fa-solid fa-floppy-disk"></i> SAVE
+            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
+                        class="fa-solid fa-floppy-disk"></i> SAVE
                     DOCUMENT</button></small>
         </div>
     </form>

@@ -286,9 +286,12 @@ func UpdateForFiling(c *fiber.Ctx) error {
 	} else if requestAgenda.Source == "3" {
 		requestAgenda.Source = "Proposed"
 		requestAgenda.SourceResult = requestAgenda.Proponent
+	} else if requestAgenda.Source == "4" {
+		requestAgenda.Source = "Other"
+		requestAgenda.SourceResult = requestAgenda.Other
 	}
 
-	database.DBConn.Debug().Exec("INSERT INTO agendas (item_number, isUrgent, date_calendared, date_reported, agenda_tag, agenda_remarks, source, source_result) VALUES (?,?,?,?,?,?,?,?)",
+	database.DBConn.Debug().Exec("INSERT INTO agendas (item_number, is_urgent, date_calendared, date_reported, agenda_tag, agenda_remarks, source, source_result) VALUES (?,?,?,?,?,?,?,?)",
 		requestAgenda.ItemNumber, requestAgenda.IsUrgent, requestAgenda.DateCalendared, requestAgenda.DateReported, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.Source, requestAgenda.SourceResult)
 
 	// SEARCH AGENDA ID

@@ -35,16 +35,10 @@
                 <label for="receivedTime">Time</label>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}" disabled>
                 <label for="receiver">Receiver</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="sender" name="sender" value="{{.Sender}}" disabled>
-                <label for="sender">Sender</label>
             </div>
         </div>
         <div class="col-md-8">
@@ -117,6 +111,7 @@
                     <option selected value="1">Other Department</option>
                     <option value="2">Priviledged Speech</option>
                     <option value="3">Proposed</option>
+                    <option value="4">Other</option>
                 </select>
                 <label for="source">Source</label>
             </div>
@@ -144,6 +139,15 @@
                 <label for="proponent">Proponent</label>
             </div>
         </div>
+        <div class="col-md-4 src" id="cb_other">
+            <div class="input-group mb-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="other" name="other" autocomplete="false"
+                        required>
+                    <label for="other">Other</label>
+                </div>
+            </div>
+        </div>
         <div class="col-md-3">
             <div class="form-floating">
                 <select class="form-select" id="agendaTag" name="agendaTag">
@@ -166,7 +170,7 @@
                 <select class="form-select" id="committees" name="committees">
                     <option selected disabled>Select Committee</option>
                     {{range .committees}}
-                    <option value={{.Id}}>{{.Name}}</option>
+                    <option value={{.CommitteeId}}>{{.Name}}</option>
                     {{end}}
                 </select>
                 <label for="committees">Committees</label>
@@ -215,17 +219,29 @@
 <script>
     $(document).ready(function () {
         $("#cb_proponent").hide();
+        $("#cb_other").hide();
         $('#source').on('change', function () {
             var sourceValue = $(this).val();
             if (sourceValue == '1') {
                 $("#cb_proponent").hide();
                 $("#cb_department").show();
+                $("#cb_other").hide();
+                document.getElementById("department").focus();
             } else if (sourceValue == '2') {
                 $("#cb_proponent").show();
                 $("#cb_department").hide();
+                $("#cb_other").hide();
+                document.getElementById("proponent").focus();
             } else if (sourceValue == '3') {
                 $("#cb_proponent").show();
                 $("#cb_department").hide();
+                $("#cb_other").hide();
+                document.getElementById("proponent").focus();
+            } else if (sourceValue == '4') {
+                $("#cb_proponent").hide();
+                $("#cb_department").hide();
+                $("#cb_other").show();
+                document.getElementById("other").focus();
             }
         });
     });
@@ -244,6 +260,7 @@
                 document.getElementById("agendaRemarks").value = "Forwarded to Records";
             }
         });
+
         $("#submitBtn").click(function () {
             Swal.fire({
                 title: "Do you want to save this record?",
@@ -282,6 +299,7 @@
                     'Item number is empty',
                     'info'
                 )
+                document.getElementById("item_no").focus();
             } else {
 
                 $.post(endpoint,

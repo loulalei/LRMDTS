@@ -84,6 +84,7 @@ type (
 		SourceResult   string `json:"sourceResult"`
 		Department     string `json:"department"`
 		Proponent      string `json:"proponent"`
+		Other          string `json:"other"`
 		AgendaTag      string `json:"agendaTag"`
 		AgendaRemarks  string `json:"agendaRemarks"`
 	}

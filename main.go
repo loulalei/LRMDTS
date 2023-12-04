@@ -56,8 +56,14 @@ func main() {
 	routes.AppRoutes(app, store)
 
 	fmt.Println("SSL:", envRouting.SSL)
-	fmt.Println("CERT:", envRouting.SSLCertificate)
-	fmt.Println("KEY:", envRouting.SSLKey)
+	if envRouting.SSL == "disable" {
+		fmt.Println("CERT: none")
+		fmt.Println("KEY none")
+	} else {
+		fmt.Println("CERT:", envRouting.SSLCertificate)
+		fmt.Println("KEY:", envRouting.SSLKey)
+
+	}
 
 	if envRouting.SSL == "enabled" {
 		log.Fatal(app.ListenTLS(

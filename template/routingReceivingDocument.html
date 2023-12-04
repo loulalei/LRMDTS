@@ -42,21 +42,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <label for="receiver">Receiver</label>
             </div>
         </div>
-        <div class="col-md-2">
-            <select class="form-select mb-3" size="4" id="sender" name="sender" required>
-                <option disabled>Select Sender</option>
-                {{range .departments}}
-                <option value={{.Name}}>{{.Name}}</option>
-                {{end}}
-                <option value="others">Others</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="" name="">
-                <label for="">Other</label>
-            </div>
-        </div>
         <div class="col-md-8">
             <div class="form-floating mb-3">
                 <textarea class="form-control" id="summary" name="summary" style="height: 100px" required></textarea>

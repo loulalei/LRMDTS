@@ -9,22 +9,19 @@ import (
 func InitializeTables() {
 	fmt.Println("Initializing database tables")
 	database.CreateTable(model.UserCredentials{})
-	fmt.Println("User Credentials done")
-
+	fmt.Println("User Credentials ✓")
 	database.CreateTable(model.Receivings{})
-	fmt.Println("Receivings Table Created")
-
+	fmt.Println("Receivings ✓")
 	database.CreateTable(model.Agendas{})
-	fmt.Println("Agendas Table Created")
-
+	fmt.Println("Agendas ✓")
 	database.CreateTable(model.Divisions{})
-	fmt.Println("Divisions done")
+	fmt.Println("Divisions ✓")
 	database.CreateTable(model.Proponents{})
-	fmt.Println("Proponents done")
+	fmt.Println("Proponents ✓")
 	database.CreateTable(model.Committees{})
-	fmt.Println("Committee done")
+	fmt.Println("Committee ✓")
 	database.CreateTable(model.Departments{})
-	fmt.Println("Departments done")
+	fmt.Println("Departments ✓")
 
 	// Insert Default Divisions
 	var divCount int

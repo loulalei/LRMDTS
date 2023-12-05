@@ -1,7 +1,7 @@
 package model
 
 type (
-	Routings struct {
+	Routing struct {
 		TrackingNumber string `json:"trackingNumber"`
 		ItemNumber     string `json:"itemNumber"`
 		ReceiveDate    string `json:"receiveDate"`

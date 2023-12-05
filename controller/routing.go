@@ -121,22 +121,17 @@ func ViewForAgenda(c *fiber.Ctx) error {
 	}
 
 	docId, _ := strconv.Atoi(c.Params("docId"))
-
+	itemNumber := c.Params("itemNumber")
 	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' AND doc_id = ?", docId).Scan(viewRoutings)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
 
-	departments := &[]model.Departments{}
-	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
 
-	proponents := &[]model.Proponents{}
-	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
 
-	committees := &[]model.Committees{}
-	database.DBConn.Raw("SELECT * FROM committees").Scan(committees)
-
-	viewCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Raw("SELECT * FROM view_committees").Scan(viewCommittees)
-	return c.Render("routingViewForAgenda", fiber.Map{
+	return c.Render("routingForAgendaUpdate", fiber.Map{
 		"pageTitle":      "For Agenda",
 		"title":          "SECRETARIAT - FOR AGENDA",
 		"yearNow":        model.YearNow,
@@ -144,10 +139,8 @@ func ViewForAgenda(c *fiber.Ctx) error {
 		"userLogged":     model.UserCodeLogged,
 		"userId":         model.UserID,
 		"viewRoutings":   viewRoutings,
-		"departments":    departments,
-		"proponents":     proponents,
-		"committees":     committees,
-		"viewCommittees": viewCommittees,
+		"viewAgenda":     viewAgenda,
+		"itemCommittees": ItemCommittees,
 		"docId":          docId,
 		"greetings":      utils.GetGreetings(),
 		"baseURL":        c.BaseURL(),
@@ -177,6 +170,9 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 }
 
 func RegisterReceiving(c *fiber.Ctx) error {
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	fmt.Println("Process: View Register Receiving")
 	if model.Fullname == "" {
 		return c.Redirect("/")
@@ -217,6 +213,9 @@ func RegisterReceiving(c *fiber.Ctx) error {
 
 	// INSERT NEW ROUTING RECORD
 	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingId.ReceivingId, receivingData.ReceivingTag, receivingData.ReceivingRemarks)
+
+	// INSERT NEW TRACKING RECORd
+	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
 	// VIEW RESULTS
 	viewRoutings := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
@@ -236,6 +235,9 @@ func RegisterReceiving(c *fiber.Ctx) error {
 
 func GetForFiling(c *fiber.Ctx) error {
 	fmt.Println("Process: Get for Filing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	id := c.Params("id")
 	receiving := &[]model.Routings{}
 
@@ -256,9 +258,12 @@ func GetForFiling(c *fiber.Ctx) error {
 	})
 }
 
-func UpdateForFiling(c *fiber.Ctx) error {
+func RegisterForAgenda(c *fiber.Ctx) error {
 	dateNow := time.Now()
-	fmt.Println("Process: Update for Filing")
+	fmt.Println("Process: Register for Agenda")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	requestAgenda := &model.RequestForAgenda{}
 	if parsErr := c.BodyParser(requestAgenda); parsErr != nil {
 		return c.JSON(model.ResponseBody{
@@ -302,6 +307,10 @@ func UpdateForFiling(c *fiber.Ctx) error {
 	// UPDATE ROUTINGS
 	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaId.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
 
+	// UPDATE TRACKING
+
+	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, requestAgenda.TrackingNumber)
+
 	viewroutings := &[]model.ViewRoutings{}
 	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(viewroutings)
 	//------------------
@@ -319,8 +328,33 @@ func UpdateForFiling(c *fiber.Ctx) error {
 	})
 }
 
+func UpdateForAgenda(c *fiber.Ctx) error {
+	fmt.Println("Process: Register for Agenda")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	requestAgenda := &model.RequestForAgenda{}
+	if parsErr := c.BodyParser(requestAgenda); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "parsing request error",
+			Request: requestAgenda,
+			Data:    parsErr.Error(),
+		})
+	}
+
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "success",
+		Request: requestAgenda,
+	})
+}
 func ViewApproved(c *fiber.Ctx) error {
 	fmt.Println("Process: View Approved")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	return c.Render("routingApproved", fiber.Map{
 		"pageTitle":  "Routing - Approved",
 		"title":      "ROUTING APPROVED",
@@ -334,6 +368,9 @@ func ViewApproved(c *fiber.Ctx) error {
 
 func ViewReleasing(c *fiber.Ctx) error {
 	fmt.Println("Process: View Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	return c.Render("routingReleasing", fiber.Map{
 		"pageTitle":  "Routing - Releasing",
 		"title":      "ROUTING RELEASING",
@@ -346,6 +383,9 @@ func ViewReleasing(c *fiber.Ctx) error {
 }
 
 func InsertCommitteeForAgenda(c *fiber.Ctx) error {
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
 	itemNo := c.Params("itemNo")
 	committeeId := c.Params("committeeId")
 	userId := c.Params("userId")

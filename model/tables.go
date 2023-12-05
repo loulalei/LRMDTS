@@ -44,20 +44,31 @@ type (
 	}
 
 	Trackings struct {
-		TrackingId    int       `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
-		ItemNumber    string    `json:"itemNumber" gorm:"default:None"`
-		LawNumber     string    `json:"lawNumber" gorm:"default:None"`
-		Summary       string    `json:"summary" gorm:"default:None"`
-		ReceivedDate  string    `json:"receivedDate" gorm:"default:None"`
-		Calendared    string    `json:"calendared" gorm:"default:None"`
-		EnactedDate   string    `json:"enactedDate" gorm:"default:None"`
-		MayorDate     string    `json:"forwardedMayorDate" gorm:"default:None"`
-		StaCruzDate   string    `json:"ForwardedStaCruzDate" gorm:"default:None"`
-		ReleasedDate  string    `json:"releasedDate" gorm:"default:None"`
-		PublishedDate string    `json:"publishedDate" gorm:"default:None"`
-		FiledDate     string    `json:"filedDate" gorm:"default:None"`
-		CreatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP"`
-		UpdatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		TrackingId     int       `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
+		TrackingNumber string    `json:"trackingNumber" `
+		ItemNumber     string    `json:"itemNumber"`
+		LawType        string    `json:"lawType" `
+		LawNumber      string    `json:"lawNumber" `
+		Summary        string    `json:"summary" `
+		ReceivedDate   string    `json:"receivedDate"`
+		Calendared     string    `json:"calendared" `
+		EnactedDate    string    `json:"enactedDate" `
+		MayorDate      string    `json:"forwardedMayorDate"`
+		StaCruzDate    string    `json:"ForwardedStaCruzDate"`
+		ReleasedDate   string    `json:"releasedDate" `
+		PublishedDate  string    `json:"publishedDate"`
+		FiledDate      string    `json:"filedDate"`
+		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	CommitteeLists struct {
+		ListId      int       `json:"listId"`
+		ItemNumber  string    `json:"itemNumber"`
+		CommitteeId int       `json:"committeeId"`
+		UserId      int       `json:"userId"`
+		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Proponents struct {

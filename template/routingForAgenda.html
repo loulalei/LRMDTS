@@ -16,9 +16,9 @@
         {{range .viewRoutings}}
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
+                <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
                     value="{{ .TrackingNumber}}" disabled>
-                <label for="trackingNumber">Tracking Number</label>
+                <label for="trackingNumberx">Tracking Number</label>
             </div>
         </div>
         <div class="col-md-2">
@@ -70,10 +70,12 @@
         </div>
         <hr>
     </div>
-    {{end}}
+
     <!-- FOR AGENDA -->
-    <form class="row" action="/api/routing/update_filing" method="post" enctype="multipart/form-data" id="forAgenda"
+    <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
         name="forAgenda">
+        <input type="text" id="trackingNumber" name="trackingNumber" value="{{ .TrackingNumber}}" hidden readonly>
+        {{end}}
         <input type="text" id="docId" name="docId" value="{{ .docId}}" hidden readonly>
         <div class="col-md-1">
             <div class="input-group mb-3">
@@ -142,8 +144,7 @@
         <div class="col-md-4 src" id="cb_other">
             <div class="input-group mb-3">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="other" name="other" autocomplete="false"
-                        required>
+                    <input type="text" class="form-control" id="other" name="other" autocomplete="false" required>
                     <label for="other">Other</label>
                 </div>
             </div>
@@ -191,26 +192,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- {{range .viewCommittees}}
-                    <tr>
-                        <td>{{.Name}}</td>
-                        <td>
-                            <div class="d-grid gap-3 mx-auto">
-                                <button id="remove_committee" class="btn btn-danger btn-sm fw-bold" type="button">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    {{end}} -->
                 </tbody>
             </table>
         </div>
         <hr>
-        <div class="col-md-12 mb-2">
-            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
+        <div class="gap-2 col-md-12 mx-auto">
+            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm mx-2" type="button"><i
                         class="fa-solid fa-floppy-disk"></i>SAVE
                     DOCUMENT</button></small>
+            <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
+                        class="fa-regular fa-hand"></i> CANCEL</a></small>
         </div>
     </form>
 

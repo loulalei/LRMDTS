@@ -40,10 +40,16 @@ type (
 		ReceivedFile   string `json:"receivedFile"`
 	}
 
-	ViewAgendas struct {
-		AgendaId   int    `json:"agendaId"`
-		ItemNumber string `json:"itemNumber"`
-		IsUrgent   bool   `json:"isUrgent"`
+	ViewAgenda struct {
+		AgendaId       int    `json:"agendaId"`
+		ItemNumber     string `json:"itemNumber"`
+		IsUrgent       bool   `json:"isUrgent"`
+		DateCalendared string `json:"dateCalendared"`
+		DateReported   string `json:"dateReported"`
+		Source         string `json:"source"`
+		SourceResult   string `json:"sourceResult"`
+		AgendaTag      string `json:"agendaTag"`
+		AgendaRemarks  string `json:"agendaRemarks"`
 	}
 )
 
@@ -76,6 +82,7 @@ type (
 type (
 	RequestForAgenda struct {
 		DocId          int    `json:"docId"`
+		TrackingNumber string `json:"trackingNumber"`
 		ItemNumber     string `json:"itemNumber"`
 		IsUrgent       bool   `json:"isUrgent"`
 		DateCalendared string `json:"dateCalendared"`

@@ -369,6 +369,19 @@ func ViewApproved(c *fiber.Ctx) error {
 	})
 }
 
+func RegisterApproved(c *fiber.Ctx) error {
+	fmt.Println("Process: Register Approved")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	requestApproved := &model.Approves{}
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "success",
+		Request: requestApproved,
+	})
+}
 func ViewReleasing(c *fiber.Ctx) error {
 	fmt.Println("Process: View Releasing")
 	if model.Fullname == "" {

@@ -4,84 +4,85 @@ import "time"
 
 type (
 	Receivings struct {
-		ReceivingId      int `gorm:"primaryKey;autoIncrement:true"`
-		TrackingNumber   string
-		ReceivedDate     string
-		ReceivedTime     string
-		Receiver         string
-		Summary          string
-		ReceivingTag     string
-		ReceivingRemarks string
-		ReceivedFile     string
-		Encoder          string
+		ReceivingId      int       `gorm:"primaryKey;autoIncrement:true"`
+		TrackingNumber   string    `json:"trackingNumber,omitempty"`
+		ReceivedDate     string    `json:"receivedDate,omitempty"`
+		ReceivedTime     string    `json:"receivedTime,omitempty"`
+		Receiver         string    `json:"receiver,omitempty"`
+		Summary          string    `json:"summary,omitempty"`
+		ReceivingTag     string    `json:"receivingTag,omitempty"`
+		ReceivingRemarks string    `json:"receivingRemarks,omitempty"`
+		ReceivedFile     string    `json:"receivedFile,omitempty"`
+		Encoder          string    `json:"encoder,omitempty"`
 		CreatedAt        time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Agendas struct {
-		AgendaId       int `gorm:"primaryKey;autoIncrement:true"`
-		ItemNumber     string
-		IsUrgent       bool
-		DateCalendared string
-		DateReported   string
-		Source         string
-		SourceResult   string
-		AgendaTag      string
-		AgendaRemarks  string
-		Encoder        string
+		AgendaId       int       `gorm:"primaryKey;autoIncrement:true"`
+		ItemNumber     string    `json:"itemNumber,omitempty"`
+		IsUrgent       bool      `json:"isUrgent,omitempty"`
+		DateCalendared string    `json:"dateCalendared,omitempty"`
+		DateReported   string    `json:"dateReported,omitempty"`
+		Source         string    `json:"source,omitempty"`
+		SourceResult   string    `json:"sourceResult,omitempty"`
+		AgendaTag      string    `json:"agendaTag,omitempty"`
+		AgendaRemarks  string    `json:"agendaRemarks,omitempty"`
+		Encoder        string    `json:"encoder,omitempty"`
 		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Approves struct {
-		ApproveId   int `gorm:"primaryKey;autoIncrement:true"`
-		LawType     string
-		LawNumber   string
-		Series      string
-		EnactedDate string
-		MotionedBy  string
-		Author      string
-		ResOrdFile  string
-		Encoder     string
+		ApproveId   int       `gorm:"primaryKey;autoIncrement:true"`
+		LawType     string    `json:"lawType,omitempty"`
+		LawNumber   string    `json:"lawNumber,omitempty"`
+		Series      string    `json:"series,omitempty"`
+		EnactedDate string    `json:"enactedDate,omitempty"`
+		MotionedBy  string    `json:"motionedBy,omitempty"`
+		Author      string    `json:"author,omitempty"`
+		ResOrdFile  string    `json:"attachedFile,omitempty"`
+		TitleBody   string    `json:"titleBody,omitempty"`
+		Encoder     string    `json:"encoder,omitempty"`
 		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Routings struct {
 		DocId       int       `json:"docId" gorm:"primaryKey;autoIncrement:true"`
-		ReceivingId int       `json:"receivingId"`
-		AgendaId    int       `json:"agendaId"`
-		ApprovedId  int       `json:"approvedId"`
-		ReleasingId int       `json:"releasingId"`
-		FilingId    int       `json:"filingId"`
-		ItemNumber  string    `json:"itemNumber"`
-		DocumentTag string    `json:"documentTag"`
-		Remarks     string    `json:"remarks"`
+		ReceivingId int       `json:"receivingId,omitempty"`
+		AgendaId    int       `json:"agendaId,omitempty"`
+		ApprovedId  int       `json:"approvedId,omitempty"`
+		ReleasingId int       `json:"releasingId,omitempty"`
+		FilingId    int       `json:"filingId,omitempty"`
+		ItemNumber  string    `json:"itemNumber,omitempty"`
+		DocumentTag string    `json:"documentTag,omitempty"`
+		Remarks     string    `json:"remarks,omitempty"`
 		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Trackings struct {
 		TrackingId     int       `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
-		TrackingNumber string    `json:"trackingNumber" `
-		ItemNumber     string    `json:"itemNumber"`
-		LawType        string    `json:"lawType" `
-		LawNumber      string    `json:"lawNumber" `
-		Summary        string    `json:"summary" `
-		ReceivedDate   string    `json:"receivedDate"`
-		Calendared     string    `json:"calendared" `
-		EnactedDate    string    `json:"enactedDate" `
-		MayorDate      string    `json:"forwardedMayorDate"`
-		StaCruzDate    string    `json:"ForwardedStaCruzDate"`
-		ReleasedDate   string    `json:"releasedDate" `
-		PublishedDate  string    `json:"publishedDate"`
-		FiledDate      string    `json:"filedDate"`
+		TrackingNumber string    `json:"trackingNumber,omitempty"`
+		ItemNumber     string    `json:"itemNumber,omitempty"`
+		LawType        string    `json:"lawType,omitempty"`
+		LawNumber      string    `json:"lawNumber,omitempty"`
+		Summary        string    `json:"summary,omitempty"`
+		ReceivedDate   string    `json:"receivedDate,omitempty"`
+		Calendared     string    `json:"calendared,omitempty"`
+		EnactedDate    string    `json:"enactedDate,omitempty"`
+		MayorDate      string    `json:"forwardedMayorDate,omitempty"`
+		StaCruzDate    string    `json:"ForwardedStaCruzDate,omitempty"`
+		ReleasedDate   string    `json:"releasedDate,omitempty"`
+		PublishedDate  string    `json:"publishedDate,omitempty"`
+		FiledDate      string    `json:"filedDate,omitempty"`
 		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	CommitteeLists struct {
-		ListId      int       `json:"listId"`
-		ItemNumber  string    `json:"itemNumber"`
-		CommitteeId int       `json:"committeeId"`
-		UserId      int       `json:"userId"`
+		ListId      int       `json:"listId,omitempty"`
+		ItemNumber  string    `json:"itemNumber,omitempty"`
+		CommitteeId int       `json:"committeeId,omitempty"`
+		UserId      int       `json:"userId,omitempty"`
 		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}

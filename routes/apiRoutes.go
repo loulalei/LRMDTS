@@ -40,6 +40,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 
 	// Approved
 	routingEndpoint.Get("/approved/:docId/:itemNumber", controller.ViewApproved)
+	routingEndpoint.Post("/register_approved", controller.RegisterApproved)
 
 	routingEndpoint.Get("/for_filing/:id", controller.GetForFiling)
 

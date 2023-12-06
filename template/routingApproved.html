@@ -146,7 +146,7 @@
         {{end}}
     </div>
     <!-- APRROVED -->
-    <form class="row" action="#">
+    <form class="row" action="#" method="/api/routing/register_approved" enctype="multipart/form-data" id="approved" name="approved">
         <span class="badge bg-secondary my-2 fw-bold">APPROVED</span>
         <div class="col-md-2">
             <div class="form-floating mb-3">
@@ -160,26 +160,26 @@
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="LawNo" name="LawNo" required>
-                <label for="LawNo">No.</label>
+                <input type="text" class="form-control" id="LawNumber   " name="LawNumber   " required>
+                <label for="LawNumber">No.</label>
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="Series" name="Series" required>
-                <label for="Series">Series</label>
+                <input type="text" class="form-control" id="series" name="series" required>
+                <label for="series">Series</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="dateEnacted" name="dateEnacted" required>
-                <label for="Series">Date Enacted</label>
+                <input type="date" class="form-control" id="enactedDate" name="enactedDate " required>
+                <label for="enactedDate">Date Enacted</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-12">
                 <label for="receiving_file" class="form-label">Attach Res/Ord File</label>
-                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                <input class="form-control form-control-sm" id="attachedFile" name="attachedFile" type="file"
                     accept="application/pdf" required>
             </div>
         </div>
@@ -191,7 +191,7 @@
                     <option value="{{.Name}}">{{.Name}}</option>
                     {{end}}
                 </select>
-                <label for="yearReceived">Motioned By</label>
+                <label for="motionedBy">Motioned By</label>
             </div>
             <div class="form-floating mb-3">
                 <select class="form-select" id="author" name="author" required>
@@ -200,13 +200,13 @@
                     <option value="{{.Name}}">{{.Name}}</option>
                     {{end}}
                 </select>
-                <label for="yearReceived">Author</label>
+                <label for="author">Author</label>
             </div>
         </div>
         <div class="col-md-9">
             <div class="form-floating mb-3">
-                <textarea class="form-control" id="Title" name="Title" style="height: 132px" required></textarea>
-                <label for="summary">Title/Body</label>
+                <textarea class="form-control" id="titleBody" name="titleBody" style="height: 132px" required></textarea>
+                <label for="titleBody">Title/Body</label>
             </div>
         </div>
         <hr>
@@ -243,13 +243,15 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    $("#forAgenda").submit(); // Submit the form
+                    $("#approved").submit(); // Submit the form
                 } else if (result.isDenied) {
                     Swal.fire("Cancel saving record", "", "info");
                 }
             });
         });
 
-        $("#item_no").inputmask("9999-9999");
+        $("#LawNumber").inputmask("9999");
+        $("#series").inputmask("9999");
+
     });
 </script>

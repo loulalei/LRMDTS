@@ -146,7 +146,7 @@
         {{end}}
     </div>
     <!-- APRROVED -->
-    <form class="row" action="#" method="/api/routing/register_approved" enctype="multipart/form-data" id="approved" name="approved">
+    <form class="row" action="/api/routing/register_approved" method="/api/routing/register_approved" enctype="multipart/form-data" id="approved" name="approved">
         <span class="badge bg-secondary my-2 fw-bold">APPROVED</span>
         <div class="col-md-2">
             <div class="form-floating mb-3">
@@ -160,8 +160,8 @@
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="LawNumber   " name="LawNumber   " required>
-                <label for="LawNumber">No.</label>
+                <input type="text" class="form-control" id="lawNumber" name="lawNumber" required>
+                <label for="lawNumber">No.</label>
             </div>
         </div>
         <div class="col-md-1">
@@ -250,7 +250,7 @@
             });
         });
 
-        $("#LawNumber").inputmask("9999");
+        $("#lawNumber").inputmask("9999");
         $("#series").inputmask("9999");
 
     });

@@ -13,6 +13,7 @@ type (
 		ReceivingTag     string
 		ReceivingRemarks string
 		ReceivedFile     string
+		Encoder          string
 		CreatedAt        time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
@@ -26,14 +27,28 @@ type (
 		SourceResult   string
 		AgendaTag      string
 		AgendaRemarks  string
+		Encoder        string
 		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	Approves struct {
+		ApproveId   int `gorm:"primaryKey;autoIncrement:true"`
+		LawType     string
+		LawNumber   string
+		Series      string
+		EnactedDate string
+		MotionedBy  string
+		Author      string
+		ResOrdFile  string
+		Encoder     string
+		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Routings struct {
 		DocId       int       `json:"docId" gorm:"primaryKey;autoIncrement:true"`
 		ReceivingId int       `json:"receivingId"`
 		AgendaId    int       `json:"agendaId"`
-		ApprovalId  int       `json:"approvalId"`
+		ApprovedId  int       `json:"approvedId"`
 		ReleasingId int       `json:"releasingId"`
 		FilingId    int       `json:"filingId"`
 		ItemNumber  string    `json:"itemNumber"`

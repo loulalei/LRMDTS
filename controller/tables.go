@@ -14,6 +14,8 @@ func InitializeTables() {
 	fmt.Println("Receivings ✓")
 	database.CreateTable(model.Agendas{})
 	fmt.Println("Agendas ✓")
+	database.CreateTable(model.Approves{})
+	fmt.Println("Approved ✓")
 	database.CreateTable(model.Routings{})
 	fmt.Println("Routing ✓")
 	database.CreateTable(model.Trackings{})

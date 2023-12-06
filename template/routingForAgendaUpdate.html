@@ -13,6 +13,7 @@
 <div class="container-fluid py-2 shadow mb-3">
     <!-- RECEIVING -->
     <div class="row">
+        <span class="badge bg-secondary my-2 fw-bold">RECEIVING</span>
         {{range .viewRoutings}}
         <div class="col-md-4">
             <div class="form-floating mb-3">
@@ -68,12 +69,11 @@
                 <label for="receivingRemarks">Receiving Remarks</label>
             </div>
         </div>
-        <hr>
     </div>
     {{end}}
-    <hr>
     <!-- FOR AGENDA -->
     <div class="row">
+        <span class="badge bg-secondary my-2 fw-bold">AGENDA</span>
         {{ range .viewAgenda}}
         <div class="col-md-2">
             <div class="form-floating mb-3">
@@ -129,6 +129,7 @@
                 </tbody>
             </table>
         </div>
+        {{ range .viewAgenda}}
         <form class="col-md-4" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data"
             id="forAgenda" name="forAgenda">
             <div class="row">
@@ -136,17 +137,29 @@
                     <div class="form-floating">
                         <select class="form-select" id="agendaTag" name="agendaTag">
                             <option selected disabled>Select Action</option>
+                            {{if eq .AgendaTag "For information of the whole body"}}
+                            <option value="1" selected>For information of the whole body</option>
+                            {{else}}
                             <option value="1">For information of the whole body</option>
-                            <option value="2">Referred to Committee</option>
-                            <option value="3">Approved</option>
+                            {{end}}
+                            {{if eq .AgendaTag "Referred to Committee" }}
+                            <option value="2" selected>Referred to Committee</option>
+                            {{else}}
+                            <option value="2" >Referred to Committee</option>
+                            {{end}}
+                            {{if eq .AgendaTag "Approved" }}
+                            <option value="3" selected>Approved</option>
+                            {{else}}
+                            <option value="3" >Approved</option>
+                            {{end}}
                         </select>
                         <label for="agendaTag">Document Tag</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="agendaRemarks" name="agendaRemarks" required
-                            readonly>
+                        <input type="text" class="form-control" id="agendaRemarks" name="agendaRemarks"
+                            value="{{.AgendaRemarks}}" required readonly>
                         <label for="agendaRemarks">Remarks</label>
                     </div>
                 </div>
@@ -154,11 +167,12 @@
                 <div class="gap-2 col-md-12 mx-auto">
                     <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm mx-2"
                             type="button"><i class="fa-solid fa-floppy-disk"></i> UPDATE DOCUMENT</button></small>
-                            <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
+                    <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
                                 class="fa-regular fa-hand"></i> CANCEL</a></small>
                 </div>
             </div>
         </form>
+        {{end}}
     </div>
 </div>
 

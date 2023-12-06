@@ -66,14 +66,14 @@ ORDER BY cmtl.list_id DESC
 
 CREATE VIEW view_routings AS
 SELECT route.doc_id, route.item_number, route.document_tag, route.remarks,
-	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file
+	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
 ORDER BY route.updated_at DESC
 
 CREATE VIEW view_agendas AS
-SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_remarks,
+SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder,
  vcmt."name"
 FROM agendas agd
 INNER JOIN view_committees vcmt
@@ -83,20 +83,30 @@ ORDER BY vcmt.item_number DESC
 SELECT cmtl.list_id, cmtl.item_number FROM committee_lists cmtl
 INNER JOIN committees cmt ON cmt.id = cmtl.committee_id
 
-SELECT * FROM divisions
-SELECT * FROM receivings
 SELECT * FROM user_credentials
+
+SELECT * FROM receivings
+SELECT * FROM agendas
+SELECT * FROM approves
+
+SELECT * FROM divisions
 SELECT * FROM committees
 SELECT * FROM departments
 SELECT * FROM committee_lists
 SELECT * FROM routings
-SELECT * FROM view_committees
-SELECT * FROM view_routings
-SELECT * FROM view_agendas
-SELECT * FROM agendas
-SELECT COUNT(*) FROM divisions
 
+SELECT * FROM view_committees WHERE item_number = '3512-1345'
+SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
+SELECT * FROM view_agendas
+SELECT * FROM agendas WHERE item_number = '3512-1345'
+SELECT * FROM filings
+SELECT * FROM file_paths
+SELECT * FROM trackings
+SELECT * FROM FilingPaths
+SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
+
+SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Referred to Committee'
 
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Kept in Secretariat'
 SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'

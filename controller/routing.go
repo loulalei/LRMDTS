@@ -21,6 +21,7 @@ func ViewRouting(c *fiber.Ctx) error {
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
 	tracking := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(tracking)
+
 	return c.Render("routing", fiber.Map{
 		"pageTitle":    "Routing",
 		"title":        "ROUTING MAIN",
@@ -122,6 +123,7 @@ func ViewForAgenda(c *fiber.Ctx) error {
 
 	docId, _ := strconv.Atoi(c.Params("docId"))
 	itemNumber := c.Params("itemNumber")
+
 	viewRoutings := &[]model.ViewRoutings{}
 	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
 
@@ -170,9 +172,6 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 }
 
 func RegisterReceiving(c *fiber.Ctx) error {
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
 	fmt.Println("Process: View Register Receiving")
 	if model.Fullname == "" {
 		return c.Redirect("/")
@@ -203,9 +202,9 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	receivingData.ReceivedFile = file.Filename
 
 	// INSERT NEW RECEIVING RECORD
-	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file) VALUES (?,?,?,?,?,?,?,?)",
+	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
 		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver,
-		receivingData.Summary, receivingData.ReceivingTag, receivingData.ReceivingRemarks, receivingData.ReceivedFile)
+		receivingData.Summary, receivingData.ReceivingTag, receivingData.ReceivingRemarks, receivingData.ReceivedFile, model.Fullname)
 
 	// SEARCH RECEIVING ID
 	receivingId := &model.RequestRoutingIdentifications{}
@@ -220,17 +219,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	viewRoutings := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
 
-	return c.Render("routing", fiber.Map{
-		"status":       100,
-		"pageTitle":    "Routing",
-		"title":        "ROUTING MAIN",
-		"yearNow":      model.YearNow,
-		"user":         model.Fullname,
-		"userLogged":   model.UserCodeLogged,
-		"greetings":    utils.GetGreetings(),
-		"viewRoutings": viewRoutings,
-		"baseURL":      c.BaseURL(),
-	})
+	return c.Redirect("/api/routing")
 }
 
 func GetForFiling(c *fiber.Ctx) error {
@@ -296,8 +285,8 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 		requestAgenda.SourceResult = requestAgenda.Other
 	}
 
-	database.DBConn.Debug().Exec("INSERT INTO agendas (item_number, is_urgent, date_calendared, date_reported, agenda_tag, agenda_remarks, source, source_result) VALUES (?,?,?,?,?,?,?,?)",
-		requestAgenda.ItemNumber, requestAgenda.IsUrgent, requestAgenda.DateCalendared, requestAgenda.DateReported, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.Source, requestAgenda.SourceResult)
+	database.DBConn.Debug().Exec("INSERT INTO agendas (item_number, is_urgent, date_calendared, date_reported, agenda_tag, agenda_remarks, source, source_result, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
+		requestAgenda.ItemNumber, requestAgenda.IsUrgent, requestAgenda.DateCalendared, requestAgenda.DateReported, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.Source, requestAgenda.SourceResult, model.Fullname)
 
 	// SEARCH AGENDA ID
 	agendaId := &model.RequestRoutingIdentifications{}
@@ -308,7 +297,6 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaId.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
 
 	// UPDATE TRACKING
-
 	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, requestAgenda.TrackingNumber)
 
 	viewroutings := &[]model.ViewRoutings{}
@@ -316,16 +304,8 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	//------------------
 	receivings := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
-	return c.Render("routing", fiber.Map{
-		"pageTitle":    "Routing",
-		"title":        "ROUTING MAIN",
-		"yearNow":      model.YearNow,
-		"user":         model.Fullname,
-		"userLogged":   model.UserCodeLogged,
-		"greetings":    utils.GetGreetings(),
-		"viewRoutings": viewroutings,
-		"status":       100,
-	})
+
+	return c.Redirect("/api/routing/secretariat")
 }
 
 func UpdateForAgenda(c *fiber.Ctx) error {
@@ -350,19 +330,42 @@ func UpdateForAgenda(c *fiber.Ctx) error {
 		Request: requestAgenda,
 	})
 }
+
 func ViewApproved(c *fiber.Ctx) error {
 	fmt.Println("Process: View Approved")
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Raw("SELECT * FROM view_routings WHERE document_tag = 'Approved' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	proponents := &[]model.Proponents{}
+	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
+
 	return c.Render("routingApproved", fiber.Map{
-		"pageTitle":  "Routing - Approved",
-		"title":      "ROUTING APPROVED",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"baseURL":    c.BaseURL(),
+		"pageTitle":      "Document Approved",
+		"title":          "APPROVED",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"userId":         model.UserID,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"itemCommittees": ItemCommittees,
+		"proponents":     proponents,
+		"docId":          docId,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
 	})
 }
 

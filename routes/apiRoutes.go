@@ -26,22 +26,25 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	routingEndpoint := apiEndpoint.Group("/routing")
 	routingEndpoint.Get("/", controller.ViewRouting)
 	routingEndpoint.Get("/records", controller.ViewRoutingRecords)
-	routingEndpoint.Get("/secretariat", controller.ViewRoutingSecretariat)
-	routingEndpoint.Get("/foragenda/:docId", controller.ViewRoutingForAgenda)
 
 	routingEndpoint.Get("/download/:filename", controller.DownloadAttachment)
 	// Receiving
 	routingEndpoint.Get("/receiving", controller.ViewReceivingRoute)
 	routingEndpoint.Post("/register_receiving", controller.RegisterReceiving)
 	// Agenda
+	routingEndpoint.Get("/secretariat", controller.ViewRoutingSecretariat)
 	routingEndpoint.Get("/foragenda/:docId", controller.ViewRoutingForAgenda)
 	routingEndpoint.Post("/register_agenda", controller.RegisterForAgenda)
 	routingEndpoint.Get("/viewagenda/:docId/:itemNumber", controller.ViewForAgenda)
-	routingEndpoint.Post("/update_agenda", controller.RegisterForAgenda)
+	// routingEndpoint.Post("/update_agenda", controller.RegisterForAgenda)
+
+	// Approved
+	routingEndpoint.Get("/approved/:docId/:itemNumber", controller.ViewApproved)
 
 	routingEndpoint.Get("/for_filing/:id", controller.GetForFiling)
-	routingEndpoint.Get("/routingApproved", controller.ViewApproved)
+
 	routingEndpoint.Get("/routingReleasing", controller.ViewReleasing)
+	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
 

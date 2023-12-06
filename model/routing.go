@@ -38,6 +38,7 @@ type (
 		Summary        string `json:"summary"`
 		Remarks        string `json:"remarks"`
 		ReceivedFile   string `json:"receivedFile"`
+		Encoder        string `json:"encoder"`
 	}
 
 	ViewAgenda struct {
@@ -50,6 +51,7 @@ type (
 		SourceResult   string `json:"sourceResult"`
 		AgendaTag      string `json:"agendaTag"`
 		AgendaRemarks  string `json:"agendaRemarks"`
+		Encoder        string `json:"encoder"`
 	}
 )
 

@@ -14,6 +14,7 @@
     <!-- RECEIVING -->
     <div class="row border-bottom">
         {{range .viewRoutings}}
+        <span class="badge bg-secondary my-2 fw-bold">RECEIVING - Encoder: {{.Encoder}}</span>
         <div class="col-md-4">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -70,10 +71,10 @@
         </div>
         <hr>
     </div>
-
     <!-- FOR AGENDA -->
     <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
         name="forAgenda">
+        <span class="badge bg-secondary my-2 fw-bold">AGENDA</span>
         <input type="text" id="trackingNumber" name="trackingNumber" value="{{ .TrackingNumber}}" hidden readonly>
         {{end}}
         <input type="text" id="docId" name="docId" value="{{ .docId}}" hidden readonly>

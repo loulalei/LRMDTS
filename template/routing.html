@@ -9,7 +9,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border mb-5">
     <div class="container-fluid row justify-content-md-end">
         <div class="col-md-8">
-            <small><a class="navbar-brand " href="/api/routing"><i class="bi bi-calendar-week"></i> ROUTING DOCUMENT
+            <small><a class="navbar-brand " ><i class="bi bi-calendar-week"></i> ROUTING DOCUMENT
                     TABLE</a></small>
         </div>
         <div class="col-md-4 text-md-end">
@@ -38,10 +38,10 @@
             <tr>
                 <td>{{.ReceivedDate}}</td>
                 <td>{{.TrackingNumber}}</td>
-                 {{if .ItemNumber}}
-                    <td>{{.ItemNumber}}</td>
+                {{if .ItemNumber}}
+                <td>{{.ItemNumber}}</td>
                 {{else}}
-                    <td>None</td>
+                <td>None</td>
                 {{end}}
                 <td>{{.Summary}}</td>
                 <td>{{.DocumentTag}}</td>
@@ -51,6 +51,11 @@
                         <!-- encode -->
                         {{if eq .DocumentTag "For Filing"}}
                         <a href="/api/routing/for_filing/{{.DocId}}" class="btn btn-primary btn-sm fw-bold"
+                            type="button"><i class="fa-solid fa-file-pen"></i>
+                        </a>
+                        {{end}}
+                        {{if eq .DocumentTag "Approved"}}
+                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}" class="btn btn-primary btn-sm fw-bold"
                             type="button"><i class="fa-solid fa-file-pen"></i>
                         </a>
                         {{end}}

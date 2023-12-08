@@ -43,6 +43,11 @@
                             class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
                         </a>
                         {{end}}
+                        {{if eq .DocumentTag "For Releasing"}}
+                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-paper-plane"></i>
+                        </a>
+                        {{end}}
                     </div>
                     <div class="d-grid col-md-4 mx-auto">
                         <!-- view -->
@@ -81,8 +86,8 @@
                         </a>
                         {{end}}
                         {{if eq .DocumentTag "Referred to Committee"}}
-                        <a href="/api/routing/viewagenda/{{.DocId}}/{{.ItemNumber}}" class="btn btn-primary btn-sm fw-bold"
-                            type="button"><i class="fa-regular fa-calendar"></i>
+                        <a href="/api/routing/viewagenda/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-calendar"></i>
                         </a>
                         {{end}}
                     </div>

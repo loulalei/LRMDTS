@@ -37,7 +37,7 @@ type (
 
 	Approves struct {
 		ApproveId   int       `json:"approvedId" gorm:"primaryKey;autoIncrement:true"`
-		ItemNumber  int       `json:"itemNumber,omitempty"`
+		ItemNumber  string    `json:"itemNumber,omitempty"`
 		LawType     string    `json:"lawType,omitempty"`
 		LawNumber   string    `json:"lawNumber,omitempty"`
 		Series      string    `json:"series,omitempty"`
@@ -72,6 +72,7 @@ type (
 		ItemNumber     string    `json:"itemNumber,omitempty"`
 		LawType        string    `json:"lawType,omitempty"`
 		LawNumber      string    `json:"lawNumber,omitempty"`
+		Series         int       `json:"series,omitempty"`
 		Summary        string    `json:"summary,omitempty"`
 		ReceivedDate   string    `json:"receivedDate,omitempty"`
 		Calendared     string    `json:"calendared,omitempty"`

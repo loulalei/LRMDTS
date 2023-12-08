@@ -180,7 +180,7 @@
         <div class="col-md-1 py-1">
             <div class="d-grid gap-2">
                 <button id="add_committee" class="btn btn-success btn-lg" type="button"><i
-                        class="fa-solid fa-plus"></i></button>
+                        class="fa-solid fa-turn-down"></i></button>
             </div>
         </div>
         <hr>
@@ -198,7 +198,7 @@
         <hr>
         <div class="gap-2 col-md-12 mx-auto">
             <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm mx-2" type="button"><i
-                        class="fa-regular fa-floppy-disk"> SAVE</i> 
+                        class="fa-regular fa-floppy-disk"> SAVE</i>
                     DOCUMENT</button></small>
             <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
                         class="fa-regular fa-hand"> CANCEL</i> </a></small>
@@ -284,10 +284,21 @@
             var baseURL = $('#baseURL').val();
             var endpoint = baseURL + "/api/routing/add_committee"
 
+            var noSC = itemNumber.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+            var itemNumberLen = noSC.length;
+            alert("Item Number:" + itemNumberLen + " string:" + noSC);
+
             if (itemNumber == "") {
                 Swal.fire(
                     'Adding Error',
                     'Item number is empty',
+                    'info'
+                )
+                document.getElementById("item_no").focus()
+            } else if(itemNumberLen < 8){
+                Swal.fire(
+                    'Adding Error',
+                    'Item number must be 8 digits',
                     'info'
                 )
                 document.getElementById("item_no").focus()
@@ -357,3 +368,5 @@
     });
 
 </script>
+
+{{template "footer" .}}

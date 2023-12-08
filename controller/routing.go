@@ -498,23 +498,63 @@ func RegisterApproved(c *fiber.Ctx) error {
 	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
 	requestApproved.ResOrdFile = file.Filename
 
-	return c.JSON(requestApproved)
-
 	// Insert new data for approved
-	// approvedFields := &model.Approves{}
-	// database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
-	// 	requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
-	// 	requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
-	// 	requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
-	// ).Find(approvedFields)
+	approvedFields := &model.Approves{}
+	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder, itemNumber) VALUES (?,?,?,?,?,?,?,?,?,?)",
+		requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
+		requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
+		requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
+		requestApproved.ItemNumber,
+	).Find(approvedFields)
 
 	// Update Routing
-	// database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
 
 	// Update Tracking
-	// database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.EnactedDate, requestApproved.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.ItemNumber)
 
-	// return c.Redirect("/api/routing/secretariat")
+	return c.Redirect("/api/routing/secretariat")
+}
+
+// ------------------------
+// RELEASING
+// ------------------------
+func ViewReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: View Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Debug().Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	viewApproved := &[]model.Approves{}
+	database.DBConn.Debug().Raw("SELECT * FROM approves WHERE item_number = ?", itemNumber).Scan(viewApproved)
+
+	return c.Render("routingReleasing", fiber.Map{
+		"pageTitle":      "Routing - Releasing",
+		"title":          "ROUTING RELEASING",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"viewApproved":   viewApproved,
+		"itemCommittees": ItemCommittees,
+		"docId":          docId,
+		"itemNumber":     itemNumber,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
+	})
 }
 
 // ------------------------
@@ -541,22 +581,6 @@ func GetForFiling(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
 		"folders":    folders,
-		"baseURL":    c.BaseURL(),
-	})
-}
-
-func ViewReleasing(c *fiber.Ctx) error {
-	fmt.Println("Process: View Releasing")
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
-	return c.Render("routingReleasing", fiber.Map{
-		"pageTitle":  "Routing - Releasing",
-		"title":      "ROUTING RELEASING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
 		"baseURL":    c.BaseURL(),
 	})
 }

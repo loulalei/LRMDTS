@@ -94,6 +94,7 @@ SELECT * FROM committees
 SELECT * FROM departments
 SELECT * FROM committee_lists
 SELECT * FROM routings
+SELECT * FROM trackings
 
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
@@ -109,7 +110,11 @@ SELECT * FROM user_credentials
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
 
+-- WARNING DO NOT RUN THIS SCRIPT
 SELECT truncate_tables()
+SELECT reset_tables()
+-- ------------------------------
+
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'For information of the whole body'
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Kept in Secretariat'
 SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'
@@ -224,6 +229,24 @@ BEGIN
 	TRUNCATE TABLE routings;
 	TRUNCATE TABLE trackings;
 	RETURN 'All tables are truncated';
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION reset_tables()
+RETURNS text AS
+$$
+BEGIN
+	DROP VIEW view_agendas;
+	DROP VIEW view_committees;
+	DROP VIEW view_routings;
+	DROP TABLE agendas;
+	DROP TABLE approves;
+	DROP TABLE committee_lists;
+	DROP TABLE receivings;
+	DROP TABLE routings;
+	DROP TABLE trackings;
+	RETURN 'All tables are DROPPED!';
 END;
 $$
 LANGUAGE plpgsql;

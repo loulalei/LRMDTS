@@ -113,10 +113,8 @@
               <td>
                 {{if eq .DocumentTag "Approved"}}<i class="fa-regular fa-thumbs-up"></i>{{end}}
                 {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-solid fa-business-time"></i>{{end}}
-                {{if eq .DocumentTag "For Agenda"}}<i class="fa-solid fa-business-time"></i>{{end}}
-                {{if eq .DocumentTag "For Information - Admin Div"}}<i class="fa-solid fa-circle-info"></i>{{end}}
-                {{if eq .DocumentTag "For Information - Dept. Head"}}<i class="fa-solid fa-circle-info"></i>{{end}}
                 {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
+                {{if eq .DocumentTag "For Releasing"}}<i class="fa-regular fa-paper-plane"></i>{{end}}
                 {{ .Summary}} is {{.Remarks}} - {{.DocumentTag}}
               </td>
               <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceivedDate}} </td>

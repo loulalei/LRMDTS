@@ -37,15 +37,15 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	routingEndpoint.Post("/register_agenda", controller.RegisterForAgenda)
 	routingEndpoint.Post("/update_agenda", controller.UpdateForAgenda)
 	routingEndpoint.Get("/viewagenda/:docId/:itemNumber", controller.ViewForAgenda)
-	// routingEndpoint.Post("/update_agenda", controller.RegisterForAgenda)
-
 	// Approved
 	routingEndpoint.Get("/approved/:docId/:itemNumber", controller.ViewApproved)
 	routingEndpoint.Post("/register_approved", controller.RegisterApproved)
+	// Releasing
+	routingEndpoint.Get("/releasing/:docId/:itemNumber", controller.ViewReleasing)
 
+	// Filing
 	routingEndpoint.Get("/for_filing/:id", controller.GetForFiling)
 
-	routingEndpoint.Get("/routingReleasing", controller.ViewReleasing)
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)

@@ -93,9 +93,9 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="itemNumber" name="itemNumber" value="{{.ItemNumber}}"
+                <input type="text" class="form-control" id="itemNumberx" name="itemNumberx" value="{{.ItemNumber}}"
                     disabled>
-                <label for="itemNumber">Item Number</label>
+                <label for="itemNumberx">Item Number</label>
             </div>
         </div>
         <div class="col-md-2">
@@ -153,7 +153,7 @@
     </div>
     <!-- APRROVED -->
     <form class="row" action="/api/routing/register_approved" method="post" enctype="multipart/form-data" id="approved"
-        name="approved">
+        name="approved" autocomplete="off">
         <span class="badge bg-secondary my-2 fw-bold">APPROVED</span>
         <input type="text" value="{{.user}}" id="encoder" name="encoder" readonly hidden>
         <input type="text" value="{{.docId}}" id="docId" name="docId" readonly hidden>
@@ -204,7 +204,7 @@
                 <label for="motionedBy">Motioned By</label>
             </div>
             <div class="form-floating mb-3">
-                <select class="form-select" id="author" name="author" required>
+                <select class="form-select" id="author" name="author">
                     <option selected disabled>Select</option>
                     {{ range .proponents}}
                     <option value="{{.Name}}">{{.Name}}</option>
@@ -252,3 +252,5 @@
         $("#series").inputmask("9999");
     });
 </script>
+
+{{template "footer" .}}

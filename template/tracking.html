@@ -79,7 +79,11 @@
                 <tr>
                     <td class="text-center"><small>{{ .TrackingNumber}}</small></td>
                     <td class="text-center"><small>{{ .ItemNumber}}</small></td>
+                    {{if .LawType}}
                     <td class="text-center"><small>{{ .LawType }} No.{{ .LawNumber }} s.{{.Series}}</small></td>
+                    {{else}}
+                    <td class="text-center"><small></small></td>
+                    {{end}}
                     <td class="text-center"><small>{{ .Summary}}</small></td>
                     <td class="text-center"><small>{{ .ReceivedDate}}</small></td>
                     <td class="text-center"><small>{{ .Calendared}}</small></td>

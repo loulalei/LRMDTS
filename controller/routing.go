@@ -500,7 +500,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 
 	// Insert new data for approved
 	approvedFields := &model.Approves{}
-	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder, itemNumber) VALUES (?,?,?,?,?,?,?,?,?,?)",
+	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder, item_number) VALUES (?,?,?,?,?,?,?,?,?,?)",
 		requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
 		requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
 		requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,

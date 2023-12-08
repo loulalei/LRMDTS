@@ -175,13 +175,15 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="enactedDate" name="enactedDate" value="{{.EnactedDate}}" disabled>
+                <input type="text" class="form-control" id="enactedDate" name="enactedDate" value="{{.EnactedDate}}"
+                    disabled>
                 <label for="enactedDate">Date Enacted</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="motionedBy" name="motionedBy" value="{{.MotionedBy}}" disabled>
+                <input type="text" class="form-control" id="motionedBy" name="motionedBy" value="{{.MotionedBy}}"
+                    disabled>
                 <label for="motionedBy">Motioned By</label>
             </div>
         </div>
@@ -200,12 +202,91 @@
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="resOrdFile" name="resOrdFile" value="{{.ResOrdFile}}" disabled>
+                <input type="text" class="form-control" id="resOrdFile" name="resOrdFile" value="{{.ResOrdFile}}"
+                    disabled>
                 <label for="resOrdFile">Attached File</label>
             </div>
         </div>
         {{end}}
     </div>
+    <!-- RELEASING -->
+    <form action="#" class="row">
+        <span class="badge bg-secondary my-2 fw-bold">RELEASING</span>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="DateFMayor" name="DateFMayor">
+                <label for="DateFMayor">Date Forwarded to Mayor</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-1">
+                <input type="date" class="form-control" id="DateAMayor" name="DateAMayor">
+                <label for="DateAMayor">Date Approved by Mayor</label>
+            </div>
+            <div class="form-floating mb-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="mayor-laches" name="mayor-laches">
+                    <label class="form-check-label" for="mayor-laches">Approved by laches</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" id="DateFSP" name="DateFSP">
+                <label for="DateFSP">Date Forwarded to Sang. Panlalawigan</label>
+            </div>
+            <div class="mb-2">
+                <label for="SPEndorseFile" class="form-label"></label>
+                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                    accept="application/pdf">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" id="DateASP" name="DateASP">
+                <label for="DateFSP">Date Approved by Sang. Panlalawigan</label>
+            </div>
+            <div class="form-floating mb-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="sp-laches" name="sp-laches">
+                    <label class="form-check-label" for="sp-laches">Approved by laches</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="SPResNo" name="SPResNo">
+                <label for="SPResNo">SP Res. No.</label>
+            </div>
+            <div class="mb-2">
+                <label for="SPResFile" class="form-label">Attach Res. File</label>
+                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                    accept="application/pdf">
+            </div>
+        </div>
+        <hr>
+        <div class="col-md-2">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" id="DateReleased" name="DateReleased">
+                <label for="DateReleased">Date of Local Release</label>
+            </div>
+            <div class="mb-2">
+                <label for="EndorseFile" class="form-label">Attach Res. File</label>
+                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                    accept="application/pdf">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" id="DatePublished" name="DatePublished">
+                <label for="DatePublished">Date Published</label>
+            </div>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="Publisher" name="Publisher">
+                <label for="Publisher">Publisher</label>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script>

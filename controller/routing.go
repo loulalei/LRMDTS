@@ -502,7 +502,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 	approvedFields := &model.Approves{}
 	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder, item_number) VALUES (?,?,?,?,?,?,?,?,?,?)",
 		requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
-		requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
+		requestApproved.EnactedDate, requestApproved.MotionedBy, requestApproved.Author,
 		requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
 		requestApproved.ItemNumber,
 	).Find(approvedFields)
@@ -513,7 +513,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 	// Update Tracking
 	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.ItemNumber)
 
-	return c.Redirect("/api/routing/secretariat")
+	return c.Redirect("/api/routing")
 }
 
 // ------------------------

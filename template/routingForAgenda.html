@@ -69,7 +69,6 @@
                 <label for="receivingRemarks">Receiving Remarks</label>
             </div>
         </div>
-        <hr>
     </div>
     <!-- FOR AGENDA -->
     <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
@@ -199,10 +198,10 @@
         <hr>
         <div class="gap-2 col-md-12 mx-auto">
             <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm mx-2" type="button"><i
-                        class="fa-solid fa-floppy-disk"></i>SAVE
+                        class="fa-regular fa-floppy-disk"> SAVE</i> 
                     DOCUMENT</button></small>
             <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
-                        class="fa-regular fa-hand"></i> CANCEL</a></small>
+                        class="fa-regular fa-hand"> CANCEL</i> </a></small>
         </div>
     </form>
 
@@ -241,7 +240,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#agendaTag").click(function () {
+        $("#agendaTag").change(function () {
             var selectedValue = document.getElementById("agendaTag").value
             if (selectedValue == "1") {
                 document.getElementById("agendaRemarks").value = "Forwarded to Records";
@@ -291,19 +290,15 @@
                     'Item number is empty',
                     'info'
                 )
-                document.getElementById("item_no").focus();
+                document.getElementById("item_no").focus()
             } else {
-
-                $.post(endpoint,
-                    {
-                        itemNumber: itemNumber,
-                        committeeId: committeeId,
-                        userId: userId
-                    },
+                $.post(endpoint, {
+                    itemNumber: itemNumber,
+                    committeeId: committeeId,
+                    userId: userId
+                },
                     function (response, status) {
                         if (response.status == 100) {
-                            // alert("Response:"+response.request['listId'])
-                            // alert("data: " + response.data[0].listId + "\nstatus: " + status);
                             var markup =
                                 `<tr>
                                 <td>` + response.data['name'] + `</td>
@@ -340,8 +335,8 @@
                                 title: response.message,
                             });
                         }
-
-                    });
+                    }
+                );
             }
         });
 

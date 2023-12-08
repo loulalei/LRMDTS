@@ -32,6 +32,8 @@ func InitializeTables() {
 	fmt.Println("Committee ✓")
 	database.CreateTable(model.Departments{})
 	fmt.Println("Departments ✓")
+	database.CreateTable(model.DashboardTotal{})
+	fmt.Println("Dashboard Fields ✓")
 
 	// Insert Default Divisions
 	var count int
@@ -53,6 +55,19 @@ func InitializeTables() {
 	if count == 0 {
 		database.DBConn.Exec("INSERT INTO departments (name) VALUES ('City Accountant Office'), ('City Budget Office'),('City Administrator Office'), ('City Auditor Office'),('City Treasurer Office'), ('City Planning and Development Coordinator Office'),('City Agriculture Office'), ('City Assesor Office'),('City Business Permit & Licensing Office'), ('City Building Office'), ('City Environment & Natural Resource Office'),('City Health Office'), ('City Human Resource & Management Office'),('City Information Office'), ('City Population Office'),('City Prosecutor Office'), ('City Traffic Management Office'),('Civil Registrar Office'), ('Cooperative Office'),('Disaster Risk Reduction Management Office'), ('Engineering Office'),('General Services Office'), ('Legal Office'),('LEDIPO'), ('Municipal Trial Court'),('Pamantasan ng Lungsod ng San Pablo'), ('Public Employment Office'),('Regional Trial Court'), ('San Pablo City General Hospital'),('San Pablo City General Hospital-Dialysis Unit'), ('Sangguniang Panlungsod'), ('Sangguniang Panlungsod-Library'), ('Senior Citizen Affairs'), ('Social Welfare & Development Office'), ('Solid Waste Management Office'), ('Tourism Office'), ('Veterinarian Office')")
 		fmt.Println("Success")
+	}
+
+	// Create View Tables
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_committees AS SELECT list_id, item_number, name, fullname, cmt.committee_id FROM committee_lists cmtl INNER JOIN committees cmt ON cmt.committee_id = cmtl.committee_id INNER JOIN user_credentials usr ON usr.id = cmtl.user_id ORDER BY cmtl.list_id DESC").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
+	}
+
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_routings AS SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by FROM routings route INNER JOIN receivings rcv ON route.receiving_id = rcv.receiving_id ORDER BY route.updated_at DESC").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
+	}
+
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_agendas AS SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder, agd.modified_by, vcmt.name FROM agendas agd INNER JOIN view_committees vcmt ON agd.item_number = vcmt.item_number ORDER BY vcmt.item_number DESC").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
 }

@@ -170,3 +170,17 @@ type (
 		Name string `json:"name"`
 	}
 )
+
+type (
+	DashboardTotal struct {
+		ToMayor         int `json:"toMayor" `
+		StaCruz         int `json:"staCrus"`
+		ForRelease      int `json:"forReleaase"`
+		ForFiling       int `json:"forFiling"`
+		Ordinances      int `json:"ordinances" `
+		Resolutions     int `json:"resolutions"`
+		RegularSessions int `json:"regularSessions"`
+		SpecialSessions int `json:"specialSessions" `
+		TotalAgenda     int `json:"totalAgendas"`
+	}
+)

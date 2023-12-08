@@ -14,7 +14,9 @@ type (
 		ReceivingRemarks string    `json:"receivingRemarks,omitempty"`
 		ReceivedFile     string    `json:"receivedFile,omitempty"`
 		Encoder          string    `json:"encoder,omitempty"`
+		ModifiedBy       string    `json:"modifedBy,omitempty"`
 		CreatedAt        time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt        time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Agendas struct {
@@ -28,7 +30,9 @@ type (
 		AgendaTag      string    `json:"agendaTag,omitempty"`
 		AgendaRemarks  string    `json:"agendaRemarks,omitempty"`
 		Encoder        string    `json:"encoder,omitempty"`
+		ModifiedBy     string    `json:"modifedBy,omitempty"`
 		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Approves struct {
@@ -36,13 +40,15 @@ type (
 		LawType     string    `json:"lawType,omitempty"`
 		LawNumber   string    `json:"lawNumber,omitempty"`
 		Series      string    `json:"series,omitempty"`
-		EnactedDate string    `json:"enactedDate,omitempty"`
+		EnactedDate string    `json:"enactedDate"`
 		MotionedBy  string    `json:"motionedBy,omitempty"`
 		Author      string    `json:"author,omitempty"`
 		ResOrdFile  string    `json:"attachedFile,omitempty"`
 		TitleBody   string    `json:"titleBody,omitempty"`
 		Encoder     string    `json:"encoder,omitempty"`
+		ModifiedBy  string    `json:"modifedBy,omitempty"`
 		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Routings struct {
@@ -79,7 +85,7 @@ type (
 	}
 
 	CommitteeLists struct {
-		ListId      int       `json:"listId,omitempty"`
+		ListId      int       `json:"listId" gorm:"primaryKey;autoIncrement:true"`
 		ItemNumber  string    `json:"itemNumber,omitempty"`
 		CommitteeId int       `json:"committeeId,omitempty"`
 		UserId      int       `json:"userId,omitempty"`

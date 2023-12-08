@@ -129,10 +129,12 @@
                 </tbody>
             </table>
         </div>
-        {{ range .viewAgenda}}
-        <form class="col-md-4" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data"
+
+        <form class="col-md-4" action="/api/routing/update_agenda" method="post" enctype="multipart/form-data"
             id="forAgenda" name="forAgenda">
+            <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
             <div class="row">
+                {{ range .viewAgenda}}
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select class="form-select" id="agendaTag" name="agendaTag">
@@ -145,12 +147,12 @@
                             {{if eq .AgendaTag "Referred to Committee" }}
                             <option value="2" selected>Referred to Committee</option>
                             {{else}}
-                            <option value="2" >Referred to Committee</option>
+                            <option value="2">Referred to Committee</option>
                             {{end}}
                             {{if eq .AgendaTag "Approved" }}
                             <option value="3" selected>Approved</option>
                             {{else}}
-                            <option value="3" >Approved</option>
+                            <option value="3">Approved</option>
                             {{end}}
                         </select>
                         <label for="agendaTag">Document Tag</label>
@@ -170,15 +172,16 @@
                     <small><a href="/api/routing/secretariat" class="btn btn-danger fw-bold btn-sm"><i
                                 class="fa-regular fa-hand"></i> CANCEL</a></small>
                 </div>
+                {{end}}
             </div>
         </form>
-        {{end}}
+
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
-        $("#agendaTag").click(function () {
+        $("#agendaTag").change(function () {
             var selectedValue = document.getElementById("agendaTag").value
             if (selectedValue == "1") {
                 document.getElementById("agendaRemarks").value = "Forwarded to Records";
@@ -192,7 +195,7 @@
 
         $("#submitBtn").click(function () {
             Swal.fire({
-                title: "Do you want to save this record?",
+                title: "Do you want to update this record?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -203,11 +206,9 @@
                 if (result.isConfirmed) {
                     $("#forAgenda").submit(); // Submit the form
                 } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
+                    Swal.fire("Cancel update record", "", "info");
                 }
             });
         });
-
-        $("#item_no").inputmask("9999-9999");
     });
 </script>

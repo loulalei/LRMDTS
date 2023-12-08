@@ -35,6 +35,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	routingEndpoint.Get("/secretariat", controller.ViewRoutingSecretariat)
 	routingEndpoint.Get("/foragenda/:docId", controller.ViewRoutingForAgenda)
 	routingEndpoint.Post("/register_agenda", controller.RegisterForAgenda)
+	routingEndpoint.Post("/update_agenda", controller.UpdateForAgenda)
 	routingEndpoint.Get("/viewagenda/:docId/:itemNumber", controller.ViewForAgenda)
 	// routingEndpoint.Post("/update_agenda", controller.RegisterForAgenda)
 

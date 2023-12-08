@@ -66,15 +66,15 @@ ORDER BY cmtl.list_id DESC
 
 CREATE VIEW view_routings AS
 SELECT route.doc_id, route.item_number, route.document_tag, route.remarks,
-	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder
+	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
 ORDER BY route.updated_at DESC
 
 CREATE VIEW view_agendas AS
-SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder,
- vcmt."name"
+SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder, , rcv.modified_by,
+ vcmt.name
 FROM agendas agd
 INNER JOIN view_committees vcmt
 ON agd.item_number = vcmt.item_number
@@ -103,9 +103,11 @@ SELECT * FROM filings
 SELECT * FROM file_paths
 SELECT * FROM trackings
 SELECT * FROM FilingPaths
+
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
 
+SELECT truncate_tables()
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Referred to Committee'
 
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Kept in Secretariat'
@@ -196,3 +198,31 @@ INSERT INTO departments (name) VALUES
 ('Solid Waste Management Office'),
 ('Tourism Office'), 
 ('Veterinarian Office')
+
+-- FUNCTIONS
+CREATE OR REPLACE FUNCTION update_agenda(_agenda_id int, _tag text, _remarks text, _encoder)
+RETURNS int AS
+$$
+DECLARE
+BEGIN
+	UPDATE agendas SET agenda_tag = _tag, agenda_remarks = remarks, modified_by = _encoder
+	WHERE agenda_id = _agenda_id;
+	RETURN 100
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION truncate_tables()
+RETURNS text AS
+$$
+BEGIN
+	TRUNCATE TABLE agendas;
+	TRUNCATE TABLE approves;
+	TRUNCATE TABLE committee_lists;
+	TRUNCATE TABLE receivings;
+	TRUNCATE TABLE routings;
+	TRUNCATE TABLE trackings;
+	RETURN 'All tables are truncated';
+END;
+$$
+LANGUAGE plpgsql;

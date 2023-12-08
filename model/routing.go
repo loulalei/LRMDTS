@@ -42,30 +42,31 @@ type (
 	}
 
 	ViewAgenda struct {
-		AgendaId       int    `json:"agendaId"`
-		ItemNumber     string `json:"itemNumber"`
-		IsUrgent       bool   `json:"isUrgent"`
-		DateCalendared string `json:"dateCalendared"`
-		DateReported   string `json:"dateReported"`
-		Source         string `json:"source"`
-		SourceResult   string `json:"sourceResult"`
-		AgendaTag      string `json:"agendaTag"`
-		AgendaRemarks  string `json:"agendaRemarks"`
-		Encoder        string `json:"encoder"`
+		AgendaId       int    `json:"agendaId,omitempty"`
+		ItemNumber     string `json:"itemNumber,omitempty"`
+		IsUrgent       bool   `json:"isUrgent,omitempty"`
+		DateCalendared string `json:"dateCalendared,omitempty"`
+		DateReported   string `json:"dateReported,omitempty"`
+		Source         string `json:"source,omitempty"`
+		SourceResult   string `json:"sourceResult,omitempty"`
+		AgendaTag      string `json:"agendaTag,omitempty"`
+		AgendaRemarks  string `json:"agendaRemarks,omitempty"`
+		Encoder        string `json:"encoder,omitempty"`
+		ModifiedBy     string `json:"modifiedBy,omitempty"`
 	}
 )
 
 // RECEIVING MODEL
 type (
 	RequestReceiving struct {
-		TrackingNumber   string `json:"trackingNumber"`
-		ReceivedDate     string `json:"receivedDate"`
-		ReceivedTime     string `json:"receivedTime"`
-		Receiver         string `json:"receiver"`
-		Summary          string `json:"summary"`
-		ReceivingTag     string `json:"receivingTag"`
-		ReceivingRemarks string `json:"receivingRemarks"`
-		ReceivedFile     string `json:"receivedFile"`
+		TrackingNumber   string `json:"trackingNumber,omitempty"`
+		ReceivedDate     string `json:"receivedDate,omitempty"`
+		ReceivedTime     string `json:"receivedTime,omitempty"`
+		Receiver         string `json:"receiver,omitempty"`
+		Summary          string `json:"summary,omitempty"`
+		ReceivingTag     string `json:"receivingTag,omitempty"`
+		ReceivingRemarks string `json:"receivingRemarks,omitempty"`
+		ReceivedFile     string `json:"receivedFile,omitempty"`
 	}
 
 	ViewReceiving struct {
@@ -83,18 +84,20 @@ type (
 // FOR AGENDA
 type (
 	RequestForAgenda struct {
-		DocId          int    `json:"docId"`
-		TrackingNumber string `json:"trackingNumber"`
-		ItemNumber     string `json:"itemNumber"`
-		IsUrgent       bool   `json:"isUrgent"`
-		DateCalendared string `json:"dateCalendared"`
-		DateReported   string `json:"dateReported"`
-		Source         string `json:"source"`
-		SourceResult   string `json:"sourceResult"`
-		Department     string `json:"department"`
-		Proponent      string `json:"proponent"`
-		Other          string `json:"other"`
-		AgendaTag      string `json:"agendaTag"`
-		AgendaRemarks  string `json:"agendaRemarks"`
+		DocId          int    `json:"docId,omitempty"`
+		TrackingNumber string `json:"trackingNumber,omitempty"`
+		ItemNumber     string `json:"itemNumber,omitempty"`
+		IsUrgent       bool   `json:"isUrgent,omitempty"`
+		DateCalendared string `json:"dateCalendared,omitempty"`
+		DateReported   string `json:"dateReported,omitempty"`
+		Source         string `json:"source,omitempty"`
+		SourceResult   string `json:"sourceResult,omitempty"`
+		Department     string `json:"department,omitempty"`
+		Proponent      string `json:"proponent,omitempty"`
+		Other          string `json:"other,omitempty"`
+		AgendaTag      string `json:"agendaTag,omitempty"`
+		AgendaRemarks  string `json:"agendaRemarks,omitempty"`
+		Encoder        string `json:"encodeer,omitempty"`
+		ModifiedBy     string `json:"modifiedBy,omitempty"`
 	}
 )

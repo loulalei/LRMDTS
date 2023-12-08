@@ -14,7 +14,7 @@
     <!-- RECEIVING -->
     <div class="row">
         {{range .viewRoutings}}
-        <span class="badge bg-secondary my-2 fw-bold">RECEIVING - Encoder: {{.Encoder}}</span>
+        <span class="badge bg-secondary my-2 fw-bold">RECEIVING - Encoder: <i>{{.Encoder}}</i></span>
         <div class="col-md-4">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -74,7 +74,13 @@
     <!-- FOR AGENDA -->
     <div class="row">
         {{ range .viewAgenda}}
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: {{.Encoder}}</span>
+        {{if .ModifiedBy}}
+        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i> | Modified By:
+            <i>{{.ModifiedBy}}</i></span>
+        {{else}}
+        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i></span>
+        {{end}}
+
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 {{if .IsUrgent}}
@@ -146,7 +152,8 @@
         {{end}}
     </div>
     <!-- APRROVED -->
-    <form class="row" action="/api/routing/register_approved" method="post" enctype="multipart/form-data" id="approved" name="approved">
+    <form class="row" action="/api/routing/register_approved" method="post" enctype="multipart/form-data" id="approved"
+        name="approved">
         <span class="badge bg-secondary my-2 fw-bold">APPROVED</span>
         <div class="col-md-2">
             <div class="form-floating mb-3">
@@ -205,7 +212,8 @@
         </div>
         <div class="col-md-9">
             <div class="form-floating mb-3">
-                <textarea class="form-control" id="titleBody" name="titleBody" style="height: 132px" required></textarea>
+                <textarea class="form-control" id="titleBody" name="titleBody" style="height: 132px"
+                    required></textarea>
                 <label for="titleBody">Title/Body</label>
             </div>
         </div>
@@ -220,18 +228,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#agendaTag").click(function () {
-            var selectedValue = document.getElementById("agendaTag").value
-            if (selectedValue == "1") {
-                document.getElementById("agendaRemarks").value = "Forwarded to Records";
-            } else if (selectedValue == "2") {
-                document.getElementById("agendaRemarks").value = "Kept in Secretariat";
-            }
-            else if (selectedValue == "3") {
-                document.getElementById("agendaRemarks").value = "Forwarded to Records";
-            }
-        });
-
         $("#submitBtn").click(function () {
             Swal.fire({
                 title: "Do you want to save this record?",
@@ -249,9 +245,7 @@
                 }
             });
         });
-
         $("#lawNumber").inputmask("9999");
         $("#series").inputmask("9999");
-
     });
 </script>

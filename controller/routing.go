@@ -11,6 +11,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// ------------------------
+// RECORDS
+// ------------------------
 func ViewRouting(c *fiber.Ctx) error {
 	fmt.Println("Process: View Routing")
 	if model.Fullname == "" {
@@ -18,9 +21,13 @@ func ViewRouting(c *fiber.Ctx) error {
 	}
 
 	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(viewRoutings)
 	tracking := &[]model.ViewRoutings{}
-	database.DBConn.Raw("SELECT * FROM view_routings").Scan(tracking)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(tracking)
+
+	for _, v := range *viewRoutings {
+		fmt.Println("Document_tag: ", v.DocumentTag)
+	}
 
 	return c.Render("routing", fiber.Map{
 		"pageTitle":    "Routing",
@@ -51,6 +58,9 @@ func ViewRoutingRecords(c *fiber.Ctx) error {
 	})
 }
 
+// ------------------------
+// SECRETARIAT
+// ------------------------
 func ViewRoutingSecretariat(c *fiber.Ctx) error {
 	fmt.Println("Process: View Routing Secretariat")
 	if model.Fullname == "" {
@@ -84,7 +94,7 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	docId, _ := strconv.Atoi(c.Params("docId"))
 
 	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' AND doc_id = ?", docId).Scan(viewRoutings)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'For information of the whole body' OR document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
 
 	departments := &[]model.Departments{}
 	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
@@ -115,40 +125,9 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	})
 }
 
-func ViewForAgenda(c *fiber.Ctx) error {
-	fmt.Println("Process: View Routing for Agenda")
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
-
-	docId, _ := strconv.Atoi(c.Params("docId"))
-	itemNumber := c.Params("itemNumber")
-
-	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
-
-	ItemCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
-
-	viewAgenda := &[]model.ViewAgenda{}
-	database.DBConn.Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
-
-	return c.Render("routingForAgendaUpdate", fiber.Map{
-		"pageTitle":      "For Agenda",
-		"title":          "SECRETARIAT - FOR AGENDA",
-		"yearNow":        model.YearNow,
-		"user":           model.Fullname,
-		"userLogged":     model.UserCodeLogged,
-		"userId":         model.UserID,
-		"viewRoutings":   viewRoutings,
-		"viewAgenda":     viewAgenda,
-		"itemCommittees": ItemCommittees,
-		"docId":          docId,
-		"greetings":      utils.GetGreetings(),
-		"baseURL":        c.BaseURL(),
-	})
-}
-
+// ------------------------
+// RECEIVING
+// ------------------------
 func ViewReceivingRoute(c *fiber.Ctx) error {
 	fmt.Println("Process: View Receiving Route")
 	if model.Fullname == "" {
@@ -222,28 +201,41 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	return c.Redirect("/api/routing")
 }
 
-func GetForFiling(c *fiber.Ctx) error {
-	fmt.Println("Process: Get for Filing")
+// ------------------------
+// FOR AGENDA
+// ------------------------
+func ViewForAgenda(c *fiber.Ctx) error {
+	fmt.Println("Process: View Routing for Agenda")
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	id := c.Params("id")
-	receiving := &[]model.Routings{}
 
-	database.DBConn.Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
 
-	folders := &[]model.Folders{}
-	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
-	return c.Render("routingFiling", fiber.Map{
-		"pageTitle":  "forFiling",
-		"title":      "FOR FILING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"receivings": receiving,
-		"folders":    folders,
-		"baseURL":    c.BaseURL(),
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Debug().Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	return c.Render("routingForAgendaUpdate", fiber.Map{
+		"pageTitle":      "For Agenda",
+		"title":          "SECRETARIAT - FOR AGENDA",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"userId":         model.UserID,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"itemCommittees": ItemCommittees,
+		"docId":          docId,
+		"itemNumber":     itemNumber,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
 	})
 }
 
@@ -309,7 +301,8 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 }
 
 func UpdateForAgenda(c *fiber.Ctx) error {
-	fmt.Println("Process: Register for Agenda")
+	dateNow := time.Now()
+	fmt.Println("Process: Update for Agenda")
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
@@ -324,78 +317,18 @@ func UpdateForAgenda(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(model.ResponseBody{
-		Status:  100,
-		Message: "success",
-		Request: requestAgenda,
-	})
-}
-
-func ViewApproved(c *fiber.Ctx) error {
-	fmt.Println("Process: View Approved")
-	if model.Fullname == "" {
-		return c.Redirect("/")
+	if requestAgenda.AgendaTag == "1" {
+		requestAgenda.AgendaTag = "For information of the whole body"
+	} else if requestAgenda.AgendaTag == "2" {
+		requestAgenda.AgendaTag = "Referred to Committee"
+	} else if requestAgenda.AgendaTag == "3" {
+		requestAgenda.AgendaTag = "Approved"
 	}
 
-	docId, _ := strconv.Atoi(c.Params("docId"))
-	itemNumber := c.Params("itemNumber")
+	database.DBConn.Debug().Exec("UPDATE agendas SET agenda_tag = ?, agenda_remarks = ?, modified_by = ?,updated_at = ? WHERE item_number = ?", requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, model.Fullname, dateNow, requestAgenda.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE routings SET document_tag = ?, remarks = ?, updated_at = ? WHERE item_number = ?", requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, dateNow, requestAgenda.ItemNumber)
 
-	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Raw("SELECT * FROM view_routings WHERE document_tag = 'Approved' AND doc_id = ?", docId).Scan(viewRoutings)
-
-	ItemCommittees := &[]model.ViewCommittees{}
-	database.DBConn.Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
-
-	viewAgenda := &[]model.ViewAgenda{}
-	database.DBConn.Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
-
-	proponents := &[]model.Proponents{}
-	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
-
-	return c.Render("routingApproved", fiber.Map{
-		"pageTitle":      "Document Approved",
-		"title":          "APPROVED",
-		"yearNow":        model.YearNow,
-		"user":           model.Fullname,
-		"userLogged":     model.UserCodeLogged,
-		"userId":         model.UserID,
-		"viewRoutings":   viewRoutings,
-		"viewAgenda":     viewAgenda,
-		"itemCommittees": ItemCommittees,
-		"proponents":     proponents,
-		"docId":          docId,
-		"greetings":      utils.GetGreetings(),
-		"baseURL":        c.BaseURL(),
-	})
-}
-
-func RegisterApproved(c *fiber.Ctx) error {
-	fmt.Println("Process: Register Approved")
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
-
-	requestApproved := &model.Approves{}
-	return c.JSON(model.ResponseBody{
-		Status:  100,
-		Message: "success",
-		Request: requestApproved,
-	})
-}
-func ViewReleasing(c *fiber.Ctx) error {
-	fmt.Println("Process: View Releasing")
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
-	return c.Render("routingReleasing", fiber.Map{
-		"pageTitle":  "Routing - Releasing",
-		"title":      "ROUTING RELEASING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
-		"baseURL":    c.BaseURL(),
-	})
+	return c.Redirect("/api/routing/secretariat")
 }
 
 func InsertCommitteeForAgenda(c *fiber.Ctx) error {
@@ -500,5 +433,130 @@ func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "successs",
 		"ItemNo":  itemNo,
+	})
+}
+
+// ------------------------
+// APPROVED
+// ------------------------
+func ViewApproved(c *fiber.Ctx) error {
+	fmt.Println("Process: View Approved")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Raw("SELECT * FROM view_routings WHERE document_tag = 'Approved' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	proponents := &[]model.Proponents{}
+	database.DBConn.Raw("SELECT * FROM proponents").Scan(proponents)
+
+	return c.Render("routingApproved", fiber.Map{
+		"pageTitle":      "Document Approved",
+		"title":          "APPROVED",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"userId":         model.UserID,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"itemCommittees": ItemCommittees,
+		"proponents":     proponents,
+		"docId":          docId,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
+	})
+}
+
+func RegisterApproved(c *fiber.Ctx) error {
+	fmt.Println("Process: Register Approved")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	requestApproved := &model.Approves{}
+	if parsErr := c.BodyParser(requestApproved); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "error parsing data",
+			Data:    parsErr.Error(),
+		})
+	}
+
+	if requestApproved.LawType == "1" {
+		requestApproved.LawType = "Ordinance"
+	} else if requestApproved.LawType == "2" {
+		requestApproved.LawType = "Resolution"
+	}
+
+	file, err := c.FormFile("attachedFile")
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	fmt.Println("FILENAME:", file.Filename)
+	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
+	requestApproved.ResOrdFile = file.Filename
+
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "success",
+		Request: requestApproved,
+	})
+
+}
+
+// ------------------------
+// OTHER
+// ------------------------
+func GetForFiling(c *fiber.Ctx) error {
+	fmt.Println("Process: Get for Filing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+	id := c.Params("id")
+	receiving := &[]model.Routings{}
+
+	database.DBConn.Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
+
+	folders := &[]model.Folders{}
+	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
+	return c.Render("routingFiling", fiber.Map{
+		"pageTitle":  "forFiling",
+		"title":      "FOR FILING",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"receivings": receiving,
+		"folders":    folders,
+		"baseURL":    c.BaseURL(),
+	})
+}
+
+func ViewReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: View Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+	return c.Render("routingReleasing", fiber.Map{
+		"pageTitle":  "Routing - Releasing",
+		"title":      "ROUTING RELEASING",
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"baseURL":    c.BaseURL(),
 	})
 }

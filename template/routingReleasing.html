@@ -9,12 +9,13 @@
         <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - RELEASING</a>
     </div>
 </nav>
- 
+
 <div class="container-fluid py-2 shadow mb-3">
     <!-- RECEIVING -->
     <div class="row">
         {{range .viewRoutings}}
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-hand-holding"></i> RECEIVING - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-hand-holding"></i> RECEIVING - Encoder:
+            <i>{{.Encoder}}</i></span>
         <div class="col-md-4">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -44,7 +45,8 @@
         </div>
         <div class="col-md-8">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="summary" name="summary" value="{{.Summary}}" disabled>
+                <textarea class="form-control" id="summary" name="summary" style="height: 132px"
+                    disabled>{{.Summary}}</textarea>
                 <label for="summary">Summary</label>
             </div>
         </div>
@@ -75,10 +77,12 @@
     <div class="row">
         {{ range .viewAgenda}}
         {{if .ModifiedBy}}
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder: <i>{{.Encoder}}</i> | Modified By:
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder:
+            <i>{{.Encoder}}</i> | Modified By:
             <i>{{.ModifiedBy}}</i></span>
         {{else}}
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder:
+            <i>{{.Encoder}}</i></span>
         {{end}}
 
         <div class="col-md-2">
@@ -154,7 +158,8 @@
     <!-- APRROVED -->
     <div class="row">
         {{range .viewApproved}}
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-thumbs-up"></i> APPROVED - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-thumbs-up"></i> APPROVED - Encoder:
+            <i>{{.Encoder}}</i></span>
         <div class="col-md-2">
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}" disabled>

@@ -100,4 +100,20 @@ type (
 		Encoder        string `json:"encodeer,omitempty"`
 		ModifiedBy     string `json:"modifiedBy,omitempty"`
 	}
+
+	RequestApproved struct {
+		DocId       int    `json:"docId,omitempty"`
+		ApproveId   int    `json:"approvedId,omitempty"`
+		ItemNumber  int    `json:"itemNumber,omitempty"`
+		LawType     string `json:"lawType,omitempty"`
+		LawNumber   string `json:"lawNumber,omitempty"`
+		Series      string `json:"series,omitempty"`
+		EnactedDate string `json:"enactedDate"`
+		MotionedBy  string `json:"motionedBy,omitempty"`
+		Author      string `json:"author,omitempty"`
+		ResOrdFile  string `json:"attachedFile,omitempty"`
+		TitleBody   string `json:"titleBody,omitempty"`
+		Encoder     string `json:"encoder,omitempty"`
+		ModifiedBy  string `json:"modifedBy,omitempty"`
+	}
 )

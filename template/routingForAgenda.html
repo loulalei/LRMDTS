@@ -102,13 +102,13 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="date_reported" name="dateReported" required>
+                <input type="date" class="form-control" id="date_reported" name="dateReported">
                 <label for="date_reported">Date Reported</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating">
-                <select class="form-select" id="source" name="source">
+                <select class="form-select" id="source" name="source" required>
                     <option disabled>Select Source</option>
                     <option selected value="1">Other Department</option>
                     <option value="2">Priviledged Speech</option>
@@ -151,7 +151,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating">
-                <select class="form-select" id="agendaTag" name="agendaTag">
+                <select class="form-select" id="agendaTag" name="agendaTag" required>
                     <option selected disabled>Select Action</option>
                     <option value="1">For information of the whole body</option>
                     <option value="2">Referred to Committee</option>
@@ -168,7 +168,7 @@
         </div>
         <div class="col-md-5">
             <div class="form-floating">
-                <select class="form-select" id="committees" name="committees">
+                <select class="form-select" id="committees" name="committees" required>
                     <option selected disabled>Select Committee</option>
                     {{range .committees}}
                     <option value={{.CommitteeId}}>{{.Name}}</option>

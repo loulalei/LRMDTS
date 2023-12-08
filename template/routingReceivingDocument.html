@@ -17,7 +17,7 @@
 
 <div class="container-fluid py-2 shadow">
     <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data" id="forReceiving" name="forReceiving">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
                     placeholder="1111-1111-11-1111" required>
@@ -36,52 +36,25 @@
                 <label for="receivedTime">Time</label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="receiver" name="receiver" value="{{.user}}" required
                     readonly>
                 <label for="receiver">Receiver</label>
             </div>
         </div>
-        <div class="col-md-2">
-            <select class="form-select mb-3" size="4" id="sender" name="sender" required>
-                <option disabled>Select Sender</option>
-                {{range .departments}}
-                <option value={{.Name}}>{{.Name}}</option>
-                {{end}}
-                <option value="others">Others</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="" name="">
-                <label for="">Other</label>
-            </div>
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="form-floating mb-3">
                 <textarea class="form-control" id="summary" name="summary" style="height: 100px" required></textarea>
                 <label for="summary">Summary</label>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" required readonly>
-                <label for="receivingRemarks">Remarks</label>
-            </div>
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-5">
             <div class="mb-3">
                 <label for="receivedFile" class="form-label">Attach received
                     file</label>
                 <input class="form-control form-control-sm" id="receivedFile" name="receivedFile" type="file"
                     accept="application/pdf" required>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks" required readonly>
-                <label for="receivingRemarks">Remarks</label>
             </div>
         </div>
         <hr>

@@ -93,9 +93,9 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="ItemNumber" name="ItemNumber" value="{{.ItemNumber}}"
+                <input type="text" class="form-control" id="itemNumber" name="itemNumber" value="{{.ItemNumber}}"
                     disabled>
-                <label for="ItemNumber">Item Number</label>
+                <label for="itemNumber">Item Number</label>
             </div>
         </div>
         <div class="col-md-2">
@@ -153,8 +153,10 @@
     </div>
     <!-- APRROVED -->
     <form class="row" action="/api/routing/register_approved" method="post" enctype="multipart/form-data" id="approved"
-        name="approved">
+        name="approved" autocomplete="off">
         <span class="badge bg-secondary my-2 fw-bold">APPROVED</span>
+        <input type="text" value="{{.user}}" id="encoder" name="encoder" readonly hidden>
+        <input type="text" value="{{.docId}}" id="docId" name="docId" readonly hidden>
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 <select class="form-select" id="lawType" name="lawType" required>
@@ -179,7 +181,7 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="enactedDate" name="enactedDate " required>
+                <input type="date" class="form-control" id="enactedDate" name="enactedDate" required>
                 <label for="enactedDate">Date Enacted</label>
             </div>
         </div>

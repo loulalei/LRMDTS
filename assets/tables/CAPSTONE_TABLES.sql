@@ -98,18 +98,19 @@ SELECT * FROM routings
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
 SELECT * FROM view_agendas
-SELECT * FROM agendas WHERE item_number = '3512-1345'
+
+SELECT * FROM agendas WHERE item_number = '2023-0869'
 SELECT * FROM filings
 SELECT * FROM file_paths
 SELECT * FROM trackings
 SELECT * FROM FilingPaths
 
+SELECT * FROM user_credentials
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
 
 SELECT truncate_tables()
-SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Referred to Committee'
-
+SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'For information of the whole body'
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Kept in Secretariat'
 SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'
 INSERT INTO divisions (name, code) VALUES ('Records','SPCRD'), ('Secretariat','SPCSD'), ('Administration','SPCAD')

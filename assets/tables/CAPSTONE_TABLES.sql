@@ -70,7 +70,7 @@ SELECT route.doc_id, route.item_number, route.document_tag, route.remarks,
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
-ORDER BY route.updated_at DESC
+-- ORDER BY route.updated_at DESC
 
 CREATE VIEW view_agendas AS
 SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder, , rcv.modified_by,
@@ -98,7 +98,10 @@ SELECT * FROM trackings
 
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
-SELECT * FROM view_agendas
+
+SELECT * FROM view_routings 
+WHERE document_tag = 'For Agenda' 
+AND doc_id = 4
 
 SELECT * FROM agendas WHERE item_number = '2023-0869'
 SELECT * FROM filings
@@ -204,6 +207,9 @@ INSERT INTO departments (name) VALUES
 ('Solid Waste Management Office'),
 ('Tourism Office'), 
 ('Veterinarian Office')
+
+
+
 
 -- FUNCTIONS
 CREATE OR REPLACE FUNCTION update_agenda(_agenda_id int, _tag text, _remarks text, _encoder)

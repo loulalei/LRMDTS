@@ -6,15 +6,15 @@
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - APPROVED</a>
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - RELEASING</a>
     </div>
 </nav>
-
+ 
 <div class="container-fluid py-2 shadow mb-3">
     <!-- RECEIVING -->
     <div class="row">
         {{range .viewRoutings}}
-        <span class="badge bg-secondary my-2 fw-bold">RECEIVING - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-hand-holding"></i> RECEIVING - Encoder: <i>{{.Encoder}}</i></span>
         <div class="col-md-4">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -75,10 +75,10 @@
     <div class="row">
         {{ range .viewAgenda}}
         {{if .ModifiedBy}}
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i> | Modified By:
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder: <i>{{.Encoder}}</i> | Modified By:
             <i>{{.ModifiedBy}}</i></span>
         {{else}}
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-newspaper"></i> AGENDA - Encoder: <i>{{.Encoder}}</i></span>
         {{end}}
 
         <div class="col-md-2">
@@ -154,7 +154,7 @@
     <!-- APRROVED -->
     <div class="row">
         {{range .viewApproved}}
-        <span class="badge bg-secondary my-2 fw-bold">APPROVED - Encoder: <i>{{.Encoder}}</i></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-thumbs-up"></i> APPROVED - Encoder: <i>{{.Encoder}}</i></span>
         <div class="col-md-2">
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}" disabled>
@@ -211,82 +211,101 @@
     </div>
     <!-- RELEASING -->
     <form action="#" class="row">
-        <span class="badge bg-secondary my-2 fw-bold">RELEASING</span>
-        <div class="col-md-2">
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i> RELEASING</span>
+        <div class="col-md-4"> <!-- TO MAYOR  -->
             <div class="row">
                 <span class="badge bg-secondary my-2 fw-bold">TO MAYOR</span>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="DateFMayor" name="DateFMayor">
-                <label for="DateFMayor">Date Forwarded to Mayor</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-1">
-                <input type="date" class="form-control" id="DateAMayor" name="DateAMayor">
-                <label for="DateAMayor">Date Approved by Mayor</label>
-            </div>
-            <div class="form-floating mb-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="mayor-laches" name="mayor-laches">
-                    <label class="form-check-label" for="mayor-laches">Approved by laches</label>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="DateFMayor" name="DateFMayor">
+                        <label for="DateFMayor">Date Forwarded</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" id="DateAMayor" name="DateAMayor">
+                        <label for="DateAMayor">Date Approved</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="mayor-laches" name="mayor-laches">
+                            <label class="form-check-label" for="mayor-laches">Approved by laches</label>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-2">
-                <input type="date" class="form-control" id="DateFSP" name="DateFSP">
-                <label for="DateFSP">Date Forwarded to Sang. Panlalawigan</label>
-            </div>
-            <div class="mb-2">
-                <label for="SPEndorseFile" class="form-label"></label>
-                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
-                    accept="application/pdf">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-2">
-                <input type="date" class="form-control" id="DateASP" name="DateASP">
-                <label for="DateFSP">Date Approved by Sang. Panlalawigan</label>
-            </div>
-            <div class="form-floating mb-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="sp-laches" name="sp-laches">
-                    <label class="form-check-label" for="sp-laches">Approved by laches</label>
+        </div> <!-- END TO MAYOR  -->
+        <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
+            <div class="row">
+                <span class="badge bg-secondary my-2 fw-bold">SANGGUNIAN PANLALAWIGAN</span>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" id="DateFSP" name="DateFSP">
+                        <label for="DateFSP">Date Forwarded</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" id="DateASP" name="DateASP">
+                        <label for="DateFSP">Date Approved</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="sp-laches" name="sp-laches">
+                            <label class="form-check-label" for="sp-laches">Approved by laches</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="SPResNo" name="SPResNo">
+                        <label for="SPResNo">SP Res. No.</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="SPResFile" class="form-label"><small>Attach Resolution File</small> </label>
+                        <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                            accept="application/pdf">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="SPResNo" name="SPResNo">
-                <label for="SPResNo">SP Res. No.</label>
+        </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
+        <div class="col-md-4"> <!-- LOCAL -->
+            <div class="row">
+                <span class="badge bg-secondary my-2 fw-bold">LOCAL</span>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" id="DateReleased" name="DateReleased">
+                        <label for="DateReleased">Date of Local Release</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-6">
+                        <label for="EndorseFile" class="form-label"><small>Attach Resolution File</small></label>
+                        <input class="form-control form-control-sm" id="filename" name="filename" type="file"
+                            accept="application/pdf">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" id="DatePublished" name="DatePublished">
+                        <label for="DatePublished">Date Published</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="Publisher" name="Publisher">
+                        <label for="Publisher">Publisher</label>
+                    </div>
+                </div>
             </div>
-            <div class="mb-2">
-                <label for="SPResFile" class="form-label">Attach Res. File</label>
-                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
-                    accept="application/pdf">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-2">
-                <input type="date" class="form-control" id="DateReleased" name="DateReleased">
-                <label for="DateReleased">Date of Local Release</label>
-            </div>
-            <div class="mb-2">
-                <label for="EndorseFile" class="form-label">Attach Res. File</label>
-                <input class="form-control form-control-sm" id="filename" name="filename" type="file"
-                    accept="application/pdf">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-floating mb-2">
-                <input type="date" class="form-control" id="DatePublished" name="DatePublished">
-                <label for="DatePublished">Date Published</label>
-            </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="Publisher" name="Publisher">
-                <label for="Publisher">Publisher</label>
-            </div>
+        </div><!-- END OF LOCAL -->
+        <hr>
+        <div class="col-md-12 mb-2">
+            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
+                        class="fa-solid fa-floppy-disk"></i> SAVE
+                    DOCUMENT</button></small>
         </div>
     </form>
 </div>

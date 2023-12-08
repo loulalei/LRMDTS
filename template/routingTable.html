@@ -2,17 +2,17 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
-<div class="container-fluid py-2 shadow table-responsive">
-    <table id="routing_lists" class="table table-striped table-hover table-sm" style="width:100%">
+<div class="container-fluid table-responsive">
+    <table id="routing_lists" class="table table-striped table-hover table-sm">
         <thead>
             <tr>
-                <th class="text-center">DATE RECEIVED</th>
-                <th class="text-center">TRACKING NUMBER</th>
-                <th class="text-center">ITEM NUMBER</th>
-                <th class="text-center">DOCUMENT SUMMARY</th>
-                <th class="text-center">DOCUMENT TAG</th>
-                <th class="text-center">REMARKS</th>
-                <th class="text-center">ACTION</th>
+                <th class="text-center"><small>DATE RECEIVED</small></th>
+                <th class="text-center"><small>TRACKING NUMBER</small></th>
+                <th class="text-center"><small>ITEM NUMBER</small></th>
+                <th class="text-center"><small>DOCUMENT SUMMARY</small></th>
+                <th class="text-center"><small>DOCUMENT TAG</small></th>
+                <th class="text-center"><small>REMARKS</small></th>
+                <th class="text-center"><small>ACTION</small></th>
             </tr>
         </thead>
         <tbody>
@@ -20,18 +20,18 @@
             {{if eq .userLogged "SPCRD"}}
             {{range .viewRoutings}}
             <tr>
-                <td>{{.ReceivedDate}}</td>
-                <td>{{.TrackingNumber}}</td>
+                <td class="text-center"><small>{{.ReceivedDate}}</small></td>
+                <td class="text-center"><small>{{.TrackingNumber}}</small></td>
                 {{if .ItemNumber}}
-                <td>{{.ItemNumber}}</td>
+                <td class="text-center"><small>{{.ItemNumber}}</small></td>
                 {{else}}
-                <td>None</td>
+                <td class="text-center"><small>None</small></td>
                 {{end}}
-                <td>{{.Summary}}</td>
-                <td>{{.DocumentTag}}</td>
-                <td>{{.Remarks}}</td>
-                <td class="row">
-                    <div class="d-grid col-md-4 mx-auto">
+                <td class="text-center"><small>{{.Summary}}</small></td>
+                <td class="text-center"><small>{{.DocumentTag}}</small></td>
+                <td class="text-center"><small>{{.Remarks}}</small></td>
+                <td class="text-center">
+                    <div class="d-grid gap-2 d-md-block">
                         <!-- encode -->
                         {{if eq .DocumentTag "Approved"}}
                         <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
@@ -44,21 +44,15 @@
                         </a>
                         {{end}}
                         {{if eq .DocumentTag "For Releasing"}}
-                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
+                        <a href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"
                             class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-paper-plane"></i>
                         </a>
                         {{end}}
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- view -->
                         <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
                         </a>
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- download -->
                         <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                                class="fa-solid fa-download"></i>
-                        </a>
+                            class="fa-solid fa-download"></i>
+                    </a>
                     </div>
                 </td>
             </tr>

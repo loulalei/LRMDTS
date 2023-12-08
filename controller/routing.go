@@ -517,6 +517,47 @@ func RegisterApproved(c *fiber.Ctx) error {
 }
 
 // ------------------------
+// RELEASING
+// ------------------------
+func ViewReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: View Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Debug().Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	viewApproved := &[]model.Approves{}
+	database.DBConn.Debug().Raw("SELECT * FROM approves WHERE item_number = ?", itemNumber).Scan(viewApproved)
+
+	return c.Render("routingReleasing", fiber.Map{
+		"pageTitle":      "Routing - Releasing",
+		"title":          "ROUTING RELEASING",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"viewApproved":   viewApproved,
+		"itemCommittees": ItemCommittees,
+		"docId":          docId,
+		"itemNumber":     itemNumber,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
+	})
+}
+
+// ------------------------
 // OTHER
 // ------------------------
 func GetForFiling(c *fiber.Ctx) error {
@@ -540,22 +581,6 @@ func GetForFiling(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"receivings": receiving,
 		"folders":    folders,
-		"baseURL":    c.BaseURL(),
-	})
-}
-
-func ViewReleasing(c *fiber.Ctx) error {
-	fmt.Println("Process: View Releasing")
-	if model.Fullname == "" {
-		return c.Redirect("/")
-	}
-	return c.Render("routingReleasing", fiber.Map{
-		"pageTitle":  "Routing - Releasing",
-		"title":      "ROUTING RELEASING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"greetings":  utils.GetGreetings(),
 		"baseURL":    c.BaseURL(),
 	})
 }

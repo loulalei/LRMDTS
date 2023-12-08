@@ -153,50 +153,58 @@
     </div>
     <!-- APRROVED -->
     <div class="row">
+        {{range .viewApproved}}
+        <span class="badge bg-secondary my-2 fw-bold">APPROVED - Encoder: <i>{{.Encoder}}</i></span>
         <div class="col-md-2">
-            lawType
-        </div>
-        <div class="col-md-1">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="lawType" name="lawType" value="Test" disabled>
+                <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}" disabled>
                 <label for="lawType">Legislative Measure</label>
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="series" name="series" value="Test" disabled>
+                <input type="text" class="form-control" id="lawNumber" name="lawNumber" value="{{.LawNumber}}" disabled>
+                <label for="lawNumber">Number</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="series" name="series" value="{{.Series}}" disabled>
                 <label for="series">Series</label>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="enactedDate" name="enactedDate" value="Test" disabled>
+                <input type="text" class="form-control" id="enactedDate" name="enactedDate" value="{{.EnactedDate}}" disabled>
                 <label for="enactedDate">Date Enacted</label>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="resOrdFile" name="resOrdFile" value="Test" disabled>
-                <label for="resOrdFile">Attached File</label>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="motionedBy" name="motionedBy" value="Test" disabled>
+                <input type="text" class="form-control" id="motionedBy" name="motionedBy" value="{{.MotionedBy}}" disabled>
                 <label for="motionedBy">Motioned By</label>
             </div>
+        </div>
+        <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="author" name="author" value="Test" disabled>
+                <input type="text" class="form-control" id="author" name="author" value="{{.Author}}" disabled>
                 <label for="author">Author</label>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="form-floating mb-3">
                 <textarea class="form-control" id="titleBody" name="titleBody" style="height: 132px"
-                    disabled>Test</textarea>
+                    disabled>{{.TitleBody}}</textarea>
                 <label for="titleBody">Title/Body</label>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="resOrdFile" name="resOrdFile" value="{{.ResOrdFile}}" disabled>
+                <label for="resOrdFile">Attached File</label>
+            </div>
+        </div>
+        {{end}}
     </div>
 </div>
 

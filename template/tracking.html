@@ -14,7 +14,7 @@
         </div>
     </div>
 </nav>
-<div class="row m-1">
+<div class="row m-1 py-1">
     <div class="col-md-3">
         <div class="form-floating">
             <select class="form-select" id="monthReceived" name="monthReceived">
@@ -48,50 +48,49 @@
             <label for="yearReceived">Motioned By</label>
         </div>
     </div>
-    <div class="col-md-2 gy-1">
-        <div class="d-grid gap-1 col-md-12 mx-auto">
-            <button class="btn btn-primary fw-bold btn-sm"><i class="fa-solid fa-repeat"></i> RESET</button>
-            <button class="btn btn-success fw-bold btn-sm"><i class="fa-solid fa-search"></i> APPLY</button>
+    <div class="col-md-2">
+        <div class="d-grid gap-2 d-md-block text-center py-2">
+            <button class="btn btn-primary fw-bold"><i class="fa-solid fa-repeat"></i> RESET</button>
+            <button class="btn btn-success fw-bold"><i class="fa-solid fa-search"></i> APPLY</button>
         </div>
     </div>
 
-    <hr>
-    <div class="container-fluid py-2 shadow">
-        <table id="tracking-table" class="table table-responsive table-striped table-hover table-sm" style="width:100%">
+    <div class="container-fluid py-3">
+        <table id="tracking-table" class="table table-striped table-hover table-sm py-2" style="width:100%">
             <thead>
                 <tr>
-                    <th class="text-center">TRACKING NUMBER</th>
-                    <th class="text-center">ITEM NUMBER</th>
-                    <th class="text-center">LAW NO.</th>
-                    <th class="text-center">SUMMARY</th>
-                    <th class="text-center">RECEIVED</th>
-                    <th class="text-center">CALENDARED</th>
-                    <th class="text-center">ENACTED</th>
-                    <th class="text-center">FORWARDED<br>MAYOR</th>
-                    <th class="text-center">FORWARDED<br>STA. CRUZ</th>
-                    <th class="text-center">RELEASED</th>
-                    <th class="text-center">PUBLISHED</th>
-                    <th class="text-center">FILED</th>
-                    <th class="text-center">ACTION</th>
+                    <th class="text-center"><small>TRACKING NUMBER</small></th>
+                    <th class="text-center"><small>ITEM NUMBER</small></th>
+                    <th class="text-center"><small>LAW NO</small></th>
+                    <th class="text-center"><small>SUMMARY</small></th>
+                    <th class="text-center"><small>RECEIVED</small></th>
+                    <th class="text-center"><small>CALENDARED</small></th>
+                    <th class="text-center"><small>ENACTED</small></th>
+                    <th class="text-center"><small>FWD.<br>MAYOR</small></th>
+                    <th class="text-center"><small>FWD.<br>STA.CRUZ</small></th>
+                    <th class="text-center"><small>RELEASED</small></th>
+                    <th class="text-center"><small>PUBLISHED</small></th>
+                    <th class="text-center"><small>FILED</small></th>
+                    <th class="text-center"><small>ACTION</small></th>
                 </tr>
             </thead>
             <tbody>
                 {{range .tracking}}
                 <tr>
-                    <td>{{ .TrackingNumber}}</td>
-                    <td>{{ .ItemNumber}}</td>
-                    <td>{{ .LawType }} No. {{ .LawNumber }} s. {{.Series}}</td>
-                    <td>{{ .Summary}}</td>
-                    <td>{{ .ReceivedDate}}</td>
-                    <td>{{ .Calendared}}</td>
-                    <td>{{ .EnactedDate}}</td>
-                    <td>{{ .MayorDate}}</td>
-                    <td>{{ .StaCruzDate}}</td>
-                    <td>{{ .ReleasedDate}}</td>
-                    <td>{{ .PublishedDate}}</td>
-                    <td>{{ .FiledDate}}</td>
-                    <td>
-                        <div class="d-grid col-md-4 mx-auto my-1">
+                    <td class="text-center"><small>{{ .TrackingNumber}}</small></td>
+                    <td class="text-center"><small>{{ .ItemNumber}}</small></td>
+                    <td class="text-center"><small>{{ .LawType }} No.{{ .LawNumber }} s.{{.Series}}</small></td>
+                    <td class="text-center"><small>{{ .Summary}}</small></td>
+                    <td class="text-center"><small>{{ .ReceivedDate}}</small></td>
+                    <td class="text-center"><small>{{ .Calendared}}</small></td>
+                    <td class="text-center"><small>{{ .EnactedDate}}</small></td>
+                    <td class="text-center"><small>{{ .MayorDate}}</small></td>
+                    <td class="text-center"><small>{{ .StaCruzDate}}</small></td>
+                    <td class="text-center"><small>{{ .ReleasedDate}}</small></td>
+                    <td class="text-center"><small>{{ .PublishedDate}}</small></td>
+                    <td class="text-center"><small>{{ .FiledDate}}</small></td>
+                    <td class="text-center">
+                        <div class="d-grid gap-2 d-md-block">
                             <!-- view -->
                             <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
                             </a>

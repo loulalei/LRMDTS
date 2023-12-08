@@ -104,7 +104,7 @@ type (
 	RequestApproved struct {
 		DocId       int    `json:"docId,omitempty"`
 		ApproveId   int    `json:"approvedId,omitempty"`
-		ItemNumber  int    `json:"itemNumber,omitempty"`
+		ItemNumber  string `json:"itemNumber,omitempty"`
 		LawType     string `json:"lawType,omitempty"`
 		LawNumber   string `json:"lawNumber,omitempty"`
 		Series      string `json:"series,omitempty"`

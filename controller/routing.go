@@ -499,21 +499,23 @@ func RegisterApproved(c *fiber.Ctx) error {
 	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
 	requestApproved.ResOrdFile = file.Filename
 
+	return c.JSON(requestApproved)
+	
 	// Insert new data for approved
-	approvedFields := &model.Approves{}
-	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
-		requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
-		requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
-		requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
-	).Find(approvedFields)
+	// approvedFields := &model.Approves{}
+	// database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
+	// 	requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
+	// 	requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
+	// 	requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
+	// ).Find(approvedFields)
 
 	// Update Routing
-	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
+	// database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
 
 	// Update Tracking
-	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.EnactedDate, requestApproved.ItemNumber)
+	// database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.EnactedDate, requestApproved.ItemNumber)
 
-	return c.Redirect("/api/routing/secretariat")
+	// return c.Redirect("/api/routing/secretariat")
 }
 
 // ------------------------

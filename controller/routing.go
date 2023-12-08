@@ -495,12 +495,11 @@ func RegisterApproved(c *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println("FILENAME:", file.Filename)
 	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
 	requestApproved.ResOrdFile = file.Filename
 
 	return c.JSON(requestApproved)
-	
+
 	// Insert new data for approved
 	// approvedFields := &model.Approves{}
 	// database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder) VALUES (?,?,?,?,?,?,?,?,?)",

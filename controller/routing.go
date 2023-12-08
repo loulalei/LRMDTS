@@ -163,12 +163,6 @@ func RegisterReceiving(c *fiber.Ctx) error {
 		})
 	}
 
-	if receivingData.ReceivingTag == "1" {
-		receivingData.ReceivingTag = "For Agenda"
-	} else if receivingData.ReceivingTag == "2" {
-		receivingData.ReceivingTag = "For Filing"
-	}
-
 	file, err := c.FormFile("receivedFile")
 	if err != nil {
 		return c.JSON(fiber.Map{
@@ -181,19 +175,16 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	receivingData.ReceivedFile = file.Filename
 
 	// INSERT NEW RECEIVING RECORD
+	receivingFields := &model.Receivings{}
 	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
 		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver,
-		receivingData.Summary, receivingData.ReceivingTag, receivingData.ReceivingRemarks, receivingData.ReceivedFile, model.Fullname)
-
-	// SEARCH RECEIVING ID
-	receivingId := &model.RequestRoutingIdentifications{}
-	database.DBConn.Debug().Raw("SELECT receiving_id FROM receivings WHERE tracking_number = ?", receivingData.TrackingNumber).Scan(&receivingId)
+		receivingData.Summary, "For Agenda", "Forwarded to Secretariat", receivingData.ReceivedFile, model.Fullname,
+	).Find(receivingFields)
 
 	// INSERT NEW ROUTING RECORD
-	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingId.ReceivingId, receivingData.ReceivingTag, receivingData.ReceivingRemarks)
-
+	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingFields.ReceivingId, receivingFields.ReceivingTag, receivingFields.ReceivingRemarks)
 	// INSERT NEW TRACKING RECORd
-	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
+	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingFields.TrackingNumber, receivingFields.Summary, receivingFields.ReceivedDate)
 	// VIEW RESULTS
 	viewRoutings := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
@@ -277,16 +268,14 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 		requestAgenda.SourceResult = requestAgenda.Other
 	}
 
+	agendaFields := &model.Agendas{}
 	database.DBConn.Debug().Exec("INSERT INTO agendas (item_number, is_urgent, date_calendared, date_reported, agenda_tag, agenda_remarks, source, source_result, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
-		requestAgenda.ItemNumber, requestAgenda.IsUrgent, requestAgenda.DateCalendared, requestAgenda.DateReported, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.Source, requestAgenda.SourceResult, model.Fullname)
+		requestAgenda.ItemNumber, requestAgenda.IsUrgent, requestAgenda.DateCalendared, requestAgenda.DateReported,
+		requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.Source, requestAgenda.SourceResult, model.Fullname,
+	).Find(agendaFields)
 
-	// SEARCH AGENDA ID
-	agendaId := &model.RequestRoutingIdentifications{}
-	database.DBConn.Debug().Raw("SELECT agenda_id FROM agendas WHERE item_number = ?", requestAgenda.ItemNumber).Scan(agendaId)
-
-	fmt.Println("DOC ID:", requestAgenda.DocId)
 	// UPDATE ROUTINGS
-	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaId.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaFields.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
 
 	// UPDATE TRACKING
 	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, requestAgenda.TrackingNumber)
@@ -472,6 +461,7 @@ func ViewApproved(c *fiber.Ctx) error {
 		"itemCommittees": ItemCommittees,
 		"proponents":     proponents,
 		"docId":          docId,
+		"itemNumber":     itemNumber,
 		"greetings":      utils.GetGreetings(),
 		"baseURL":        c.BaseURL(),
 	})
@@ -483,7 +473,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	requestApproved := &model.Approves{}
+	requestApproved := &model.RequestApproved{}
 	if parsErr := c.BodyParser(requestApproved); parsErr != nil {
 		return c.JSON(model.ResponseBody{
 			Status:  101,
@@ -509,12 +499,21 @@ func RegisterApproved(c *fiber.Ctx) error {
 	c.SaveFile(file, fmt.Sprintf("./assets/uploads/%s", file.Filename))
 	requestApproved.ResOrdFile = file.Filename
 
-	return c.JSON(model.ResponseBody{
-		Status:  100,
-		Message: "success",
-		Request: requestApproved,
-	})
+	// Insert new data for approved
+	approvedFields := &model.Approves{}
+	database.DBConn.Debug().Exec("INSERT INTO approves (law_type, law_number, series, enacted_date, motioned_by, author, res_ord_file, title_body, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
+		requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series,
+		requestApproved.EnactedDate, requestApproved.ModifiedBy, requestApproved.Author,
+		requestApproved.ResOrdFile, requestApproved.TitleBody, requestApproved.Encoder,
+	).Find(approvedFields)
 
+	// Update Routing
+	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
+
+	// Update Tracking
+	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.EnactedDate, requestApproved.ItemNumber)
+
+	return c.Redirect("/api/routing/secretariat")
 }
 
 // ------------------------

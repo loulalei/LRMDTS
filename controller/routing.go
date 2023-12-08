@@ -94,7 +94,7 @@ func ViewRoutingForAgenda(c *fiber.Ctx) error {
 	docId, _ := strconv.Atoi(c.Params("docId"))
 
 	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'For information of the whole body' OR document_tag = 'Referred to Committee' AND doc_id = ?", docId).Scan(viewRoutings)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE doc_id = ?", docId).Scan(viewRoutings)
 
 	departments := &[]model.Departments{}
 	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)

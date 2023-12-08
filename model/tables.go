@@ -4,7 +4,7 @@ import "time"
 
 type (
 	Receivings struct {
-		ReceivingId      int       `gorm:"primaryKey;autoIncrement:true"`
+		ReceivingId      int       `json:"receivingId" gorm:"primaryKey;autoIncrement:true"`
 		TrackingNumber   string    `json:"trackingNumber,omitempty"`
 		ReceivedDate     string    `json:"receivedDate,omitempty"`
 		ReceivedTime     string    `json:"receivedTime,omitempty"`
@@ -20,7 +20,7 @@ type (
 	}
 
 	Agendas struct {
-		AgendaId       int       `gorm:"primaryKey;autoIncrement:true"`
+		AgendaId       int       `json:"agendaId" gorm:"primaryKey;autoIncrement:true"`
 		ItemNumber     string    `json:"itemNumber,omitempty"`
 		IsUrgent       bool      `json:"isUrgent,omitempty"`
 		DateCalendared string    `json:"dateCalendared,omitempty"`
@@ -36,7 +36,7 @@ type (
 	}
 
 	Approves struct {
-		ApproveId   int       `gorm:"primaryKey;autoIncrement:true"`
+		ApproveId   int       `json:"approvedId" gorm:"primaryKey;autoIncrement:true"`
 		ItemNumber  int       `json:"itemNumber,omitempty"`
 		LawType     string    `json:"lawType,omitempty"`
 		LawNumber   string    `json:"lawNumber,omitempty"`

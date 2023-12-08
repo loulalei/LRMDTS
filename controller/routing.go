@@ -181,8 +181,11 @@ func RegisterReceiving(c *fiber.Ctx) error {
 		receivingData.Summary, "For Agenda", "Forwarded to Secretariat", receivingData.ReceivedFile, model.Fullname,
 	).Find(receivingFields)
 
+	// GET RECEIVING ID
+	var receivingID int
+	database.DBConn.Debug().Raw("SELECT receiving_id FROM receivings WHERE tracking_number = ?", receivingData.TrackingNumber).Scan(&receivingID)
 	// INSERT NEW ROUTING RECORD
-	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingFields.ReceivingId, receivingFields.ReceivingTag, receivingFields.ReceivingRemarks)
+	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingID, receivingFields.ReceivingTag, receivingFields.ReceivingRemarks)
 	// INSERT NEW TRACKING RECORd
 	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingFields.TrackingNumber, receivingFields.Summary, receivingFields.ReceivedDate)
 	// VIEW RESULTS
@@ -507,8 +510,12 @@ func RegisterApproved(c *fiber.Ctx) error {
 		requestApproved.ItemNumber,
 	).Find(approvedFields)
 
+	// GET APPROVED ID
+	var approvedId int
+	database.DBConn.Debug().Raw("SELECT agenda_id FROM agendas WHERE item_number = ?", requestApproved.ItemNumber).Scan(&approvedId)
+
 	// Update Routing
-	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedFields.ApproveId, "For Releasing", "Kept in Records", requestApproved.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedId, "For Releasing", "Kept in Records", requestApproved.DocId)
 
 	// Update Tracking
 	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.ItemNumber)

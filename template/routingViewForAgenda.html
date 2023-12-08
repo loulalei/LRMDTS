@@ -221,7 +221,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#agendaTag").click(function () {
+        $("#agendaTag").change(function () {
             var selectedValue = document.getElementById("agendaTag").value
             if (selectedValue == "1") {
                 document.getElementById("agendaRemarks").value = "Forwarded to Records";

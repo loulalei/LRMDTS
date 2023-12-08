@@ -176,7 +176,7 @@
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="series" name="series" required>
+                <input type="text" class="form-control" id="series" name="series" required readonly disabled>
                 <label for="series">Series</label>
             </div>
         </div>
@@ -231,25 +231,50 @@
 
 <script>
     $(document).ready(function () {
+        $("#enactedDate").change(function () {
+            var enactedDate = $('#enactedDate').val();
+            var yearEnacted = enactedDate.substr(0, 4)
+            document.getElementById("series").value = yearEnacted;
+        });
+
         $("#submitBtn").click(function () {
-            Swal.fire({
-                title: "Do you want to save this record?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Save"
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    $("#approved").submit(); // Submit the form
-                } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
-                }
-            });
+            var lawNumber = $('#lawNumber').val();
+            var noSC = lawNumber.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+            var lawNumberLen = noSC.length;
+
+            if (lawNumber == "") {
+                Swal.fire(
+                    'Saving Error',
+                    'Law number is empty',
+                    'info'
+                )
+                document.getElementById("lawNumber").focus()
+            } else if (lawNumberLen < 4) {
+                Swal.fire(
+                    'SAving Error',
+                    'Law number must be 4 digits',
+                    'info'
+                )
+                document.getElementById("lawNumber").focus()
+            } else {
+                Swal.fire({
+                    title: "Do you want to save this record?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Save"
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $("#approved").submit(); // Submit the form
+                    } else if (result.isDenied) {
+                        Swal.fire("Cancel saving record", "", "info");
+                    }
+                });
+            }
         });
         $("#lawNumber").inputmask("9999");
-        $("#series").inputmask("9999");
     });
 </script>
 

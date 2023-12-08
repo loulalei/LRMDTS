@@ -14,7 +14,8 @@ func ViewTracking(c *fiber.Ctx) error {
 	}
 
 	proponents := &[]model.Proponents{}
-	database.DBConn.Raw("SELECT DISTINCT * FROM proponents ORDER BY proponent_id ASC").Scan(proponents)
+	database.DBConn.Debug().Raw("SELECT DISTINCT * FROM proponents ORDER BY proponent_id ASC").Scan(proponents)
+	
 	tracking := &[]model.Trackings{}
 	database.DBConn.Debug().Raw("SELECT * FROM trackings").Scan(tracking)
 

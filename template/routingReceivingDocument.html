@@ -68,14 +68,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#receivingTag").click(function () {
-            var selectedValue = document.getElementById("receivingTag").value
-            if (selectedValue == "1") {
-                document.getElementById("receivingRemarks").value = "Forwarded to Secretariat";
-            } else if (selectedValue == "2") {
-                document.getElementById("receivingRemarks").value = "Kept in Records";
-            }
-        });
         $("#submitBtn").click(function () {
             Swal.fire({
                 title: "Do you want to save this record?",

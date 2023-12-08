@@ -135,7 +135,6 @@ func ViewReceivingRoute(c *fiber.Ctx) error {
 	}
 
 	departments := &[]model.Departments{}
-
 	database.DBConn.Raw("SELECT * FROM departments").Scan(departments)
 
 	return c.Render("routingReceivingDocument", fiber.Map{
@@ -175,19 +174,18 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	receivingData.ReceivedFile = file.Filename
 
 	// INSERT NEW RECEIVING RECORD
-	receivingFields := &model.Receivings{}
-	database.DBConn.Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
+	database.DBConn.Debug().Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
 		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver,
 		receivingData.Summary, "For Agenda", "Forwarded to Secretariat", receivingData.ReceivedFile, model.Fullname,
-	).Find(receivingFields)
+	)
 
 	// GET RECEIVING ID
 	var receivingID int
 	database.DBConn.Debug().Raw("SELECT receiving_id FROM receivings WHERE tracking_number = ?", receivingData.TrackingNumber).Scan(&receivingID)
 	// INSERT NEW ROUTING RECORD
-	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?)", receivingID, receivingFields.ReceivingTag, receivingFields.ReceivingRemarks)
+	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?) ", receivingID, "For Agenda", "Forwarded to Secretariat")
 	// INSERT NEW TRACKING RECORd
-	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingFields.TrackingNumber, receivingFields.Summary, receivingFields.ReceivedDate)
+	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
 	// VIEW RESULTS
 	viewRoutings := &[]model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)

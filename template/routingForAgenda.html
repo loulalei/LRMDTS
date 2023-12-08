@@ -253,23 +253,42 @@
         });
 
         $("#submitBtn").click(function () {
-            Swal.fire({
-                title: "Do you want to save this record?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Save"
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    $("#forAgenda").submit(); // Submit the form
-                } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
-                }
-            });
-        });
+            var itemNumber = $('#item_no').val();
+            var noSC = itemNumber.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+            var itemNumberLen = noSC.length;
 
+            if (itemNumber == "") {
+                Swal.fire(
+                    'Saving record error',
+                    'Item number is empty',
+                    'info'
+                )
+                document.getElementById("item_no").focus()
+            } else if (itemNumberLen < 8) {
+                Swal.fire(
+                    'Saving record error',
+                    'Item number must be 8 digits',
+                    'info'
+                )
+                document.getElementById("item_no").focus()
+            } else {
+                Swal.fire({
+                    title: "Do you want to save this record?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Save"
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $("#forAgenda").submit(); // Submit the form
+                    } else if (result.isDenied) {
+                        Swal.fire("Cancel saving record", "", "info");
+                    }
+                });
+            }
+        });
         $("#item_no").inputmask("9999-9999");
     });
 </script>
@@ -277,7 +296,7 @@
 <script>
     $(document).ready(function () {
         $("#add_committee").click(function () {
-            var committeeId = $('#committees').find(":selected").val(); 
+            var committeeId = $('#committees').find(":selected").val();
             var committeeName = $('#committees').find(":selected").text();
             var itemNumber = $('#item_no').val();
             var userId = $('#userId').val();
@@ -294,7 +313,7 @@
                     'info'
                 )
                 document.getElementById("item_no").focus()
-            } else if(itemNumberLen < 8){
+            } else if (itemNumberLen < 8) {
                 Swal.fire(
                     'Adding Error',
                     'Item number must be 8 digits',

@@ -545,7 +545,7 @@ func ViewReleasing(c *fiber.Ctx) error {
 	viewApproved := &[]model.Approves{}
 	database.DBConn.Debug().Raw("SELECT * FROM approves WHERE item_number = ?", itemNumber).Scan(viewApproved)
 
-	return c.Render("routingReleasing", fiber.Map{
+	return c.Render("releasing", fiber.Map{
 		"pageTitle":      "Routing - Releasing",
 		"title":          "ROUTING RELEASING",
 		"yearNow":        model.YearNow,
@@ -562,6 +562,45 @@ func ViewReleasing(c *fiber.Ctx) error {
 	})
 }
 
+func RegisterReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: Register Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	requestApproved := &model.RequestReleasing{}
+	if parsErr := c.BodyParser(requestApproved); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "error parsing data",
+			Data:    parsErr.Error(),
+		})
+	}
+
+	spFile, err := c.FormFile("spResolutionFile")
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	localFile, err := c.FormFile("localResolutionFile")
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	requestApproved.SPResolutionFile = spFile.Filename
+	requestApproved.LocalResolutionFile = localFile.Filename
+
+	return c.JSON(model.ResponseBody{
+		Status:  199,
+		Message: "success",
+		Request: requestApproved,
+	})
+}
+
 // ------------------------
 // OTHER
 // ------------------------
@@ -570,22 +609,17 @@ func GetForFiling(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
-	id := c.Params("id")
-	receiving := &[]model.Routings{}
 
-	database.DBConn.Raw("SELECT * FROM routings WHERE doc_id=?", id).Scan(receiving)
+	docId := c.Params("docId")
 
-	folders := &[]model.Folders{}
-	database.DBConn.Raw("SELECT * FROM folders").Scan(folders)
 	return c.Render("routingFiling", fiber.Map{
 		"pageTitle":  "forFiling",
 		"title":      "FOR FILING",
 		"yearNow":    model.YearNow,
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
+		"docId":      docId,
 		"greetings":  utils.GetGreetings(),
-		"receivings": receiving,
-		"folders":    folders,
 		"baseURL":    c.BaseURL(),
 	})
 }

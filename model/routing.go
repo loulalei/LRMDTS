@@ -116,4 +116,22 @@ type (
 		Encoder     string `json:"encoder,omitempty"`
 		ModifiedBy  string `json:"modifedBy,omitempty"`
 	}
+
+	RequestReleasing struct {
+		DocId                 int    `json:"docId,omitempty"`
+		ItemNumber            string `json:"itemNumber,omitempty"`
+		ReleasingId           int    `json:"releasingId,omitempty"`
+		MayorDateForwarded    string `json:"mayorDateForwarded,omitempty"`
+		MayorDateApproved     string `json:"mayorDateApproved,omitempty"`
+		IsApprovedLachesMayor bool   `json:"isApprovedLachesMayor,omitempty"`
+		SPDateForwarded       string `json:"spDateForwarded,omitempty"`
+		SPDateApproved        string `json:"spDateApproved,omitempty"`
+		IsApprovedLachesSP    bool   `json:"isApprovedLachesSP,omitempty"`
+		SPResolutionNumber    string `json:"spResolutionNumber,omitempty"`
+		SPResolutionFile      string `json:"spResolutionFile,omitempty"`
+		LocalDateRelease      string `json:"localDateRelease,omitempty"`
+		LocalDatePublished    string `json:"localDatePublished,omitempty"`
+		LocalResolutionFile   string `json:"localResolutionFile,omitempty"`
+		Publisher             string `json:"publisher,omitempty"`
+	}
 )

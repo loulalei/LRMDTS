@@ -80,6 +80,12 @@ INNER JOIN view_committees vcmt
 ON agd.item_number = vcmt.item_number
 ORDER BY vcmt.item_number DESC
 
+SELECT * 
+FROM trackings trk
+INNER JOIN routings rtg
+ON trk.tracking_number = rtg.
+
+-- TEST QUERY
 SELECT cmtl.list_id, cmtl.item_number FROM committee_lists cmtl
 INNER JOIN committees cmt ON cmt.id = cmtl.committee_id
 
@@ -94,6 +100,7 @@ SELECT * FROM committees
 SELECT * FROM departments
 SELECT * FROM committee_lists
 SELECT * FROM routings
+SELECT * FROM folders
 SELECT * FROM trackings
 
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
@@ -129,6 +136,9 @@ INSERT INTO committees (name) VALUES ('Agriculture And Economic Productivity'), 
 SELECT COUNT(agenda_id) FROM routings WHERE agenda_id IS NULL
 SELECT COUNT(*) FROM view_committees WHERE committee_id = 
 
+SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
+SELECT * FROM view_committees WHERE item_number = '2023-0002'
+SELECT * FROM approves WHERE item_number = '2023-0002'
 
 -- DEFAULT VALUES
 INSERT INTO departments (name) VALUES 
@@ -207,9 +217,6 @@ INSERT INTO departments (name) VALUES
 ('Solid Waste Management Office'),
 ('Tourism Office'), 
 ('Veterinarian Office')
-
-
-
 
 -- FUNCTIONS
 CREATE OR REPLACE FUNCTION update_agenda(_agenda_id int, _tag text, _remarks text, _encoder)

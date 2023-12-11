@@ -66,7 +66,26 @@ type (
 		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
+	Releasings struct {
+		DocId                 int       `json:"docId,omitempty"`
+		ReleasingId           int       `json:"releasingId" gorm:"primaryKey;autoIncrement:true"`
+		MayorDateForwarded    string    `json:"mayorDateForwarded,omitempty"`
+		MayorDateApproved     string    `json:"mayorDateApproved,omitempty"`
+		IsApprovedLachesMayor bool      `json:"isApprovedLachesMayor,omitempty"`
+		SPDateForwarded       string    `json:"spDateForwarded,omitempty"`
+		SPDateApproved        string    `json:"spDateApproved,omitempty"`
+		IsApprovedLachesSP    bool      `json:"isApprovedLachesSP,omitempty"`
+		SPResolutionNumber    string    `json:"spResolutionNumber,omitempty"`
+		SPResolutionFile      string    `json:"spResolutionFile,omitempty"`
+		LocalDateRelease      string    `json:"localDateRelease,omitempty"`
+		LocalDatePublished    string    `json:"localDatePublished,omitempty"`
+		LocalResolutionFile   string    `json:"localResolutionFile,omitempty"`
+		CreatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
 	Trackings struct {
+		DocId          int       `json:"docId,omitempty"`
 		TrackingId     int       `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
 		TrackingNumber string    `json:"trackingNumber,omitempty"`
 		ItemNumber     string    `json:"itemNumber,omitempty"`
@@ -111,6 +130,11 @@ type (
 		Name         string `json:"name"`
 	}
 
+	Folders struct {
+		FolderId int    `json:"folderId" gorm:"primaryKey;autoIncrement"`
+		Name     string `json:"name"`
+	}
+
 	Divisions struct {
 		Name string `json:"name"`
 		Code string `json:"code"`
@@ -122,5 +146,12 @@ type (
 		Description string    `json:"description"`
 		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	DocumentFolders struct {
+		FolderId   int    `json:"folderId" gorm:"primaryKey;autoIncrement"`
+		FolderName string `json:"folderName,omitempty"`
+
+		Encoder string `json:"encoder,omitempty"`
 	}
 )

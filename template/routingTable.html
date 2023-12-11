@@ -45,14 +45,15 @@
                         {{end}}
                         {{if eq .DocumentTag "For Releasing"}}
                         <a href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"
-                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-paper-plane"></i>
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i
+                                class="fa-regular fa-paper-plane"></i>
                         </a>
                         {{end}}
-                        <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
+                        <!-- <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
+                        </a> -->
+                        <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
+                                class="fa-solid fa-download"></i>
                         </a>
-                        <!-- <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                            class="fa-solid fa-download"></i> -->
-                    </a>
                     </div>
                 </td>
             </tr>
@@ -107,6 +108,7 @@
 <script>
     $(document).ready(function () {
         $('#routing_lists').DataTable({
+            searching: true,
             order: [[1, 'desc']]
         });
     });

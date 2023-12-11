@@ -1,91 +1,96 @@
 {{template "header" .}}
-<!-- DATATABLE -->
-<!-- ONLINE -->
-<link rel="stylesheet"
-    href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-<!-- OFFLINE -->
-<link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
-<nav class="navbar navbar-expand-lg bg-body-tertiary border">
+<input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
+<nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
-        <small class="fw-bold">ROUTING - FILING</small>
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - FILING CABINET</a>
     </div>
 </nav>
 
-<div class="container-fluid py-2 shadow">
-    <form class="row" action="/api/routing/update_filing" method="post"
-        enctype="multipart/form-data">
-        {{range .receivings}}
-        <input type="text" id="id" name="id" value="{{.DocId}}" hidden>
+<div class="container-fluid py-2 shadow mb-3">
+    <!-- ROUTINGS -->
+    <div class="accordion" id="accordionRouting">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="receiving">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReceiving" aria-expanded="true" aria-controls="collapseReceiving">
+                    RECEIVING
+                </button>
+            </h2>
+            <div id="collapseReceiving" class="accordion-collapse collapse show" aria-labelledby="receiving"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
+                    plugin adds the appropriate classes that we use to style each element. These classes control the
+                    overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of
+                    this with custom CSS or overriding our default variables. It's also worth noting that just about any
+                    HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="agenda">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseAgenda" aria-expanded="false" aria-controls="collapseAgenda">
+                    AGENDA
+                </button>
+            </h2>
+            <div id="collapseAgenda" class="accordion-collapse collapse" aria-labelledby="agenda"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body">
+                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
+                    collapse plugin adds the appropriate classes that we use to style each element. These classes
+                    control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                    modify any of this with custom CSS or overriding our default variables. It's also worth noting that
+                    just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit
+                    overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="approved">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseApproved" aria-expanded="false" aria-controls="collapseApproved">
+                    APPROVED
+                </button>
+            </h2>
+            <div id="collapseApproved" class="accordion-collapse collapse" aria-labelledby="approved"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
+                    collapse plugin adds the appropriate classes that we use to style each element. These classes
+                    control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                    modify any of this with custom CSS or overriding our default variables. It's also worth noting that
+                    just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit
+                    overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="releasing">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReleasing" aria-expanded="false" aria-controls="collapseReleasing">
+                    RELEASING
+                </button>
+            </h2>
+            <div id="collapseReleasing" class="accordion-collapse collapse" aria-labelledby="releasing"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
+                    collapse plugin adds the appropriate classes that we use to style each element. These classes
+                    control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                    modify any of this with custom CSS or overriding our default variables. It's also worth noting that
+                    just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit
+                    overflow.
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- END OF ROUTINGS -->
+    <form class="row" action="#" method="post" enctype="multipart/form-data">
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumber"
-                    name="trackingNumber" value="{{.TrackingNumber}}" disabled>
-                <label for="trackingNumber">Tracking Number</label>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="receiveDate"
-                    name="receiveDate" value="{{.ReceiveDate}}" disabled>
-                <label for="receiveDate">Date</label>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-floating mb-3">
-                <input type="time" class="form-control" id="receiveTime"
-                    name="receiveTime" value="{{.ReceiveTime}}" disabled>
-                <label for="receiveTime">Time</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receiver"
-                    name="receiver" value="{{.Receiver}}" disabled>
-                <label for="receiver">Receiver</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="sender"
-                    name="sender" value="{{.Sender}}" disabled>
-                <label for="sender">Sender</label>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="summary" name="summary"
-                    style="height: 100px" disabled>{{.Summary}}"</textarea>
-                <label for="summary">Summary</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select" size="4" id="documentTag"
-                name="documentTag" disabled>
-                <option disabled>Select Document Tag</option>
-                <option value="1" {{if eq .DocumentTag "For Agenda" }} selected
-                    {{end}}>For Agenda</option>
-                <option value="2" {{if eq .DocumentTag "For Info - Admin" }}
-                    selected {{end}}>For Info - Admin</option>
-                <option value="3" {{if eq .DocumentTag "For Info - Dept. Head"
-                    }} selected {{end}}>For Info - Dept. Head</option>
-                <option value="4" {{if eq .DocumentTag "For Filing" }} selected
-                    {{end}}>For Filing</option>
-            </select>
-        </div>
-        {{end}}
-        <div class="col-md-3">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="remarks"
-                    name="remarks" readonly>
-                <label for="remarks">Remarks</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="cabinet"
-                    name="cabinet" required>
+                <input type="text" class="form-control" id="cabinet" name="cabinet" required>
                 <label for="cabinet">File Folder/Cabinet No.</label>
             </div>
         </div>
@@ -100,23 +105,20 @@
         </div>
         <div class="col-md-2">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="folders"
-                    name="cabinet">
+                <input type="text" class="form-control" id="folders" name="cabinet">
                 <label for="cabinet">New Folder Name</label>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="DateFiled"
-                    name="DateFiled" required>
+                <input type="date" class="form-control" id="DateFiled" name="DateFiled" required>
                 <label for="DateFiled">Date Filed</label>
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-floating mb-3 ">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox"
-                        id="isBorrowed" name="isBorrowed">
+                    <input class="form-check-input" type="checkbox" id="isBorrowed" name="isBorrowed">
                     <label class="form-check-label" for="isBorrowed">
                         Is borrowed?
                     </label>
@@ -125,55 +127,17 @@
         </div>
         <div class="col-md-3">
             <div class="form-floating mb-3">
-                <input type="date" class="form-control" id="dateBorrowed"
-                    name="dateBorrowed">
+                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed">
                 <label for="dateBorrowed">Date Borrowed</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="borrower"
-                    name="borrower">
+                <input type="text" class="form-control" id="borrower" name="borrower">
                 <label for="borrower">Borrower</label>
             </div>
         </div>
-        <hr>
-        <div class="col-md-12 mb-2">
-            <small><button class="btn btn-success fw-bold btn-sm"><i
-                        class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
-        </div>
-
     </form>
 </div>
-
-<script>
-    $(document).ready(function(){
-        document.getElementById("remarks").value = "On file";
-
-        $("#documentTag").click(function(){
-            var selectedValue = document.getElementById("documentTag").value
-            if(selectedValue == "1"){
-                document.getElementById("remarks").value = "Forwarded to Secretariat";
-            }else if(selectedValue == "2"){
-                document.getElementById("remarks").value = "Forwarded to Admin Div.";
-            }else if(selectedValue == "3"){
-                document.getElementById("remarks").value = "Forwarded to Dept. Head";
-            }else if(selectedValue == "4"){
-                document.getElementById("remarks").value = "Kept in Records";
-            }
-        });
-
-        $("#isBorrowed").change(function(){
-            if ($('#isBorrowed').is(":checked")){
-                document.getElementById("isBorrowed").value = "true";
-                document.getElementById("remarks").value = "Borrowed";
-            }else{
-                document.getElementById("isBorrowed").value = "false";
-                document.getElementById("remarks").value = "On file";
-            }
-        });
-    });
-    
-</script>
 
 {{template "footer" .}}

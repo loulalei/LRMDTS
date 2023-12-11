@@ -16,6 +16,8 @@ func InitializeTables() {
 	fmt.Println("Agendas ✓")
 	database.CreateTable(model.Approves{})
 	fmt.Println("Approved ✓")
+	database.CreateTable(model.Releasing{})
+	fmt.Println("Releasing Fields ✓")
 	database.CreateTable(model.Routings{})
 	fmt.Println("Routing ✓")
 	database.CreateTable(model.Trackings{})
@@ -32,6 +34,8 @@ func InitializeTables() {
 	fmt.Println("Committee ✓")
 	database.CreateTable(model.Departments{})
 	fmt.Println("Departments ✓")
+	database.CreateTable(model.Folders{})
+	fmt.Println("Folder Fields ✓")
 	database.CreateTable(model.DashboardTotal{})
 	fmt.Println("Dashboard Fields ✓")
 
@@ -54,6 +58,13 @@ func InitializeTables() {
 	database.DBConn.Raw("SELECT COUNT(*) FROM departments").Scan(&count)
 	if count == 0 {
 		database.DBConn.Exec("INSERT INTO departments (name) VALUES ('City Accountant Office'), ('City Budget Office'),('City Administrator Office'), ('City Auditor Office'),('City Treasurer Office'), ('City Planning and Development Coordinator Office'),('City Agriculture Office'), ('City Assesor Office'),('City Business Permit & Licensing Office'), ('City Building Office'), ('City Environment & Natural Resource Office'),('City Health Office'), ('City Human Resource & Management Office'),('City Information Office'), ('City Population Office'),('City Prosecutor Office'), ('City Traffic Management Office'),('Civil Registrar Office'), ('Cooperative Office'),('Disaster Risk Reduction Management Office'), ('Engineering Office'),('General Services Office'), ('Legal Office'),('LEDIPO'), ('Municipal Trial Court'),('Pamantasan ng Lungsod ng San Pablo'), ('Public Employment Office'),('Regional Trial Court'), ('San Pablo City General Hospital'),('San Pablo City General Hospital-Dialysis Unit'), ('Sangguniang Panlungsod'), ('Sangguniang Panlungsod-Library'), ('Senior Citizen Affairs'), ('Social Welfare & Development Office'), ('Solid Waste Management Office'), ('Tourism Office'), ('Veterinarian Office')")
+		fmt.Println("Success")
+	}
+
+	// Insert Default Folders
+	database.DBConn.Raw("SELECT COUNT(*) FROM folders").Scan(&count)
+	if count == 0 {
+		database.DBConn.Exec("INSERT INTO folders (name) VALUES ('20 PERCENT DEV. FUND'),('2011 REVISED TRAFFIC CODE'),('2012 REVISED REVENUE CODE'),('AMUSEMENTS'),('ANIMALS'),('ANNUAL BUDGET'),('ANNUAL DEVELOPMENT PLAN'),('ANNUAL INVESTMENT PLAN (AIP)'),('ANTI-DRUG'),('ANTI-LITTERING'),('ANTI-RABIES'),('ANTI-TRAFFICKING ACT OF 2003'),('ARTS AND CULTURE'),('AWARDS'),('BANK LOANS'),('BARANGAY EMERGENCY RESPONSE TEAM (BERT)'),('BARANGAY MICRO BUSINESS'),('BARANGAY UNIFORM SCHEDULE OF FEES'),('BUDGET'),('BUSINESS IDENTIFICATION NUMBERS (BIN)'),('CALL OF NATURE'),('CASH INCENTIVES'),('CCTV (CLOSED CIRCUIT TV)'),('CEDERA'),('CEMETERY'),('CIGARETTES, TOBACCO PRODUCTS'),('CITY AGRICULTURAL AND FISHERY COUNCIL (CAFC)'),('CITY URBAN DEVELOPMENT AND HOUSING BOARD'),('CIVIL REGISTRAR'),('COCONUT'),('COMMISSION ON DECORUM AND INVESTIGATION'),('COMMON PARKING'),('COMPREHENSIVE TRAFFIC CODE'),('CONDONATION'),('CONSTRUCTIONS'),('CREATIONS'),('DEATH OR BURIAL'),('DEVELOPMENT PLAN'),('DISCOHOUSES'),('DLSP'),('DOMESTIC VIOLENCE'),('DRAG RACING'),('ELECTRICAL ENGINEERING LAW'),('ENVIRONMENT'),('FARMS'),('FUNERAL PARLOR'),('GENDER AND DEVELOPMENT PLAN (GAD)'),('GENERAL FUND'),('GENERIC CODE (SOLID WASTE MANAGEMENT)'),('HEALTH'),('HOLIDAY'),('HONORARIUM'),('HOUSING (HLURB)'),('HYMN'),('ILLEGAL LOGGING'),('INTERNET CAFÉ or COMPUTER GAME CENTERS'),('INVESTMENT INCENTIVES'),('LABOR'),('LAKES'),('LAND CLASSIFICATION'),('LAND CONVERSION'),('LOANS'),('LOCAL CODE ON CHILDREN'),('LOCAL TAX CODE'),('MARKET CODE'),('MORATORIUM'),('MOVIEHOUSES'),('NIGHT MARKET'),('OFFICES - SPC DISASTER RISK REDUCTION AND MANAGEMENT COUNCIL'),('ORGANIC AGRICULTURE ACT OF 2010'),('OVERSEAS FILIPINO AFFAIRS COUNCIL'),('PARENTAL RESPONSIBILITY CODE'),('PARKS'),('PEOPLES LAW ENFORCEMENT BOARD (PLEB)'),('PERSONS WITH DISABILITY (PWD)'),('PHILHEALTH TRUST FUND'),('PUBLIC EMPLOYMENT SERVICE OFFICE (PESO)'),('PUBLIC MARKET'),('PUBLIC TRANSPORTATION'),('QUASI JUDICIAL POWERS OF SP'),('REALIGNMENT'),('RECREATION'),('REVENUE CODE'),('REVERSION'),('SCHOOLS'),('SENIOR CITIZENS'),('SEPTAGE MANAGEMENT SYSTEM'),('SPC CDRRMC'),('SPC CITIZENS CHARTER'),('SPC CONSUMER WELFARE AND PROTECTION CENTER'),('SPC TRIPARTITE INDUSTRIAL PEACE COUNCIL (SPCTIPC)'),('SPECIAL DAYS'),('STREETS'),('SWAT'),('TAX EXEMPTION'),('THE 2012 FAMILY INTEGRITY WELFARE AND PROTECTION ACT OF THE CITY OF SAN PABLO'),('TIPPING FEE'),('TOURISM CODE'),('TOYS'),('TRAFFIC'),('TRANSFER OF PROJECT'),('TRICYCLES'),('VETOED CM'),('VIDEO'),('YOUTH'),('ZONING')")
 		fmt.Println("Success")
 	}
 

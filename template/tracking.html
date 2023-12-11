@@ -1,8 +1,8 @@
 {{template "header" .}}
 <!-- DATATABLE -->
 <!-- ONLINE -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"/>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <!-- OFFLINE -->
 <link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
@@ -109,6 +109,7 @@
     <script>
         $(document).ready(function () {
             $('#tracking-table').DataTable({
+                searching: true,
                 order: [[3, 'desc']]
             });
         });

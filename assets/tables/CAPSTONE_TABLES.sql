@@ -65,12 +65,12 @@ ON usr.id = cmtl.user_id
 ORDER BY cmtl.list_id DESC
 
 CREATE VIEW view_routings AS
-SELECT route.doc_id, route.item_number, route.document_tag, route.remarks,
+SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, route.updated_at,
 	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
--- ORDER BY route.updated_at DESC
+ORDER BY route.updated_at DESC
 
 CREATE VIEW view_agendas AS
 SELECT agd.agenda_id, agd.item_number, agd.is_urgent, agd.date_calendared, agd.date_reported, agd.source, agd.source_result, agd.agenda_tag, agd.agenda_remarks, agd.encoder, , rcv.modified_by,
@@ -94,6 +94,7 @@ SELECT * FROM user_credentials
 SELECT * FROM receivings
 SELECT * FROM agendas
 SELECT * FROM approves
+SELECT * FROM releasings
 
 SELECT * FROM divisions
 SELECT * FROM committees
@@ -102,6 +103,8 @@ SELECT * FROM committee_lists
 SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
+
+SELECT * FROM view_routings ORDER BY updated_at DESC
 
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
@@ -235,10 +238,11 @@ CREATE OR REPLACE FUNCTION truncate_tables()
 RETURNS text AS
 $$
 BEGIN
+	TRUNCATE TABLE receivings;
 	TRUNCATE TABLE agendas;
 	TRUNCATE TABLE approves;
+	TRUNCATE TABLE releasings;
 	TRUNCATE TABLE committee_lists;
-	TRUNCATE TABLE receivings;
 	TRUNCATE TABLE routings;
 	TRUNCATE TABLE trackings;
 	RETURN 'All tables are truncated';
@@ -253,10 +257,11 @@ BEGIN
 	DROP VIEW view_agendas;
 	DROP VIEW view_committees;
 	DROP VIEW view_routings;
+	DROP TABLE receivings;
 	DROP TABLE agendas;
 	DROP TABLE approves;
+	DROP TABLE releasings;
 	DROP TABLE committee_lists;
-	DROP TABLE receivings;
 	DROP TABLE routings;
 	DROP TABLE trackings;
 	RETURN 'All tables are DROPPED!';

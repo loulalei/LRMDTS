@@ -79,7 +79,9 @@ type (
 		SPResolutionFile      string    `json:"spResolutionFile,omitempty"`
 		LocalDateRelease      string    `json:"localDateRelease,omitempty"`
 		LocalDatePublished    string    `json:"localDatePublished,omitempty"`
-		LocalResolutionFile   string    `json:"localResolutionFile,omitempty"`
+		EndorsementFile       string    `json:"EndorsementFile,omitempty"`
+		Encoder               string    `json:"encoder,omitempty"`
+		ModifiedBy            string    `json:"modifiedBy,omitempty"`
 		CreatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}

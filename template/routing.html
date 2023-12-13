@@ -1,8 +1,5 @@
 {{template "header" .}}
 <!-- DATATABLE -->
-<!-- ONLINE -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <!-- OFFLINE -->
 <link rel="stylesheet" type="text/css" href="/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="/jquery.dataTables.js"></script>
@@ -20,120 +17,7 @@
     </div>
 </nav>
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-
-<div class="container-fluid table-responsive">
-    <table id="routing_lists" class="table table-borderless table-hover table-sm">
-        <thead>
-            <tr>
-                <th class="text-center"><small>DATE RECEIVED</small></th>
-                <th class="text-center"><small>TRACKING NUMBER</small></th>
-                <th class="text-center"><small>ITEM NUMBER</small></th>
-                <th class="text-center"><small>DOCUMENT SUMMARY</small></th>
-                <th class="text-center"><small>DOCUMENT TAG</small></th>
-                <th class="text-center"><small>REMARKS</small></th>
-                <th class="text-center"><small>ACTION</small></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- FOR RECORDS -->
-            {{if eq .userLogged "SPCRD"}}
-            {{range .viewRoutings}}
-            <tr>
-                <td class="text-center"><small>{{.ReceivedDate}}</small></td>
-                <td class="text-center"><small>{{.TrackingNumber}}</small></td>
-                {{if .ItemNumber}}
-                <td class="text-center"><small>{{.ItemNumber}}</small></td>
-                {{else}}
-                <td class="text-center"><small>None</small></td>
-                {{end}}
-                <td class="text-center"><small>{{.Summary}}</small></td>
-                <td class="text-center"><small>{{.DocumentTag}}</small></td>
-                <td class="text-center"><small>{{.Remarks}}</small></td>
-                <td class="text-center">
-                    <div class="d-grid gap-2 d-md-block">
-                        <!-- encode -->
-                        {{if eq .DocumentTag "Approved"}}
-                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
-                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
-                        </a>
-                        {{end}}
-                        {{if eq .DocumentTag "For information of the whole body"}}
-                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
-                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
-                        </a>
-                        {{end}}
-                        {{if eq .DocumentTag "For Releasing"}}
-                        <a href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"
-                            class="btn btn-primary btn-sm fw-bold" type="button"><i
-                                class="fa-regular fa-paper-plane"></i>
-                        </a>
-                        {{end}}
-                        <!-- <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
-                        </a> -->
-                        <!-- <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                                class="fa-solid fa-download"></i>
-                        </a> -->
-                    </div>
-                </td>
-            </tr>
-            {{end}}
-            <!-- FOR SECRETARIAT -->
-            {{else}}
-            {{range .viewRoutings}}
-            <tr>
-                <td>{{.ReceivedDate}}</td>
-                <td>{{.TrackingNumber}}</td>
-                {{if .ItemNumber}}
-                <td>{{.ItemNumber}}</td>
-                {{else}}
-                <td>None</td>
-                {{end}}
-                <td>{{.Summary}}</td>
-                <td>{{.DocumentTag}}</td>
-                <td>{{.Remarks}}</td>
-                <td class="row">
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- encode -->
-                        {{if eq .DocumentTag "For Agenda"}}
-                        <a href="/api/routing/foragenda/{{.DocId}}" class="btn btn-primary btn-sm fw-bold"
-                            type="button"><i class="fa-regular fa-calendar"></i>
-                        </a>
-                        {{end}}
-                        {{if eq .DocumentTag "Referred to Committee"}}
-                        <a href="/api/routing/viewagenda/{{.DocId}}/{{.ItemNumber}}"
-                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-calendar"></i>
-                        </a>
-                        {{end}}
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- view -->
-                        <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
-                        </a>
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- download -->
-                        <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                                class="fa-solid fa-download"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            {{end}}
-            {{end}}
-        </tbody>
-    </table>
-</div>
-
-<script>
-    $(document).ready(function () {
-        $('#routing_lists').DataTable({
-            order: [[1, 'desc']]
-        });
-    });
-</script>
-
+{{template "routingTable" .}}
 
 {{if eq .status 100}}
 <script>

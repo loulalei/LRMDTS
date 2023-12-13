@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"mime/multipart"
 	"strconv"
 	"tech_tubbies/middleware/database"
 	utils "tech_tubbies/middleware/util"
@@ -21,13 +22,7 @@ func ViewRouting(c *fiber.Ctx) error {
 	}
 
 	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(viewRoutings)
-	tracking := &[]model.ViewRoutings{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(tracking)
-
-	for _, v := range *viewRoutings {
-		fmt.Println("Document_tag: ", v.DocumentTag)
-	}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings ORDER BY updated_at DESC").Scan(viewRoutings)
 
 	return c.Render("routing", fiber.Map{
 		"pageTitle":    "Routing",
@@ -37,7 +32,6 @@ func ViewRouting(c *fiber.Ctx) error {
 		"userLogged":   model.UserCodeLogged,
 		"greetings":    utils.GetGreetings(),
 		"viewRoutings": viewRoutings,
-		"tracking":     tracking,
 		"baseURL":      c.BaseURL(),
 	})
 }
@@ -564,6 +558,8 @@ func ViewReleasing(c *fiber.Ctx) error {
 
 func RegisterReleasing(c *fiber.Ctx) error {
 	fmt.Println("Process: Register Releasing")
+	var spFile, endorsementFile *multipart.FileHeader
+	var err error
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
@@ -577,28 +573,151 @@ func RegisterReleasing(c *fiber.Ctx) error {
 		})
 	}
 
-	spFile, err := c.FormFile("spResolutionFile")
+	spFile, err = c.FormFile("spResolutionFile")
 	if err != nil {
-		return c.JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		fmt.Println("Error SP attachment:", err.Error())
+	} else {
+		c.SaveFile(spFile, fmt.Sprintf("./assets/uploads/%s", spFile.Filename))
+		requestApproved.SPResolutionFile = spFile.Filename
 	}
 
-	localFile, err := c.FormFile("localResolutionFile")
+	endorsementFile, err = c.FormFile("endorsementFile")
 	if err != nil {
-		return c.JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		fmt.Println("Error LOCAL attachment:", err.Error())
+	} else {
+		c.SaveFile(endorsementFile, fmt.Sprintf("./assets/uploads/%s", endorsementFile.Filename))
+		requestApproved.EndorsementFile = endorsementFile.Filename
 	}
 
-	requestApproved.SPResolutionFile = spFile.Filename
-	requestApproved.LocalResolutionFile = localFile.Filename
+	if requestApproved.IsApprovedLachesMayor {
+		requestApproved.MayorDateApproved = ""
+	}
 
-	return c.JSON(model.ResponseBody{
-		Status:  199,
-		Message: "success",
-		Request: requestApproved,
+	if requestApproved.IsApprovedLachesSP {
+		requestApproved.SPDateApproved = ""
+	}
+
+	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = ?", requestApproved.DocId)
+	}
+	if requestApproved.SPDateForwarded != "" && (requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
+	}
+	if requestApproved.LocalDateRelease != "" {
+		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records' WHERE doc_id = ?", requestApproved.DocId)
+	}
+
+	database.DBConn.Debug().Exec("INSERT INTO releasings (doc_id,mayor_date_forwarded, mayor_date_approved, is_approved_laches_mayor, sp_date_forwarded, sp_date_approved, is_approved_laches_sp, sp_resolution_number, sp_resolution_file, local_date_release, local_date_published, endorsement_file, encoder) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		requestApproved.DocId, requestApproved.MayorDateForwarded, requestApproved.MayorDateApproved, requestApproved.IsApprovedLachesMayor,
+		requestApproved.SPDateForwarded, requestApproved.SPDateApproved, requestApproved.IsApprovedLachesSP, requestApproved.SPResolutionNumber,
+		requestApproved.SPResolutionFile, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.EndorsementFile, model.Fullname)
+
+	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.ItemNumber)
+
+	return c.Redirect("/api/routing")
+}
+
+func UpdateReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: Update Releasing")
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	docId, _ := strconv.Atoi(c.Params("docId"))
+	itemNumber := c.Params("itemNumber")
+
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Debug().Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	viewApproved := &[]model.Approves{}
+	database.DBConn.Debug().Raw("SELECT * FROM approves WHERE item_number = ?", itemNumber).Scan(viewApproved)
+
+	releasing := &[]model.Releasings{}
+	database.DBConn.Debug().Raw("SELECT * FROM releasings WHERE doc_id = ?", docId).Scan(releasing)
+
+	return c.Render("updatereleasing", fiber.Map{
+		"pageTitle":      "Routing - Releasing",
+		"title":          "ROUTING RELEASING",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"viewApproved":   viewApproved,
+		"releasing":      releasing,
+		"itemCommittees": ItemCommittees,
+		"docId":          docId,
+		"itemNumber":     itemNumber,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
 	})
+}
+
+func SaveReleasing(c *fiber.Ctx) error {
+	fmt.Println("Process: Save Releasing")
+	var spFile, endorsementFile *multipart.FileHeader
+	var err error
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	requestApproved := &model.RequestReleasing{}
+	if parsErr := c.BodyParser(requestApproved); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "error parsing data",
+			Data:    parsErr.Error(),
+		})
+	}
+
+	spFile, err = c.FormFile("spResolutionFile")
+	if err != nil {
+		fmt.Println("Error SP attachment:", err.Error())
+	} else {
+		c.SaveFile(spFile, fmt.Sprintf("./assets/uploads/%s", spFile.Filename))
+		requestApproved.SPResolutionFile = spFile.Filename
+	}
+
+	endorsementFile, err = c.FormFile("endorsementFile")
+	if err != nil {
+		fmt.Println("Error LOCAL attachment:", err.Error())
+	} else {
+		c.SaveFile(endorsementFile, fmt.Sprintf("./assets/uploads/%s", endorsementFile.Filename))
+		requestApproved.EndorsementFile = endorsementFile.Filename
+	}
+
+	if requestApproved.IsApprovedLachesMayor {
+		requestApproved.MayorDateApproved = ""
+	}
+
+	if requestApproved.IsApprovedLachesSP {
+		requestApproved.SPDateApproved = ""
+	}
+
+	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = ?", requestApproved.DocId)
+	}
+	if requestApproved.SPDateForwarded != "" && (requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
+	}
+	if requestApproved.LocalDateRelease != "" {
+		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records' WHERE doc_id = ?", requestApproved.DocId)
+	}
+
+	database.DBConn.Debug().Exec("UPDATE releasings SET mayor_date_forwarded = ?, mayor_date_approved = ?, is_approved_laches_mayor = ?, sp_date_forwarded = ?, sp_date_approved = ?, is_approved_laches_sp = ?, sp_resolution_number = ?, sp_resolution_file = ?, local_date_release = ?, local_date_published = ?, endorsement_file = ?, modified_by = ? WHERE doc_id = ?",
+		requestApproved.MayorDateForwarded, requestApproved.MayorDateApproved, requestApproved.IsApprovedLachesMayor,
+		requestApproved.SPDateForwarded, requestApproved.SPDateApproved, requestApproved.IsApprovedLachesSP, requestApproved.SPResolutionNumber,
+		requestApproved.SPResolutionFile, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.EndorsementFile, model.Fullname, requestApproved.DocId)
+
+	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ?, sta_cruz_date = ?, released_date = ?, published_date = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.SPDateForwarded, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.ItemNumber)
+
+	return c.Redirect("/api/routing")
 }
 
 // ------------------------

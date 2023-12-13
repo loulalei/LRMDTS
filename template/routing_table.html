@@ -1,4 +1,4 @@
-{{define "routing_table"}}
+{{define "routingTable"}}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
@@ -44,16 +44,35 @@
                         </a>
                         {{end}}
                         {{if eq .DocumentTag "For Releasing"}}
+                        {{if eq .Remarks "Kept in Records"}}
                         <a href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"
                             class="btn btn-primary btn-sm fw-bold" type="button"><i
                                 class="fa-regular fa-paper-plane"></i>
                         </a>
                         {{end}}
+                        {{if eq .Remarks "Forwarded to Mayor"}}
+                        <a href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i
+                                class="fa-regular fa-paper-plane"></i>
+                        </a>
+                        {{end}}
+                        {{if eq .Remarks "Forwarded to Panlalawigan"}}
+                        <a href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i
+                                class="fa-regular fa-paper-plane"></i>
+                        </a>
+                        {{end}}
+                        {{end}}
+                        {{if eq .DocumentTag "For Filing"}}
+                        <a href="#" class="btn btn-primary btn-sm fw-bold" type="button"><i
+                                class="fa-regular fa-paper-plane"></i>
+                        </a>
+                        {{end}}
                         <!-- <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
                         </a> -->
-                        <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
+                        <!-- <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
                                 class="fa-solid fa-download"></i>
-                        </a>
+                        </a> -->
                     </div>
                 </td>
             </tr>
@@ -108,8 +127,7 @@
 <script>
     $(document).ready(function () {
         $('#routing_lists').DataTable({
-            searching: true,
-            order: [[1, 'desc']]
+            order: [[0, 'desc']]
         });
     });
 </script>

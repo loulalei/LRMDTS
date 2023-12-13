@@ -44,6 +44,8 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	// Releasing
 	routingEndpoint.Get("/releasing/:docId/:itemNumber", controller.ViewReleasing)
 	routingEndpoint.Post("/register_releasing", controller.RegisterReleasing)
+	routingEndpoint.Get("/update_releasing/:docId/:itemNumber", controller.UpdateReleasing)
+	routingEndpoint.Post("/save_releasing", controller.SaveReleasing)
 
 	// Filing
 	routingEndpoint.Get("/for_filing/:docId", controller.GetForFiling)

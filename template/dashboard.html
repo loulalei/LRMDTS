@@ -102,7 +102,7 @@
       </a>
     </div>
     <div class="col-md-6 p-3 border-start">
-      <div class="container-fluid py-2 table-responsive">
+      <div class="container-fluid py-2 table-responsive-sm">
         <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
           <thead>
             <th class="text-center"><i class="fa-solid fa-bell"></i> NOTIFICATIONS</th>
@@ -111,6 +111,8 @@
             {{range .notifs}}
             <tr class="border-bottom py-2">
               <td>
+                {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-regular fa-newspaper"></i>{{end}}
+                {{if eq .DocumentTag "For Agenda"}}<i class="fa-regular fa-newspaper"></i>{{end}}
                 {{if eq .DocumentTag "For information of the whole body"}}<i class="fa-solid fa-box-open"></i>{{end}}
                 {{if eq .DocumentTag "Approved"}}<i class="fa-regular fa-thumbs-up"></i>{{end}}
                 {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-regular fa-newspaper"></i>{{end}}

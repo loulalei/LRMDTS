@@ -7,7 +7,7 @@
 
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - RELEASING</a>
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - UPDATE RELEASING</a>
     </div>
 </nav>
 
@@ -94,7 +94,6 @@
             <div id="collapseAgenda" class="accordion-collapse collapse" aria-labelledby="agenda"
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
-
                     {{ range .viewAgenda}}
                     {{if .ModifiedBy}}
                     <span class="badge bg-secondary my-2 fw-bold"> Encoder:
@@ -259,71 +258,91 @@
         <hr>
     </div>
     <!-- RELEASING -->
-    <form class="row" action="/api/routing/register_releasing" method="post" enctype="multipart/form-data"
+    <form class="row" action="/api/routing/save_releasing" method="post" enctype="multipart/form-data"
         id="releasing" name="releasing" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
         <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i> RELEASING</span>
         <div class="col-md-4"> <!-- TO MAYOR  -->
+            {{range .releasing}}    
             <div class="row">
                 <span class="badge bg-secondary my-2 fw-bold">TO MAYOR</span>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded">
+                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded" value="{{.MayorDateForwarded}}">
                         <label for="mayorDateForwarded">Date Forwarded</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved">
+                        {{if .IsApprovedLachesMayor }}
+                            <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved" value="{{.MayorDateApproved}}" disabled>
+                        {{else}}
+                            <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved" value="{{.MayorDateApproved}}">
+                        {{end}}
                         <label for="mayorDateApproved">Date Approved</label>
                     </div>
                     <div class="form-floating mb-2">
                         <div class="form-check form-switch">
+                            {{if .IsApprovedLachesMayor }}
+                            <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
+                                name="isApprovedLachesMayor" checked>
+                            {{else}}
                             <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
                                 name="isApprovedLachesMayor">
+                            {{end}}
                             <label class="form-check-label" for="isApprovedLachesMayor">Approved by laches</label>
                         </div>
                     </div>
                 </div>
             </div>
+            {{end}}
         </div> <!-- END TO MAYOR  -->
         <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
+            {{range .releasing}}   
             <div class="row">
                 <span class="badge bg-secondary my-2 fw-bold">SANGGUNIAN PANLALAWIGAN</span>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded">
+                        <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded" value="{{.SPDateForwarded}}">
                         <label for="spDateForwarded">Date Forwarded</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="spDateApproved" name="spDateApproved">
+                        {{if .IsApprovedLachesSP}}
+                            <input type="date" class="form-control" id="spDateApproved" name="spDateApproved" value="{{.SPDateApproved}}" disabled>
+                        {{else}}
+                            <input type="date" class="form-control" id="spDateApproved" name="spDateApproved" value="{{.SPDateApproved}}">
+                        {{end}}                        
                         <label for="spDateApproved">Date Approved</label>
                     </div>
                     <div class="form-floating mb-2">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
-                                name="isApprovedLachesSP">
+                            {{if .IsApprovedLachesSP}}
+                                <input class="form-check-input" type="checkbox" id="isApprovedLachesSP" name="isApprovedLachesSP" checked>
+                            {{else}}
+                                <input class="form-check-input" type="checkbox" id="isApprovedLachesSP" name="isApprovedLachesSP">
+                            {{end}}
                             <label class="form-check-label" for="isApprovedLachesSP">Approved by laches</label>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="spResolutionNumber" name="spResolutionNumber">
+                        <input type="text" class="form-control" id="spResolutionNumber" name="spResolutionNumber" value="{{.SPResolutionNumber}}">
                         <label for="spResolutionNumber">SP Resolution No.</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="endorsementFile" class="form-label"><small>Attach Endorsement File</small> </label>
-                        <input class="form-control form-control-sm" id="endorsementFile" name="endorsementFile"
-                            type="file" accept="application/pdf">
+                        <label for="spResolutionFile" class="form-label"><small>Attach Resolution File</small> </label>
+                        <input class="form-control form-control-sm" id="endorsementFile" name="spResolutionFile"
+                            type="file" accept="application/pdf" value="{{.SPResolutionFile}}">
                     </div>
                 </div>
             </div>
+            {{end}}
         </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
         <div class="col-md-4"> <!-- LOCAL -->
             <div class="row">
@@ -336,9 +355,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-6">
-                        <label for="EndorseFile" class="form-label"><small>Attach Resolution
+                        <label for="endorsementFile" class="form-label"><small>Attach Resolution
                                 File</small></label>
-                        <input class="form-control form-control-sm" id="localResolutionFile" name="localResolutionFile"
+                        <input class="form-control form-control-sm" id="endorsementFile" name="endorsementFile"
                             type="file" accept="application/pdf">
                     </div>
                 </div>
@@ -359,7 +378,7 @@
         <hr>
         <div class="col-md-12 mb-2">
             <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
-                        class="fa-solid fa-floppy-disk"></i> SAVE DOCUMENT</button></small>
+                        class="fa-solid fa-floppy-disk"></i> UPDATE DOCUMENT</button></small>
         </div>
     </form>
 </div>

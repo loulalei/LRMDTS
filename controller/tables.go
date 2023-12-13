@@ -16,7 +16,7 @@ func InitializeTables() {
 	fmt.Println("Agendas ✓")
 	database.CreateTable(model.Approves{})
 	fmt.Println("Approved ✓")
-	database.CreateTable(model.Releasing{})
+	database.CreateTable(model.Releasings{})
 	fmt.Println("Releasing Fields ✓")
 	database.CreateTable(model.Routings{})
 	fmt.Println("Routing ✓")
@@ -73,7 +73,7 @@ func InitializeTables() {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
-	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_routings AS SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by FROM routings route INNER JOIN receivings rcv ON route.receiving_id = rcv.receiving_id ORDER BY route.updated_at DESC").Error; database.DBErr != nil {
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_routings AS SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, route.updated_at, rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by FROM routings route INNER JOIN receivings rcv ON route.receiving_id = rcv.receiving_id ORDER BY route.updated_at DESC").Error; database.DBErr != nil {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 

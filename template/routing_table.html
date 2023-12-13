@@ -12,6 +12,7 @@
                 <th class="text-center"><small>DOCUMENT SUMMARY</small></th>
                 <th class="text-center"><small>DOCUMENT TAG</small></th>
                 <th class="text-center"><small>REMARKS</small></th>
+                <th class="text-center"><small>LAST UPDATE</small></th>
                 <th class="text-center"><small>ACTION</small></th>
             </tr>
         </thead>
@@ -20,17 +21,18 @@
             {{if eq .userLogged "SPCRD"}}
             {{range .viewRoutings}}
             <tr>
-                <td class="text-center"><small>{{.ReceivedDate}}</small></td>
-                <td class="text-center"><small>{{.TrackingNumber}}</small></td>
+                <td class="text-center small">{{.ReceivedDate}}</td>
+                <td class="text-center small">{{.TrackingNumber}}</td>
                 {{if .ItemNumber}}
-                <td class="text-center"><small>{{.ItemNumber}}</small></td>
+                <td class="text-center small">{{.ItemNumber}}</td>
                 {{else}}
-                <td class="text-center"><small>None</small></td>
+                <td class="text-center small">None</td>
                 {{end}}
-                <td class="text-center"><small>{{.Summary}}</small></td>
-                <td class="text-center"><small>{{.DocumentTag}}</small></td>
-                <td class="text-center"><small>{{.Remarks}}</small></td>
-                <td class="text-center">
+                <td class="small">{{.Summary}}</td>
+                <td class="text-center small">{{.DocumentTag}}</td>
+                <td class="text-center small">{{.Remarks}}</td>
+                <td class="text-center small" id="updated_at">{{.UpdatedAt}}</td>
+                <td class="text-center small">
                     <div class="d-grid gap-2 d-md-block">
                         <!-- encode -->
                         {{if eq .DocumentTag "Approved"}}
@@ -56,23 +58,31 @@
                                 class="fa-regular fa-paper-plane"></i>
                         </a>
                         {{end}}
+                        {{if eq .Remarks "Approved by Mayor"}}
+                        <a href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
+                        </a>
+                        {{end}}
                         {{if eq .Remarks "Forwarded to Panlalawigan"}}
                         <a href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"
                             class="btn btn-primary btn-sm fw-bold" type="button"><i
                                 class="fa-regular fa-paper-plane"></i>
                         </a>
                         {{end}}
-                        {{end}}
-                        {{if eq .DocumentTag "For Filing"}}
-                        <a href="#" class="btn btn-primary btn-sm fw-bold" type="button"><i
-                                class="fa-regular fa-paper-plane"></i>
+                        {{if eq .Remarks "Approved by Panlalawigan"}}
+                        <a href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"
+                            class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
                         </a>
                         {{end}}
-                        <!-- <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
-                        </a> -->
-                        <!-- <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                                class="fa-solid fa-download"></i>
-                        </a> -->
+                        {{end}}
+                        {{if eq .DocumentTag "For Filing"}}
+                        <a href="/api/routing/filing/{{.DocId}}/{{.ItemNumber}}" class="btn btn-primary btn-sm fw-bold"
+                            type="button"><i class="fa-regular fa-folder-open"></i>
+                        </a>
+                        {{end}}
+                        <!-- view -->
+                        <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -81,18 +91,19 @@
             {{else}}
             {{range .viewRoutings}}
             <tr>
-                <td>{{.ReceivedDate}}</td>
-                <td>{{.TrackingNumber}}</td>
+                <td class="text-center small">{{.ReceivedDate}}</td>
+                <td class="text-center small">{{.TrackingNumber}}</td>
                 {{if .ItemNumber}}
-                <td>{{.ItemNumber}}</td>
+                <td class="text-center small">{{.ItemNumber}}</td>
                 {{else}}
-                <td>None</td>
+                <td class="text-center small">None</td>
                 {{end}}
-                <td>{{.Summary}}</td>
-                <td>{{.DocumentTag}}</td>
-                <td>{{.Remarks}}</td>
-                <td class="row">
-                    <div class="d-grid col-md-4 mx-auto">
+                <td class="small">{{.Summary}}</td>
+                <td class="text-center small">{{.DocumentTag}}</td>
+                <td class="text-center small">{{.Remarks}}</td>
+                <td class="small">{{.UpdatedAt}}</td>
+                <td class="text-center small">
+                    <div class="d-grid gap-2 d-md-block">
                         <!-- encode -->
                         {{if eq .DocumentTag "For Agenda"}}
                         <a href="/api/routing/foragenda/{{.DocId}}" class="btn btn-primary btn-sm fw-bold"
@@ -104,16 +115,8 @@
                             class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-calendar"></i>
                         </a>
                         {{end}}
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
                         <!-- view -->
                         <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
-                        </a>
-                    </div>
-                    <div class="d-grid col-md-4 mx-auto">
-                        <!-- download -->
-                        <a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-secondary btn-sm fw-bold"><i
-                                class="fa-solid fa-download"></i>
                         </a>
                     </div>
                 </td>
@@ -127,7 +130,7 @@
 <script>
     $(document).ready(function () {
         $('#routing_lists').DataTable({
-            order: [[0, 'desc']]
+            order: [[6, 'desc']]
         });
     });
 </script>

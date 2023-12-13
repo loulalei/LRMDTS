@@ -19,7 +19,7 @@
                     data-bs-target="#collapseReceiving" aria-expanded="true" aria-controls="collapseReceiving">RECEIVING
                 </button>
             </h2>
-            <div id="collapseReceiving" class="accordion-collapse collapse" aria-labelledby="receiving"
+            <div id="collapseReceiving" class="accordion-collapse collapse show" aria-labelledby="receiving"
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewRoutings}}
@@ -55,8 +55,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" id="summary" name="summary" style="height: 132px"
-                                disabled>{{.Summary}}</textarea>
+                            <textarea class="form-control" id="summary" name="summary" disabled>{{.Summary}}</textarea>
                             <label for="summary">Summary</label>
                         </div>
                     </div>
@@ -258,27 +257,30 @@
         <hr>
     </div>
     <!-- RELEASING -->
-    <form class="row" action="/api/routing/save_releasing" method="post" enctype="multipart/form-data"
-        id="releasing" name="releasing" autocomplete="off">
+    <form class="row" action="/api/routing/save_releasing" method="post" enctype="multipart/form-data" id="releasing"
+        name="releasing" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
         <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i> RELEASING</span>
         <div class="col-md-4"> <!-- TO MAYOR  -->
-            {{range .releasing}}    
+            {{range .releasing}}
             <div class="row">
                 <span class="badge bg-secondary my-2 fw-bold">TO MAYOR</span>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded" value="{{.MayorDateForwarded}}">
+                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded"
+                            value="{{.MayorDateForwarded}}">
                         <label for="mayorDateForwarded">Date Forwarded</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
                         {{if .IsApprovedLachesMayor }}
-                            <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved" value="{{.MayorDateApproved}}" disabled>
+                        <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved"
+                            value="{{.MayorDateApproved}}" disabled>
                         {{else}}
-                            <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved" value="{{.MayorDateApproved}}">
+                        <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved"
+                            value="{{.MayorDateApproved}}">
                         {{end}}
                         <label for="mayorDateApproved">Date Approved</label>
                     </div>
@@ -299,30 +301,35 @@
             {{end}}
         </div> <!-- END TO MAYOR  -->
         <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
-            {{range .releasing}}   
+            {{range .releasing}}
             <div class="row">
                 <span class="badge bg-secondary my-2 fw-bold">SANGGUNIAN PANLALAWIGAN</span>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded" value="{{.SPDateForwarded}}">
+                        <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
+                            value="{{.SPDateForwarded}}">
                         <label for="spDateForwarded">Date Forwarded</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
                         {{if .IsApprovedLachesSP}}
-                            <input type="date" class="form-control" id="spDateApproved" name="spDateApproved" value="{{.SPDateApproved}}" disabled>
+                        <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                            value="{{.SPDateApproved}}" disabled>
                         {{else}}
-                            <input type="date" class="form-control" id="spDateApproved" name="spDateApproved" value="{{.SPDateApproved}}">
-                        {{end}}                        
+                        <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                            value="{{.SPDateApproved}}">
+                        {{end}}
                         <label for="spDateApproved">Date Approved</label>
                     </div>
                     <div class="form-floating mb-2">
                         <div class="form-check form-switch">
                             {{if .IsApprovedLachesSP}}
-                                <input class="form-check-input" type="checkbox" id="isApprovedLachesSP" name="isApprovedLachesSP" checked>
+                            <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                name="isApprovedLachesSP" checked>
                             {{else}}
-                                <input class="form-check-input" type="checkbox" id="isApprovedLachesSP" name="isApprovedLachesSP">
+                            <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                name="isApprovedLachesSP">
                             {{end}}
                             <label class="form-check-label" for="isApprovedLachesSP">Approved by laches</label>
                         </div>
@@ -330,7 +337,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="spResolutionNumber" name="spResolutionNumber" value="{{.SPResolutionNumber}}">
+                        <input type="text" class="form-control" id="spResolutionNumber" name="spResolutionNumber"
+                            value="{{.SPResolutionNumber}}">
                         <label for="spResolutionNumber">SP Resolution No.</label>
                     </div>
                 </div>

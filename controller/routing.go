@@ -273,7 +273,7 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaFields.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
 
 	// UPDATE TRACKING
-	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, requestAgenda.TrackingNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ?, updated_at = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, dateNow, requestAgenda.TrackingNumber)
 
 	viewroutings := &[]model.ViewRoutings{}
 	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(viewroutings)
@@ -382,7 +382,7 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 	} else {
 		committeesLists := &model.ViewCommittees{}
 		// check if existing in the view committee
-		database.DBConn.Debug().Raw("SELECT COUNT(*) FROM view_committees WHERE committee_id = ?", requestBody.CommitteeId).Scan(&count)
+		database.DBConn.Debug().Raw("SELECT COUNT(*) FROM view_committees WHERE committee_id = ? AND item_number = ?", requestBody.CommitteeId, requestBody.ItemNumber).Scan(&count)
 		if count > 0 {
 			return c.JSON(model.ResponseBody{
 				Status:  101,
@@ -463,6 +463,7 @@ func ViewApproved(c *fiber.Ctx) error {
 }
 
 func RegisterApproved(c *fiber.Ctx) error {
+	dateNow := time.Now()
 	fmt.Println("Process: Register Approved")
 	if model.Fullname == "" {
 		return c.Redirect("/")
@@ -507,10 +508,10 @@ func RegisterApproved(c *fiber.Ctx) error {
 	database.DBConn.Debug().Raw("SELECT agenda_id FROM agendas WHERE item_number = ?", requestApproved.ItemNumber).Scan(&approvedId)
 
 	// Update Routing
-	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ? WHERE doc_id = ?", approvedId, "For Releasing", "Kept in Records", requestApproved.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ?, updated_at = ? WHERE doc_id = ?", approvedId, "For Releasing", "Kept in Records", dateNow, requestApproved.DocId)
 
 	// Update Tracking
-	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ?, updated_at = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, dateNow, requestApproved.ItemNumber)
 
 	return c.Redirect("/api/routing")
 }
@@ -557,6 +558,7 @@ func ViewReleasing(c *fiber.Ctx) error {
 }
 
 func RegisterReleasing(c *fiber.Ctx) error {
+	dateNow := time.Now()
 	fmt.Println("Process: Register Releasing")
 	var spFile, endorsementFile *multipart.FileHeader
 	var err error
@@ -597,14 +599,19 @@ func RegisterReleasing(c *fiber.Ctx) error {
 		requestApproved.SPDateApproved = ""
 	}
 
-	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
-		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = ?", requestApproved.DocId)
+	if requestApproved.MayorDateForwarded != "" && (!requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved == "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestApproved.DocId)
 	}
-	if requestApproved.SPDateForwarded != "" && (requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
-		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
+
+	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestApproved.DocId)
+	}
+
+	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded == "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan', updated_at = ? WHERE doc_id = ?", dateNow, requestApproved.DocId)
 	}
 	if requestApproved.LocalDateRelease != "" {
-		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records' WHERE doc_id = ?", requestApproved.DocId)
+		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ? WHERE doc_id = ?", dateNow, requestApproved.DocId)
 	}
 
 	database.DBConn.Debug().Exec("INSERT INTO releasings (doc_id,mayor_date_forwarded, mayor_date_approved, is_approved_laches_mayor, sp_date_forwarded, sp_date_approved, is_approved_laches_sp, sp_resolution_number, sp_resolution_file, local_date_release, local_date_published, endorsement_file, encoder) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -612,7 +619,7 @@ func RegisterReleasing(c *fiber.Ctx) error {
 		requestApproved.SPDateForwarded, requestApproved.SPDateApproved, requestApproved.IsApprovedLachesSP, requestApproved.SPResolutionNumber,
 		requestApproved.SPResolutionFile, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.EndorsementFile, model.Fullname)
 
-	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ?, sta_cruz_date = ?, released_date = ?, published_date = ?, updated_at = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.SPDateForwarded, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, dateNow, requestApproved.ItemNumber)
 
 	return c.Redirect("/api/routing")
 }
@@ -660,6 +667,7 @@ func UpdateReleasing(c *fiber.Ctx) error {
 }
 
 func SaveReleasing(c *fiber.Ctx) error {
+	dateNow := time.Now()
 	fmt.Println("Process: Save Releasing")
 	var spFile, endorsementFile *multipart.FileHeader
 	var err error
@@ -700,11 +708,19 @@ func SaveReleasing(c *fiber.Ctx) error {
 		requestApproved.SPDateApproved = ""
 	}
 
-	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
+	if requestApproved.MayorDateForwarded != "" && (!requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved == "") {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = ?", requestApproved.DocId)
 	}
-	if requestApproved.SPDateForwarded != "" && (requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
+
+	if requestApproved.MayorDateForwarded != "" && (requestApproved.IsApprovedLachesMayor || requestApproved.MayorDateApproved != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor' WHERE doc_id = ?", requestApproved.DocId)
+	}
+
+	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded == "") {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
+	}
+	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
 	}
 	if requestApproved.LocalDateRelease != "" {
 		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records' WHERE doc_id = ?", requestApproved.DocId)
@@ -715,7 +731,7 @@ func SaveReleasing(c *fiber.Ctx) error {
 		requestApproved.SPDateForwarded, requestApproved.SPDateApproved, requestApproved.IsApprovedLachesSP, requestApproved.SPResolutionNumber,
 		requestApproved.SPResolutionFile, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.EndorsementFile, model.Fullname, requestApproved.DocId)
 
-	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ?, sta_cruz_date = ?, released_date = ?, published_date = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.SPDateForwarded, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, requestApproved.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ?, sta_cruz_date = ?, released_date = ?, published_date = ?, updated_at = ? WHERE item_number = ?", requestApproved.MayorDateForwarded, requestApproved.SPDateForwarded, requestApproved.LocalDateRelease, requestApproved.LocalDatePublished, dateNow, requestApproved.ItemNumber)
 
 	return c.Redirect("/api/routing")
 }
@@ -723,22 +739,45 @@ func SaveReleasing(c *fiber.Ctx) error {
 // ------------------------
 // OTHER
 // ------------------------
-func GetForFiling(c *fiber.Ctx) error {
+func ViewForFiling(c *fiber.Ctx) error {
+
 	fmt.Println("Process: Get for Filing")
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
 
 	docId := c.Params("docId")
+	itemNumber := c.Params("itemNumber")
 
-	return c.Render("routingFiling", fiber.Map{
-		"pageTitle":  "forFiling",
-		"title":      "FOR FILING",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"docId":      docId,
-		"greetings":  utils.GetGreetings(),
-		"baseURL":    c.BaseURL(),
+	viewRoutings := &[]model.ViewRoutings{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = ?", docId).Scan(viewRoutings)
+
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
+	viewAgenda := &[]model.ViewAgenda{}
+	database.DBConn.Debug().Raw("SELECT * FROM agendas WHERE item_number = ?", itemNumber).Scan(viewAgenda)
+
+	viewApproved := &[]model.Approves{}
+	database.DBConn.Debug().Raw("SELECT * FROM approves WHERE item_number = ?", itemNumber).Scan(viewApproved)
+
+	folders := &[]model.Folders{}
+	database.DBConn.Debug().Raw("SELECT * FROM folders").Scan(folders)
+
+	return c.Render("filing", fiber.Map{
+		"pageTitle":      "forFiling",
+		"title":          "FOR FILING",
+		"yearNow":        model.YearNow,
+		"user":           model.Fullname,
+		"userLogged":     model.UserCodeLogged,
+		"viewRoutings":   viewRoutings,
+		"viewAgenda":     viewAgenda,
+		"viewApproved":   viewApproved,
+		"itemCommittees": ItemCommittees,
+		"docId":          docId,
+		"itemNumber":     itemNumber,
+		"folder":         folders,
+		"greetings":      utils.GetGreetings(),
+		"baseURL":        c.BaseURL(),
 	})
 }

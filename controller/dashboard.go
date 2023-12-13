@@ -25,6 +25,9 @@ func ViewDashboard(c *fiber.Ctx) error {
 		"greetings":   utils.GetGreetings(),
 		"notifs":      routings,
 		"filings":     CountForFiling(),
+		"releases":    CountForReleasing(),
+		"ordinances":  CountOrdinances(),
+		"resolutions": CountResolutions(),
 		"loginStatus": c.Response().StatusCode(),
 		"baseURL":     c.BaseURL(),
 	})
@@ -52,11 +55,26 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 }
 
 func CountForAgenda() int64 {
-	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Agenda'").RowsAffected
+	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Agenda' ").RowsAffected
 	return total
 }
 
 func CountForFiling() int64 {
 	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Filing'").RowsAffected
+	return total
+}
+
+func CountForReleasing() int64 {
+	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Releasing'").RowsAffected
+	return total
+}
+
+func CountOrdinances() int64 {
+	total := database.DBConn.Exec("SELECT * FROM trackings WHERE law_type = 'Ordinance'").RowsAffected
+	return total
+}
+
+func CountResolutions() int64 {
+	total := database.DBConn.Exec("SELECT * FROM trackings WHERE law_type = 'Resolution'").RowsAffected
 	return total
 }

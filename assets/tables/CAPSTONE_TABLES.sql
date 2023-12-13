@@ -64,8 +64,10 @@ INNER JOIN user_credentials usr
 ON usr.id = cmtl.user_id
 ORDER BY cmtl.list_id DESC
 
+SELECT to_char(updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at FROM routings
+
 CREATE VIEW view_routings AS
-SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, route.updated_at,
+SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, to_char(route.updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at,
 	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by
 FROM routings route
 INNER JOIN receivings rcv
@@ -104,6 +106,7 @@ SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
 
+UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 4
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
 
@@ -267,3 +270,5 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+SELECT * FROM folders

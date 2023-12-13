@@ -16,7 +16,8 @@
 </nav>
 
 <div class="container-fluid py-2 shadow">
-    <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data" id="forReceiving" name="forReceiving">
+    <form class="row" action="/api/routing/register_receiving" method="post" enctype="multipart/form-data"
+        id="forReceiving" name="forReceiving">
         <div class="col-md-3">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="trackingNumber" name="trackingNumber"
@@ -69,22 +70,44 @@
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
-            Swal.fire({
-                title: "Do you want to save this record?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Save"
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    Swal.fire("Saved!", "", "success");
-                    $("#forReceiving").submit(); // Submit the form
-                } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
-                }
-            });
+            var trackingNumber = $('#trackingNumber').val();
+            var noSC = trackingNumber.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
+            var trackingNumberLen = noSC.length;
+
+            if (trackingNumber == "") {
+                Swal.fire(
+                    'Saving record error',
+                    'Tracking number is empty',
+                    'info'
+                )
+                document.getElementById("item_no").focus()
+            } else if (trackingNumberLen < 14) {
+                Swal.fire(
+                    'Saving record error',
+                    'Tracking number must be 14 digits',
+                    'info'
+                )
+                document.getElementById("trackingNumber").focus()
+            } else {
+                Swal.fire({
+                    title: "Do you want to save this record?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Save"
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                        $("#forReceiving").submit(); // Submit the form
+                    } else if (result.isDenied) {
+                        Swal.fire("Cancel saving record", "", "info");
+                    }
+                });
+            }
+
+
         });
         $("#trackingNumber").inputmask("9999-9999-99-9999");
     });

@@ -39,6 +39,7 @@ type (
 		Remarks        string `json:"remarks"`
 		ReceivedFile   string `json:"receivedFile"`
 		Encoder        string `json:"encoder"`
+		UpdatedAt      string `json:"updatedAt"`
 	}
 
 	ViewAgenda struct {

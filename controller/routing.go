@@ -716,10 +716,10 @@ func SaveReleasing(c *fiber.Ctx) error {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor' WHERE doc_id = ?", requestApproved.DocId)
 	}
 
-	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded == "") {
+	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateApproved == "") {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
 	}
-	if requestApproved.SPDateForwarded != "" && (!requestApproved.IsApprovedLachesSP || requestApproved.SPDateForwarded != "") {
+	if requestApproved.SPDateForwarded != "" && (requestApproved.IsApprovedLachesSP || requestApproved.SPDateApproved != "") {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan' WHERE doc_id = ?", requestApproved.DocId)
 	}
 	if requestApproved.LocalDateRelease != "" {

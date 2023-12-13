@@ -104,8 +104,6 @@ SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
 
-SELECT * FROM view_routings ORDER BY updated_at DESC
-
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6
 
@@ -133,7 +131,8 @@ SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 
 SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'
 INSERT INTO divisions (name, code) VALUES ('Records','SPCRD'), ('Secretariat','SPCSD'), ('Administration','SPCAD')
 
-UPDATE routings SET document_tag = 'Referred to Committee' WHERE doc_id = 3
+UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 2
+
 INSERT INTO committees (name) VALUES ('Agriculture And Economic Productivity'), ('Anti-Drug Abuse'),('Barangay Affairs'), ('Basic Education'),('Blue Ribbon Committee'), ('Civil Society Organizations and Cooperatives'),('Disaster Risk Reduction and Management'), ('Energy, Transportation & Telecommunication'),('Environmental Protection and Solid Waste Management'), ('Ethics & Discipline'),('Finance and Appropriations'), ('Games, Amusements and Illegal Gambling'),('Government Contracts, Legal Matters, Engineering, Public Works and Zonification'), ('Health and Sanitation'),('Higher Education, Technical and Vocational Courses'), ('History, Arts and Culture'),('Housing, Land Use and Estate Development'), ('Human Resources, Good Governance, Public Ethics and Accountability'),('Human Rights and Public Information'), ('Information Technology, e-Commerce and Mass Media'),('International Affairs'), ('Labor and Employment'),('Markets, Slaughterhouse and Government Economic Enterprise'), ('Rules and Privileges'),('Sports Development'), ('Tourism'),('Trade, Commerce, and Industry'), ('Urban Poor and Livelihood'),('Water Resources Management & Development'), ('Ways and Means'),('Welfare and Protection of Family, Women, Children, Senior Citizens, Persons with Disability and Gender Equality'), ('Youth')
 
 SELECT COUNT(agenda_id) FROM routings WHERE agenda_id IS NULL

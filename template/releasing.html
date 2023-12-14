@@ -244,12 +244,16 @@
                             <label for="titleBody">Title/Body</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="resOrdFile" name="resOrdFile"
                                 value="{{.ResOrdFile}}" disabled>
                             <label for="resOrdFile">Attached File</label>
                         </div>
+                    </div>
+                    <div class="col-md-1">
+                        <small><a href="/api/routing/download/{{.ResOrdFile}}" class="btn btn-success fw-bold btn-sm"
+                                type="button"><i class="fa-solid fa-download"></i></a></small>
                     </div>
                     {{end}}
                 </div>

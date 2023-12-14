@@ -718,23 +718,28 @@ func SaveReleasing(c *fiber.Ctx) error {
 	}
 
 	if requestReleasing.MayorDateForwarded != "" && (!requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved == "") {
+		fmt.Println("mayor forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.MayorDateForwarded != "" && (requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved != "") {
+		fmt.Println("mayor approved")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (!requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved == "") {
+		fmt.Println("sta cruz forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved != "") {
+		fmt.Println("sta cruz approved")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.LocalDateRelease != "" {
-		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ?  WHERE doc_id = ?", requestReleasing.DocId)
+		fmt.Println("local released")
+		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	database.DBConn.Debug().Exec("UPDATE releasings SET mayor_date_forwarded = ?, mayor_date_approved = ?, is_approved_laches_mayor = ?, sp_date_forwarded = ?, sp_date_approved = ?, is_approved_laches_sp = ?, sp_resolution_number = ?, sp_resolution_file = ?, local_date_release = ?, local_date_published = ?, endorsement_file = ?, modified_by = ? WHERE doc_id = ?",

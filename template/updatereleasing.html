@@ -190,7 +190,6 @@
             <div id="collapseApproved" class="accordion-collapse collapse" aria-labelledby="approved"
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
-
                     {{range .viewApproved}}
                     <span class="badge bg-secondary my-2 fw-bold">Encoder:
                         <i>{{.Encoder}}</i></span>
@@ -243,12 +242,16 @@
                             <label for="titleBody">Title/Body</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="resOrdFile" name="resOrdFile"
                                 value="{{.ResOrdFile}}" disabled>
                             <label for="resOrdFile">Attached File</label>
                         </div>
+                    </div>
+                    <div class="col-md-1">
+                        <small><a href="/api/routing/download/{{.ResOrdFile}}" class="btn btn-success fw-bold btn-sm"
+                                type="button"><i class="fa-solid fa-download"></i></a></small>
                     </div>
                     {{end}}
                 </div>
@@ -303,7 +306,8 @@
         <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
             {{range .releasing}}
             <div class="row">
-                <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-tag"></i> SANGGUNIAN PANLALAWIGAN</span>
+                <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-tag"></i> SANGGUNIAN
+                    PANLALAWIGAN</span>
                 <div class="col-md-6">
                     <div class="form-floating mb-2">
                         <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
@@ -345,6 +349,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="spResolutionFile" class="form-label"><small>Attach Resolution File</small> </label>
+                        <label for="spResolutionFile" class="form-label"><small>{{.SPResolutionFile}}</small> </label>
                         <input class="form-control form-control-sm" id="spResolutionFile" name="spResolutionFile"
                             type="file" accept="application/pdf,image/jpeg,,image/png" value="{{.SPResolutionFile}}">
                     </div>
@@ -363,6 +368,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-6">
+                        <label for="endorsementFile" class="form-label"><small>{{.EndorsementFile}}</small> </label>
                         <label for="endorsementFile" class="form-label"><small>Attach Endorsement
                                 File</small></label>
                         <input class="form-control form-control-sm" id="endorsementFile" name="endorsementFile"

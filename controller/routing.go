@@ -177,8 +177,8 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	var receivingID int
 	database.DBConn.Debug().Raw("SELECT receiving_id FROM receivings WHERE tracking_number = ?", receivingData.TrackingNumber).Scan(&receivingID)
 	// INSERT NEW ROUTING RECORD
-	database.DBConn.Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?) ", receivingID, "For Agenda", "Forwarded to Secretariat")
-	// INSERT NEW TRACKING RECORd
+	database.DBConn.Debug().Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?) ", receivingID, "For Agenda", "Forwarded to Secretariat")
+	// INSERT NEW TRACKING RECORD
 	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
 	// VIEW RESULTS
 	viewRoutings := &[]model.ViewRoutings{}
@@ -273,7 +273,7 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE routings SET agenda_id = ?, document_tag = ?, remarks = ?, item_number = ?, updated_at = ? WHERE doc_id = ?", agendaFields.AgendaId, requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, requestAgenda.ItemNumber, dateNow, requestAgenda.DocId)
 
 	// UPDATE TRACKING
-	database.DBConn.Debug().Exec("UPDATE trackings SET item_number =?, calendared = ?, updated_at = ? WHERE tracking_number = ?", requestAgenda.ItemNumber, requestAgenda.DateCalendared, dateNow, requestAgenda.TrackingNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET doc_id = ?, item_number =?, calendared = ?, updated_at = ? WHERE tracking_number = ?", requestAgenda.DocId, requestAgenda.ItemNumber, requestAgenda.DateCalendared, dateNow, requestAgenda.TrackingNumber)
 
 	viewroutings := &[]model.ViewRoutings{}
 	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(viewroutings)
@@ -511,7 +511,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE routings SET approved_id = ?, document_tag = ?, remarks = ?, updated_at = ? WHERE doc_id = ?", approvedId, "For Releasing", "Kept in Records", dateNow, requestApproved.DocId)
 
 	// Update Tracking
-	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ?, updated_at = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, dateNow, requestApproved.ItemNumber)
+	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ?, author = ?, motioned_by = ? , updated_at = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.Author, requestApproved.MotionedBy, dateNow, requestApproved.ItemNumber)
 
 	return c.Redirect("/api/routing")
 }

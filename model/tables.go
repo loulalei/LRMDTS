@@ -104,24 +104,27 @@ type (
 	}
 
 	Trackings struct {
-		DocId          int       `json:"docId,omitempty"`
-		TrackingId     int       `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
-		TrackingNumber string    `json:"trackingNumber,omitempty"`
-		ItemNumber     string    `json:"itemNumber,omitempty"`
-		LawType        string    `json:"lawType,omitempty"`
-		LawNumber      string    `json:"lawNumber,omitempty"`
-		Series         string    `json:"series,omitempty"`
-		Summary        string    `json:"summary,omitempty"`
-		ReceivedDate   string    `json:"receivedDate,omitempty"`
-		Calendared     string    `json:"calendared,omitempty"`
-		EnactedDate    string    `json:"enactedDate,omitempty"`
-		MayorDate      string    `json:"forwardedMayorDate,omitempty"`
-		StaCruzDate    string    `json:"ForwardedStaCruzDate,omitempty"`
-		ReleasedDate   string    `json:"releasedDate,omitempty"`
-		PublishedDate  string    `json:"publishedDate,omitempty"`
-		FiledDate      string    `json:"filedDate,omitempty"`
-		CreatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
-		UpdatedAt      time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		DocId          int    `json:"docId,omitempty"`
+		TrackingId     int    `json:"trackingId" gorm:"primaryKey;autoIncrement:true"`
+		TrackingNumber string `json:"trackingNumber,omitempty"`
+		ItemNumber     string `json:"itemNumber,omitempty"`
+		LawType        string `json:"lawType,omitempty"`
+		LawNumber      string `json:"lawNumber,omitempty"`
+		Series         string `json:"series,omitempty"`
+		Summary        string `json:"summary,omitempty"`
+		ReceivedDate   string `json:"receivedDate,omitempty"`
+		Calendared     string `json:"calendared,omitempty"`
+		EnactedDate    string `json:"enactedDate,omitempty"`
+		MayorDate      string `json:"forwardedMayorDate,omitempty"`
+		StaCruzDate    string `json:"forwardedStaCruzDate,omitempty"`
+		ReleasedDate   string `json:"releasedDate,omitempty"`
+		PublishedDate  string `json:"publishedDate,omitempty"`
+		FiledDate      string `json:"filedDate,omitempty"`
+		//---------
+		Author     string    `json:"author,omitempty"`
+		MotionedBy string    `json:"motionedBy,omitempty"`
+		CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	CommitteeLists struct {

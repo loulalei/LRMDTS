@@ -53,12 +53,14 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	routingEndpoint.Get("/update_filing/:docId/:itemNumber", controller.UpdateFiling)
 	routingEndpoint.Post("/save_filing", controller.SaveFiling)
 
+	// Tracking
+	trackingEndpoint := apiEndpoint.Group("/tracking")
+	trackingEndpoint.Get("/", controller.ViewTracking)
+	trackingEndpoint.Post("/search", controller.SearchTracking)
+
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
-
-	trackingEndpoint := apiEndpoint.Group("/tracking")
-	trackingEndpoint.Get("/", controller.ViewTracking)
 
 	testEndpoint := apiEndpoint.Group("/test")
 	testEndpoint.Get("/set_cookie", controller.SetCookie)

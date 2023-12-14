@@ -49,6 +49,9 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 
 	// Filing
 	routingEndpoint.Get("/filing/:docId/:itemNumber", controller.ViewForFiling)
+	routingEndpoint.Post("/register_filing", controller.RegisterFiling)
+	routingEndpoint.Get("/update_filing/:docId/:itemNumber", controller.UpdateFiling)
+	routingEndpoint.Post("/save_filing", controller.SaveFiling)
 
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)

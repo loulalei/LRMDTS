@@ -79,11 +79,28 @@ type (
 		SPResolutionFile      string    `json:"spResolutionFile,omitempty"`
 		LocalDateRelease      string    `json:"localDateRelease,omitempty"`
 		LocalDatePublished    string    `json:"localDatePublished,omitempty"`
-		EndorsementFile       string    `json:"EndorsementFile,omitempty"`
+		EndorsementFile       string    `json:"endorsementFile,omitempty"`
 		Encoder               string    `json:"encoder,omitempty"`
 		ModifiedBy            string    `json:"modifiedBy,omitempty"`
 		CreatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt             time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	Filings struct {
+		DocId         int       `json:"docId,omitempty"`
+		FilingId      int       `json:"filingId" gorm:"primaryKey;autoIncrement:true"`
+		CabinetNumber string    `json:"cabinetNumber,omitempty"`
+		FolderName    string    `json:"folderName,omitempty"`
+		DateFiled     string    `json:"dateFiled,omitempty"`
+		IsBorrowed    bool      `json:"isBorrowed,omitempty"`
+		DateBorrowed  string    `json:"dateBorrowed,omitempty"`
+		Borrower      string    `json:"borrower,omitempty"`
+		DatePublished string    `json:"datePublished,omitempty"`
+		Publisher     string    `json:"publisher,omitempty"`
+		Encoder       string    `json:"encoder,omitempty"`
+		ModifiedBy    string    `json:"modifiedBy,omitempty"`
+		CreatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	Trackings struct {

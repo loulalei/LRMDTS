@@ -2,12 +2,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
     integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
-
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - UPDATE RELEASING</a>
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - FILING CABINET</a>
     </div>
 </nav>
 
@@ -190,7 +188,6 @@
             <div id="collapseApproved" class="accordion-collapse collapse" aria-labelledby="approved"
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
-
                     {{range .viewApproved}}
                     <span class="badge bg-secondary my-2 fw-bold">Encoder:
                         <i>{{.Encoder}}</i></span>
@@ -254,155 +251,268 @@
                 </div>
             </div>
         </div>
+        <div class="accordion-item"> <!-- RELEASING -->
+            <h2 class="accordion-header" id="releasing">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReleasing" aria-expanded="true" aria-controls="collapseReleasing">RELEASE
+                </button>
+            </h2>
+            <div id="collapseReleasing" class="accordion-collapse collapse" aria-labelledby="releasing"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewReleasings}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder:<i>{{.Encoder}}</i></span>
+                    <div class="col-md-4"> <!-- TO MAYOR  -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">TO MAYOR</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="mayorDateForwarded"
+                                        name="mayorDateForwarded" value="{{.MayorDateForwarded}}" disabled>
+                                    <label for="mayorDateForwarded">Date Forwarded</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    {{if .IsApprovedLachesMayor}}
+                                    <input type="date" class="form-control" id="mayorDateApproved"
+                                        name="mayorDateApproved" value="None" disabled>
+                                    {{else}}
+                                    <input type="date" class="form-control" id="mayorDateApproved"
+                                        name="mayorDateApproved" value="{{.MayorDateApproved}}" disabled>
+                                    {{end}}
+                                    <label for="mayorDateApproved">Date Approved</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <div class="form-check form-switch">
+                                        {{if .IsApprovedLachesMayor}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
+                                            name="isApprovedLachesMayor" disabled checked>
+                                        {{else}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
+                                            name="isApprovedLachesMayor" disabled>
+                                        {{end}}
+                                        <label class="form-check-label" for="isApprovedLachesMayor">Approved by
+                                            laches</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- END TO MAYOR  -->
+                    <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">SANGGUNIAN PANLALAWIGAN</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
+                                        value="{{.SPDateForwarded}}" disabled>
+                                    <label for="spDateForwarded">Date Forwarded</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    {{if .IsApprovedLachesSP }}
+                                    <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                                        value="None" disabled>
+                                    {{else}}
+                                    <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                                        value="{{.SPDateApproved}}" disabled>
+                                    {{end}}
+                                    <label for="spDateApproved">Date Approved</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <div class="form-check form-switch">
+                                        {{if .IsApprovedLachesSP }}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                            name="isApprovedLachesSP" disabled checked>
+                                        {{else}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                            name="isApprovedLachesSP" disabled>
+                                        {{end}}
+                                        <label class="form-check-label" for="isApprovedLachesSP">Approved by
+                                            laches</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="spResolutionNumber"
+                                        name="spResolutionNumber" value="{{.SPResolutionNumber}}" disabled>
+                                    <label for="spResolutionNumber">SP Resolution No.</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="spResolutionFile"
+                                        name="spResolutionFile" value="{{.SPResolutionFile}}" disabled>
+                                    <label for="spResolutionFile">Attached Resolution File</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
+                    <div class="col-md-4"> <!-- LOCAL -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">LOCAL</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="localDateRelease"
+                                        name="localDateRelease" value="{{.LocalDateRelease}}" disabled>
+                                    <label for="localDateRelease">Date of Local Release</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="endorsementFile" name="endorsementFile"
+                                        value="{{.EndorsementFile}}" disabled>
+                                    <label for="endorsementFile">Attached Endorsement File</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- END OF LOCAL -->
+                    {{end}}
+                </div>
+            </div>
+        </div>
         <hr>
     </div>
-    <!-- RELEASING -->
-    <form class="row" action="/api/routing/save_releasing" method="post" enctype="multipart/form-data" id="releasing"
-        name="releasing" autocomplete="off">
+    <!-- FOR FILING -->
+    <form class="row" action="/api/routing/save_filing" method="post" enctype="multipart/form-data" id="filingForm"
+        name="filingForm" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i> RELEASING</span>
-        <div class="col-md-4"> <!-- TO MAYOR  -->
-            {{range .releasing}}
-            <div class="row">
-                <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-tag"></i> TO MAYOR</span>
-                <div class="col-md-6">
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded"
-                            value="{{.MayorDateForwarded}}">
-                        <label for="mayorDateForwarded">Date Forwarded</label>
-                    </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                {{range .viewFilings}}
+                <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber"
+                    value="{{.CabinetNumber}}" required>
+                <label for="cabinetNumber">File Folder/Cabinet No.</label>
+                {{end}}
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-floating">
+                <select class="form-select" id="folderName" name="folderName">
+                    <option selected disabled>Select</option>
+                    {{range .viewFilings}}
+                    <option value="{{.FolderName}}" {{if .FolderName}}selected{{end}}>{{.FolderName}}</option>
+                    {{end}}
+                    {{range .folder}}
+                    <option value="{{.Name}}">{{.Name}}</option>
+                    {{end}}
+                    <option value="new">Add New</option>
+                </select>
+                <label for="folderName">Folder</label>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="newFolderName" name="newFolderName" disabled>
+                <label for="newFolderName">New Folder Name</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                {{range .viewFilings}}
+                <input type="date" class="form-control" id="dateFiled" name="dateFiled" value="{{.DateFiled}}" required>
+                {{end}}
+                <label for="dateFiled">Date Filed</label>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="input-group">
+                <div class="input-group-text">
+                    <label for="isBorrowed">Is it borrowed?&nbsp;</label>
+                    {{range .viewFilings}}
+                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" {{if .IsBorrowed}}checked{{end}}>
+                    {{end}}
                 </div>
-                <div class="col-md-6">
-                    <div class="form-floating mb-2">
-                        {{if .IsApprovedLachesMayor }}
-                        <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved"
-                            value="{{.MayorDateApproved}}" disabled>
-                        {{else}}
-                        <input type="date" class="form-control" id="mayorDateApproved" name="mayorDateApproved"
-                            value="{{.MayorDateApproved}}">
-                        {{end}}
-                        <label for="mayorDateApproved">Date Approved</label>
-                    </div>
-                    <div class="form-floating mb-2">
-                        <div class="form-check form-switch">
-                            {{if .IsApprovedLachesMayor }}
-                            <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
-                                name="isApprovedLachesMayor" checked>
-                            {{else}}
-                            <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
-                                name="isApprovedLachesMayor">
-                            {{end}}
-                            <label class="form-check-label" for="isApprovedLachesMayor">Approved by laches</label>
-                        </div>
-                    </div>
+                <div class="form-floating">
+                    {{range .viewFilings}}
+                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}" {{if eq .IsBorrowed false}}disabled{{end}}>
+                    {{end}}
+                    <label for="dateBorrowed">Date Borrowed</label>
                 </div>
+            </div>
+
+        </div>
+        <div class="col-md-5">
+            {{range .viewFilings}}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" {{if eq .IsBorrowed false}}disabled{{end}}>
+                <label for="borrower">Borrower</label>
             </div>
             {{end}}
-        </div> <!-- END TO MAYOR  -->
-        <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
-            {{range .releasing}}
-            <div class="row">
-                <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-tag"></i> SANGGUNIAN PANLALAWIGAN</span>
-                <div class="col-md-6">
-                    <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
-                            value="{{.SPDateForwarded}}">
-                        <label for="spDateForwarded">Date Forwarded</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating mb-2">
-                        {{if .IsApprovedLachesSP}}
-                        <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
-                            value="{{.SPDateApproved}}" disabled>
-                        {{else}}
-                        <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
-                            value="{{.SPDateApproved}}">
-                        {{end}}
-                        <label for="spDateApproved">Date Approved</label>
-                    </div>
-                    <div class="form-floating mb-2">
-                        <div class="form-check form-switch">
-                            {{if .IsApprovedLachesSP}}
-                            <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
-                                name="isApprovedLachesSP" checked>
-                            {{else}}
-                            <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
-                                name="isApprovedLachesSP">
-                            {{end}}
-                            <label class="form-check-label" for="isApprovedLachesSP">Approved by laches</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" id="spResolutionNumber" name="spResolutionNumber"
-                            value="{{.SPResolutionNumber}}">
-                        <label for="spResolutionNumber">SP Resolution No.</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="spResolutionFile" class="form-label"><small>Attach Resolution File</small> </label>
-                        <input class="form-control form-control-sm" id="endorsementFile" name="spResolutionFile"
-                            type="file" accept="application/pdf,image/jpeg,,image/png" value="{{.SPResolutionFile}}">
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-2">
+            {{range .viewFilings}}
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="datePublished" value="{{.DatePublished}}"
+                    name="datePublished">
+                <label for="datePublished">Date Published</label>
             </div>
             {{end}}
-        </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
-        <div class="col-md-4"> <!-- LOCAL -->
-            <div class="row">
-                <span class="badge bg-secondary my-2 fw-bold"><i class="fa-solid fa-tag"></i> LOCAL</span>
-                <div class="col-md-6">
-                    <div class="form-floating mb-2">
-                        <input type="date" class="form-control" id="localDateRelease" name="localDateRelease">
-                        <label for="localDateRelease">Date of Local Release</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-6">
-                        <label for="endorsementFile" class="form-label"><small>Attach Endorsement
-                                File</small></label>
-                        <input class="form-control form-control-sm" id="endorsementFile" name="endorsementFile"
-                            type="file" accept="application/pdf,image/jpeg,,image/png">
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-5">
+            {{range .viewFilings}}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="publisher" name="publisher" value="{{.Publisher}}" disabled>
+                <label for="publisher">Publisher</label>
             </div>
-        </div><!-- END OF LOCAL -->
-        <hr>
-        <div class="col-md-12 mb-2">
-            <small><button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button"><i
-                        class="fa-solid fa-floppy-disk"></i> UPDATE DOCUMENT</button></small>
+            {{end}}
+        </div>
+        <div class="col-md-5">
+            <div class="col-md-12">
+                <small class="d-grid gap-2">
+                    <button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button">
+                        <i class="fa-solid fa-floppy-disk"></i> UPDATE DOCUMENT
+                    </button>
+                </small>
+            </div>
         </div>
     </form>
 </div>
 
 <script>
     $(document).ready(function () {
-        $("#isApprovedLachesMayor").change(function () {
-            if ($('#isApprovedLachesMayor').is(':checked')) {
-                $("#mayorDateApproved").prop('disabled', true);
+        $("#isBorrowed").change(function () {
+            if ($('#isBorrowed').is(':checked')) {
+                $("#dateBorrowed").prop('disabled', false);
+                $("#borrower").prop('disabled', false);
             } else {
-                $("#mayorDateApproved").prop('disabled', false);
+                $("#dateBorrowed").prop('disabled', true);
+                $("#borrower").prop('disabled', true);
             }
         });
-        $("#isApprovedLachesSP").change(function () {
-            if ($('#isApprovedLachesSP').is(':checked')) {
-                $("#spDateApproved").prop('disabled', true);
+
+        $("#datePublished").change(function () {
+            var datePublished = $('#datePublished').val();
+            var dateLen = datePublished.length;
+            if (dateLen > 0) {
+                $("#publisher").prop('disabled', false);
             } else {
-                $("#spDateApproved").prop('disabled', false);
+                $("#publisher").prop('disabled', true);
             }
         });
+
+        $("#folderName").change(function () {
+            var selectedValue = document.getElementById("folderName").value
+            if (selectedValue == "new") {
+                $("#newFolderName").prop('disabled', false);
+            } else {
+                $("#newFolderName").prop('disabled', true);
+                document.getElementById("newFolderName").focus()
+            }
+        });
+
+        $("#cabinetNumber").inputmask("CNO-99");
     });
 </script>
-
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
             Swal.fire({
-                title: "Do you want to save this record?",
+                title: "Do you want to update this record?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -411,13 +521,14 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    $("#releasing").submit(); // Submit the form
+                    $("#filingForm").submit(); // Submit the form
                 } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
+                    Swal.fire("Cancel update record", "", "info");
                 }
             });
         });
     });
+
 </script>
 
 {{template "footer" .}}

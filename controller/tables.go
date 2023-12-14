@@ -18,6 +18,8 @@ func InitializeTables() {
 	fmt.Println("Approved ✓")
 	database.CreateTable(model.Releasings{})
 	fmt.Println("Releasing Fields ✓")
+	database.CreateTable(model.Filings{})
+	fmt.Println("Filing ✓")
 	database.CreateTable(model.Routings{})
 	fmt.Println("Routing ✓")
 	database.CreateTable(model.Trackings{})

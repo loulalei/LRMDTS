@@ -41,7 +41,7 @@
                         </a>
                         {{end}}
                         {{if eq .DocumentTag "For information of the whole body"}}
-                        <a href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"
+                        <a href="/api/routing/filing/{{.DocId}}/{{.ItemNumber}}"
                             class="btn btn-primary btn-sm fw-bold" type="button"><i class="fa-regular fa-thumbs-up"></i>
                         </a>
                         {{end}}
@@ -77,6 +77,11 @@
                         {{end}}
                         {{if eq .DocumentTag "For Filing"}}
                         <a href="/api/routing/filing/{{.DocId}}/{{.ItemNumber}}" class="btn btn-primary btn-sm fw-bold"
+                            type="button"><i class="fa-regular fa-folder-open"></i>
+                        </a>
+                        {{end}}
+                        {{if eq .DocumentTag "Filed"}}
+                        <a href="/api/routing/update_filing/{{.DocId}}/{{.ItemNumber}}" class="btn btn-primary btn-sm fw-bold"
                             type="button"><i class="fa-regular fa-folder-open"></i>
                         </a>
                         {{end}}
@@ -130,7 +135,7 @@
 <script>
     $(document).ready(function () {
         $('#routing_lists').DataTable({
-            order: [[6, 'desc']]
+            order: [[6, 'asc']]
         });
     });
 </script>

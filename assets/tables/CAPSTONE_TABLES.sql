@@ -97,6 +97,7 @@ SELECT * FROM receivings
 SELECT * FROM agendas
 SELECT * FROM approves
 SELECT * FROM releasings
+SELECT * FROM filings
 
 SELECT * FROM divisions
 SELECT * FROM committees
@@ -144,6 +145,8 @@ SELECT COUNT(*) FROM view_committees WHERE committee_id =
 SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 SELECT * FROM view_committees WHERE item_number = '2023-0002'
 SELECT * FROM approves WHERE item_number = '2023-0002'
+
+SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 
 -- DEFAULT VALUES
 INSERT INTO departments (name) VALUES 
@@ -244,6 +247,7 @@ BEGIN
 	TRUNCATE TABLE agendas;
 	TRUNCATE TABLE approves;
 	TRUNCATE TABLE releasings;
+	TRUNCATE TABLE filings;
 	TRUNCATE TABLE committee_lists;
 	TRUNCATE TABLE routings;
 	TRUNCATE TABLE trackings;
@@ -263,6 +267,7 @@ BEGIN
 	DROP TABLE agendas;
 	DROP TABLE approves;
 	DROP TABLE releasings;
+	DROP TABLE filings;
 	DROP TABLE committee_lists;
 	DROP TABLE routings;
 	DROP TABLE trackings;

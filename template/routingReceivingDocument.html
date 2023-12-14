@@ -55,7 +55,7 @@
                 <label for="receivedFile" class="form-label">Attach received
                     file</label>
                 <input class="form-control form-control-sm" id="receivedFile" name="receivedFile" type="file"
-                    accept="application/pdf" required>
+                    accept="application/pdf,image/jpeg,,image/png" required>
             </div>
         </div>
         <hr>
@@ -106,8 +106,6 @@
                     }
                 });
             }
-
-
         });
         $("#trackingNumber").inputmask("9999-9999-99-9999");
     });

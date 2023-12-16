@@ -136,7 +136,7 @@ func DeleteProponent(c *fiber.Ctx) error {
 	proponentName := c.Params("name")
 	database.DBConn.Debug().Exec("DELETE FROM proponents WHERE name = ?", proponentName)
 
-	return c.Redirect("/api/settings/committees")
+	return c.Redirect("/api/settings/proponents")
 }
 func AddCommittee(c *fiber.Ctx) error {
 	if model.Fullname == "" {

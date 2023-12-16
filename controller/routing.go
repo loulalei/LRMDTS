@@ -976,7 +976,7 @@ func SaveFiling(c *fiber.Ctx) error {
 		}
 	} else {
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Kept in Records', updated_at = ? WHERE doc_id = ?", dateNow, filingFields.DocId)
-		database.DBConn.Debug().Exec("UPDATE borrower_histories SET date_returned = ?, updated_at = ? WHERE doc_id = ?", filingFields.DateReturned, dateNow, filingFields.DocId)
+		database.DBConn.Debug().Exec("UPDATE borrower_histories SET date_returned = ?, updated_at = ? WHERE doc_id = ? AND borrower = ?", filingFields.DateReturned, dateNow, filingFields.DocId, filingFields.Borrower)
 	}
 
 	return c.Redirect("/api/routing")

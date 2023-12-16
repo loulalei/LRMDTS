@@ -27,6 +27,8 @@ func InitializeTables() {
 	database.CreateTable(model.CommitteeLists{})
 	fmt.Println("Committee Lists ✓")
 	database.CreateTable(model.FilePaths{})
+	fmt.Println("Borrower Fields ✓")
+	database.CreateTable(model.BorrowerHistories{})
 	fmt.Println("File Path ✓")
 	database.CreateTable(model.Divisions{})
 	fmt.Println("Divisions ✓")
@@ -83,4 +85,7 @@ func InitializeTables() {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_borrower_history AS SELECT brw.borrower_id, apr.law_type, apr.res_ord_file, brw.borrower, brw.date_borrowed, brw.date_returnedFROM borrower_histories brw INNER JOIN filings fil ON brw.doc_id = fil.doc_id INNER JOIN view_routings rtg ON rtg.doc_id = fil.doc_id INNER JOIN approves apr ON apr.item_number = rtg.item_number").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
+	}
 }

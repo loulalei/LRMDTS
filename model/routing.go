@@ -39,6 +39,7 @@ type (
 		Remarks        string `json:"remarks"`
 		ReceivedFile   string `json:"receivedFile"`
 		Encoder        string `json:"encoder"`
+		ModifiedBy     string `json:"modifiedBy"`
 		UpdatedAt      string `json:"updatedAt"`
 	}
 
@@ -68,6 +69,8 @@ type (
 		ReceivingTag     string `json:"receivingTag,omitempty"`
 		ReceivingRemarks string `json:"receivingRemarks,omitempty"`
 		ReceivedFile     string `json:"receivedFile,omitempty"`
+		Encoder          string `json:"encoder,omitempty"`
+		ModifiedBy       string `json:"modifiedBy,omitempty"`
 	}
 
 	ViewReceiving struct {
@@ -148,6 +151,7 @@ type (
 		IsBorrowed    bool   `json:"isBorrowed,omitempty"`
 		DateBorrowed  string `json:"dateBorrowed,omitempty"`
 		Borrower      string `json:"borrower,omitempty"`
+		DateReturned  string `json:"dateReturned,omitempty"`
 		DatePublished string `json:"datePublished,omitempty"`
 		Publisher     string `json:"publisher,omitempty"`
 		Encoder       string `json:"encoder,omitempty"`

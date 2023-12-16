@@ -95,6 +95,7 @@ type (
 		IsBorrowed    bool      `json:"isBorrowed,omitempty"`
 		DateBorrowed  string    `json:"dateBorrowed,omitempty"`
 		Borrower      string    `json:"borrower,omitempty"`
+		DateReturned  string    `json:"dateReturned,omitempty"`
 		DatePublished string    `json:"datePublished,omitempty"`
 		Publisher     string    `json:"publisher,omitempty"`
 		Encoder       string    `json:"encoder,omitempty"`
@@ -175,5 +176,29 @@ type (
 		FolderName string `json:"folderName,omitempty"`
 
 		Encoder string `json:"encoder,omitempty"`
+	}
+
+	BorrowerHistories struct {
+		DocId        int       `json:"docId,omitempty"`
+		BorrowerId   int       `json:"borrowerId" gorm:"primaryKey;autoIncrement"`
+		Borrower     string    `json:"borrower,omitempty"`
+		DateBorrowed string    `json:"dateBorrowed,omitempty"`
+		DateReturned string    `json:"dateReturned,omitempty"`
+		CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+)
+
+type (
+	ViewBrrowerHistory struct {
+		BorrowerId   int    `json:"borrowerId"`
+		LawType      string `json:"lawType,omitempty"`
+		ResOrdfile   string `json:"resOrdfile,omitempty"`
+		Borrower     string `json:"borrower,omitempty"`
+		DateBorrowed string `json:"dateBorrowed,omitempty"`
+		DateReturned string `json:"dateReturned,omitempty"`
+	}
+	RequestCommittees struct {
+		Name string `json:"name"`
 	}
 )

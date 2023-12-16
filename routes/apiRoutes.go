@@ -40,23 +40,31 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	// Approved
 	routingEndpoint.Get("/approved/:docId/:itemNumber", controller.ViewApproved)
 	routingEndpoint.Post("/register_approved", controller.RegisterApproved)
-
 	// Releasing
 	routingEndpoint.Get("/releasing/:docId/:itemNumber", controller.ViewReleasing)
 	routingEndpoint.Post("/register_releasing", controller.RegisterReleasing)
 	routingEndpoint.Get("/update_releasing/:docId/:itemNumber", controller.UpdateReleasing)
 	routingEndpoint.Post("/save_releasing", controller.SaveReleasing)
-
 	// Filing
 	routingEndpoint.Get("/filing/:docId/:itemNumber", controller.ViewForFiling)
 	routingEndpoint.Post("/register_filing", controller.RegisterFiling)
 	routingEndpoint.Get("/update_filing/:docId/:itemNumber", controller.UpdateFiling)
 	routingEndpoint.Post("/save_filing", controller.SaveFiling)
-
 	// Tracking
 	trackingEndpoint := apiEndpoint.Group("/tracking")
 	trackingEndpoint.Get("/", controller.ViewTracking)
 	trackingEndpoint.Post("/search", controller.SearchTracking)
+	// Settings
+	settingsEndpoint := apiEndpoint.Group("/settings")
+	settingsEndpoint.Get("/", controller.ViewSettings)
+	settingsEndpoint.Get("/uses", controller.ViewSettingsUser)
+	settingsEndpoint.Get("/proponents", controller.ViewSettingsProponents)
+	settingsEndpoint.Post("/insert_proponent", controller.AddProponents)
+	settingsEndpoint.Get("/remove_proponent/:name", controller.DeleteProponent)
+	settingsEndpoint.Get("/committees", controller.ViewSettingsCommittees)
+	settingsEndpoint.Get("/folder", controller.ViewSettingsFolder)
+	settingsEndpoint.Post("/insert_committee/", controller.AddCommittee)
+	settingsEndpoint.Post("/remove_committee/", controller.DeleteCommittee)
 
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)

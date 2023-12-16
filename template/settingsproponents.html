@@ -1,0 +1,166 @@
+{{template "header" .}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <small class="navbar-brand col-md-1 border-end border-2">SETTINGS</small>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#settingNav"
+            aria-controls="settingNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="settingNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-users-gear"></i>
+                        USER MANGEMENT</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/api/settings/proponents"><i
+                            class="fa-solid fa-users-gear"></i>
+                        PROPONENTS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/api/settings/committees"><i
+                            class="fa-solid fa-people-group"></i>
+                        COMMITTEES</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-folder-tree"></i>
+                        FOLDERS</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid py-2 shadow mb-3">
+    <div class="row my-2">
+        <div class="col-md-12 d-grid gap-2 d-md-block my-1">
+            <a href class="btn btn-success btn-sm fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add"><i
+                    class="fa-solid fa-plus"></i> REGISTER
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid table-responsive">
+        <table id="proponents_table" class="table table-borderless table-hover table-sm">
+            <thead>
+                <tr>
+                    <th class="text-center small">ID</th>
+                    <th class="text-center small">PROPONENT</th>
+                    <th class="text-center small">TERM</th>
+                    <th class="text-center small">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .proponentList}}
+                <tr>
+                    <td class="text-center small" id="committee_id">{{.ProponentId}}</td>
+                    <td class="small">{{.Name}}</td>
+                    <td class="small">{{.Term}}</td>
+                    <td class="text-center small">
+                        <div class="d-grid gap-2 d-md-block">
+                            <a href="#" class="btn btn-danger btn-sm fw-bold"><i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- MODAL -->
+<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="add">REGISTER PROPONENT</h1>
+            </div>
+            <div class="modal-body row">
+                <div class="col-md-8">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="proponentName" name="proponentName">
+                        <label for="proponentName">Fullname</label>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="term" name="term">
+                        <label for="term">Term</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="add_proponent" name="add_proponent">Save</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#proponents_table').DataTable({
+            order: [[0, 'desc']]
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#add_proponent").click(function () {
+            var proponentName = $('#proponentName').val();
+            var term = $('#term').val();
+            var baseURL = $('#baseURL').val();
+            var endpoint = baseURL + "/api/settings/insert_proponent"
+
+            if (proponentName == "") {
+                Swal.fire(
+                    'Register Error',
+                    'Enter proponent name',
+                    'info'
+                )
+            } else {
+                $.post(endpoint,
+                    {
+                        "name": proponentName,
+                        "term": term,
+                    },
+                    function (response, status) {
+                        if (response.status == 100) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: response.message,
+                            });
+                            location.reload(true);
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: response.message,
+                            });
+                        }
+                    });
+            }
+        });
+    });
+</script>
+{{template "footer" .}}

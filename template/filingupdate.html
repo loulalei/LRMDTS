@@ -2,6 +2,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
     integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
@@ -21,8 +23,12 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewRoutings}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
-                        <i>{{.Encoder}}</i></span>
+                    {{if .ModifiedBy}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}} | Modified By:
+                            {{.ModifiedBy}}</i></span>
+                    {{else}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}}</i></span>
+                    {{end}}
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -189,8 +195,12 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewApproved}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
-                        <i>{{.Encoder}}</i></span>
+                    {{if .ModifiedBy}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}} | Modified By:
+                            {{.ModifiedBy}}</i></span>
+                    {{else}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}}</i></span>
+                    {{end}}
                     <div class="col-md-2">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}"
@@ -265,7 +275,12 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewReleasings}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:<i>{{.Encoder}}</i></span>
+                    {{if .ModifiedBy}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}} | Modified By:
+                            {{.ModifiedBy}}</i></span>
+                    {{else}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}}</i></span>
+                    {{end}}
                     <div class="col-md-4"> <!-- TO MAYOR  -->
                         <div class="row">
                             <span class="badge bg-secondary mb-2 fw-bold">TO MAYOR</span>
@@ -384,6 +399,13 @@
         name="filingForm" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
+        {{range .viewFilings}}
+        {{if .ModifiedBy}}
+        <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}} | Modified By: {{.ModifiedBy}}</i></span>
+        {{else}}
+        <span class="badge bg-secondary my-2 fw-bold">Encoder: <i>{{.Encoder}}</i></span>
+        {{end}}
+        {{end}}
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 {{range .viewFilings}}
@@ -422,27 +444,48 @@
                 <label for="dateFiled">Date Filed</label>
             </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             <div class="input-group">
                 <div class="input-group-text">
                     <label for="isBorrowed">Is it borrowed?&nbsp;</label>
                     {{range .viewFilings}}
-                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" {{if .IsBorrowed}}checked{{end}}>
+                    {{if .IsBorrowed}}
+                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" checked>
+                    {{else}}
+                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed">
+                    {{end}}
                     {{end}}
                 </div>
                 <div class="form-floating">
                     {{range .viewFilings}}
-                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}" {{if eq .IsBorrowed false}}disabled{{end}}>
+                    {{if .IsBorrowed}}
+                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed"
+                        value="{{.DateBorrowed}}">
+                    {{else}}
+                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" disabled>
+                    {{end}}
                     {{end}}
                     <label for="dateBorrowed">Date Borrowed</label>
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating mb-3">
+                {{range .viewFilings}}
+                {{if .IsBorrowed}}
+                <input type="date" class="form-control" id="dateReturned" name="dateReturned" disabled>
+                {{else}}
+                <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}">
+                {{end}}
+                {{end}}
+                <label for="dateReturned">Date Returned</label>
+            </div>
         </div>
         <div class="col-md-5">
             {{range .viewFilings}}
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" {{if eq .IsBorrowed false}}disabled{{end}}>
+                <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" {{if eq
+                    .IsBorrowed false}}disabled{{end}}>
                 <label for="borrower">Borrower</label>
             </div>
             {{end}}
@@ -466,15 +509,69 @@
         </div>
         <div class="col-md-5">
             <div class="col-md-12">
-                <small class="d-grid gap-2">
+                <div class="d-grid gap-2 d-md-block">
                     <button id="submitBtn" name="submitBtn" class="btn btn-success fw-bold btn-sm" type="button">
                         <i class="fa-solid fa-floppy-disk"></i> UPDATE DOCUMENT
                     </button>
-                </small>
+                    <button type="button" class="btn btn-info fw-bold btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        <i class="fa-solid fa-clock-rotate-left"></i> BORROWER HISTORY
+                    </button>
+                </div>
             </div>
         </div>
     </form>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Borrower History</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid table-responsive">
+                    <table id="borrower_history" class="table table-borderless table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-center small">LAW TYPE</th>
+                                <th class="text-center small">FILE</th>
+                                <th class="text-center small">BORROWER</th>
+                                <th class="text-center small">BORROWED</th>
+                                <th class="text-center small">RETURNED</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .viewBorrowerHistory}}
+                            <tr>
+                                <td class="text-center small" id="committee_id">{{.LawType}}</td>
+                                <td class="small">{{.ResOrdfile}}</td>
+                                <td class="small">{{.Borrower}}</td>
+                                <td class="small">{{.DateBorrowed}}</td>
+                                <td class="small">{{.DateReturned}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#borrower_history').DataTable({
+            order: [[4, 'asc']]
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {
@@ -482,9 +579,11 @@
             if ($('#isBorrowed').is(':checked')) {
                 $("#dateBorrowed").prop('disabled', false);
                 $("#borrower").prop('disabled', false);
+                $("#dateReturned").prop('disabled', true);
             } else {
                 $("#dateBorrowed").prop('disabled', true);
                 $("#borrower").prop('disabled', true);
+                $("#dateReturned").prop('disabled', false);
             }
         });
 

@@ -28,19 +28,14 @@
         <div class="text-center pb-md-2"><small><i class="fa-solid fa-book"></i> ACTIVITY LOGS</small></div>
         <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
           <tbody>
-            {{range .logs}}
             <tr class="border-bottom py-2">
-              <td>{{if eq .DocumentTag "For Agenda"}}<i class="fa-solid fa-business-time"></i>{{end}}
-                {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
-                {{ .Summary}} is {{.Remarks}} {{.DocumentTag}} </td>
-              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceiveDate}} </td>
+              <td> test</td>
+              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i>test</td>
             </tr>
-            {{end}}
           </tbody>
         </table>
       </div>
     </div>
-
   </div>
   <div class="row gx-2">
     <div class="col-md-12 p-2">
@@ -54,7 +49,6 @@
           </tr>
         </thead>
         <tbody>
-
           <tr>
             <td>2023-10-05</td>
             <td>2</td>
@@ -72,9 +66,7 @@
           </tr>
         </tbody>
       </table>
-
     </div>
-
   </div>
 </div>
 <script>
@@ -87,7 +79,6 @@
           targets: "_all"
         }
       ]
-
     });
   });
 </script>

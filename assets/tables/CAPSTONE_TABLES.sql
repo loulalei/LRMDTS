@@ -82,11 +82,22 @@ INNER JOIN view_committees vcmt
 ON agd.item_number = vcmt.item_number
 ORDER BY vcmt.item_number DESC
 
-SELECT * 
-FROM trackings trk
+CREATE VIEW view_borrower_history AS
+SELECT brw.borrower_id, apr.law_type, apr.res_ord_file, brw.borrower, brw.date_borrowed, brw.date_returned
+FROM borrower_histories brw
+INNER JOIN filings fil
+ON brw.doc_id = fil.doc_id
+INNER JOIN view_routings rtg
+ON rtg.doc_id = fil.doc_id
+INNER JOIN approves apr
+ON apr.item_number = rtg.item_number
+	
+
+SELECT * FROM trackings trk
 INNER JOIN routings rtg
 ON trk.tracking_number = rtg.
 
+SELECT * FROM filings
 -- TEST QUERY
 SELECT cmtl.list_id, cmtl.item_number FROM committee_lists cmtl
 INNER JOIN committees cmt ON cmt.id = cmtl.committee_id
@@ -98,15 +109,20 @@ SELECT * FROM agendas
 SELECT * FROM approves
 SELECT * FROM releasings
 SELECT * FROM filings
+SELECT * FROM borrower_histories
 
 SELECT * FROM divisions
 SELECT * FROM committees
 SELECT * FROM departments
 SELECT * FROM committee_lists
+SELECT * FROM proponents
 SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
 
+nextval('proponents_proponent_id_seq'::regclass)
+
+DELETE FROM proponents WHERE name = '';
 UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 4
 SELECT * FROM view_committees WHERE item_number = '3512-1345'
 SELECT * FROM view_routings WHERE document_tag = 'Referred to Committee' AND doc_id = 6

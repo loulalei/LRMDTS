@@ -889,26 +889,30 @@ func UpdateFiling(c *fiber.Ctx) error {
 	viewFilings := &[]model.Filings{}
 	database.DBConn.Debug().Raw("SELECT * FROM filings WHERE doc_id = ?", docId).Scan(viewFilings)
 
+	viewBorrowerHistory := &[]model.ViewBrrowerHistory{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_borrower_history").Scan(viewBorrowerHistory)
+
 	folders := &[]model.Folders{}
 	database.DBConn.Debug().Raw("SELECT * FROM folders").Scan(folders)
 
 	return c.Render("filingupdate", fiber.Map{
-		"pageTitle":      "for Update Filing",
-		"title":          "FOR UPDATE FILING",
-		"yearNow":        model.YearNow,
-		"user":           model.Fullname,
-		"userLogged":     model.UserCodeLogged,
-		"viewRoutings":   viewRoutings,
-		"viewAgenda":     viewAgenda,
-		"viewApproved":   viewApproved,
-		"viewReleasings": viewReleasings,
-		"viewFilings":    viewFilings,
-		"itemCommittees": ItemCommittees,
-		"docId":          docId,
-		"itemNumber":     itemNumber,
-		"folder":         folders,
-		"greetings":      utils.GetGreetings(),
-		"baseURL":        c.BaseURL(),
+		"pageTitle":           "for Update Filing",
+		"title":               "FOR UPDATE FILING",
+		"yearNow":             model.YearNow,
+		"user":                model.Fullname,
+		"userLogged":          model.UserCodeLogged,
+		"viewRoutings":        viewRoutings,
+		"viewAgenda":          viewAgenda,
+		"viewApproved":        viewApproved,
+		"viewReleasings":      viewReleasings,
+		"viewFilings":         viewFilings,
+		"viewBorrowerHistory": viewBorrowerHistory,
+		"itemCommittees":      ItemCommittees,
+		"docId":               docId,
+		"itemNumber":          itemNumber,
+		"folder":              folders,
+		"greetings":           utils.GetGreetings(),
+		"baseURL":             c.BaseURL(),
 	})
 }
 
@@ -944,20 +948,32 @@ func SaveFiling(c *fiber.Ctx) error {
 		IsBorrowed:    requestFiling.IsBorrowed,
 		DateBorrowed:  requestFiling.DateBorrowed,
 		Borrower:      requestFiling.Borrower,
+		DateReturned:  requestFiling.DateReturned,
 		DateFiled:     requestFiling.DateFiled,
 		DatePublished: requestFiling.DatePublished,
 		Publisher:     requestFiling.Publisher,
-		Encoder:       model.Fullname,
+		ModifiedBy:    model.Fullname,
 		CreatedAt:     dateNow,
 		UpdatedAt:     dateNow,
 	}
 
-	database.DBConn.Debug().Exec("UPDATE filings SET cabinet_number = ?, folder_name = ?, date_filed = ?, is_borrowed = ?, date_borrowed = ?, borrower = ?, date_published = ?, publisher = ?, modified_by = ?, updated_at = ? WHERE doc_id = ?",
+	database.DBConn.Debug().Exec("UPDATE filings SET cabinet_number = ?, folder_name = ?, date_filed = ?, is_borrowed = ?, date_borrowed = ?, borrower = ?, date_returned = ?,date_published = ?, publisher = ?, modified_by = ?, updated_at = ? WHERE doc_id = ?",
 		filingFields.CabinetNumber, filingFields.FolderName, filingFields.DateFiled,
-		filingFields.IsBorrowed, filingFields.DateBorrowed, filingFields.Borrower,
-		filingFields.DatePublished, filingFields.Publisher, filingFields.Encoder, dateNow, filingFields.DocId)
+		filingFields.IsBorrowed, filingFields.DateBorrowed, filingFields.Borrower, filingFields.DateReturned,
+		filingFields.DatePublished, filingFields.Publisher, filingFields.ModifiedBy, dateNow, filingFields.DocId)
 
 	database.DBConn.Debug().Exec("UPDATE trackings SET filed_date = ?, published_date = ?, updated_at = ? WHERE doc_id = ?", filingFields.DateFiled, filingFields.DatePublished, dateNow, filingFields.DocId)
+
+	var borrowerId int
+	database.DBConn.Debug().Raw("SELECT borrower_id FROM borrower_histories WHERE borrower = ?", filingFields.Borrower).Scan(&borrowerId)
+	fmt.Println("Borrowed ID:", borrowerId)
+	if filingFields.IsBorrowed {
+		if borrowerId == 0 {
+			database.DBConn.Debug().Exec("INSERT INTO borrower_histories (doc_id, borrower, date_borrowed) VALUES(?,?,?)", filingFields.DocId, filingFields.Borrower, filingFields.DateBorrowed)
+		}
+	} else {
+		database.DBConn.Debug().Exec("UPDATE borrower_histories SET date_returned = ?, updated_at = ? WHERE doc_id = ?", filingFields.DateReturned, dateNow, filingFields.DocId)
+	}
 
 	return c.Redirect("/api/routing")
 }

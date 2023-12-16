@@ -132,11 +132,20 @@ func DeleteProponent(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
+	proponentFields := &model.Proponents{}
+	if parsErr := c.BodyParser(proponentFields); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "Error parsing:" + parsErr.Error(),
+		})
+	}
 
-	proponentName := c.Params("name")
-	database.DBConn.Debug().Exec("DELETE FROM proponents WHERE name = ?", proponentName)
+	database.DBConn.Debug().Exec("DELETE FROM proponents WHERE name = ?", proponentFields.Name)
 
-	return c.Redirect("/api/settings/proponents")
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "Remove successfuly",
+	})
 }
 func AddCommittee(c *fiber.Ctx) error {
 	if model.Fullname == "" {

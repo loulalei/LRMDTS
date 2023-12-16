@@ -60,7 +60,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	settingsEndpoint.Get("/uses", controller.ViewSettingsUser)
 	settingsEndpoint.Get("/proponents", controller.ViewSettingsProponents)
 	settingsEndpoint.Post("/insert_proponent", controller.AddProponents)
-	settingsEndpoint.Get("/remove_proponent/:name", controller.DeleteProponent)
+	settingsEndpoint.Post("/remove_proponent/", controller.DeleteProponent)
 	settingsEndpoint.Get("/committees", controller.ViewSettingsCommittees)
 	settingsEndpoint.Get("/folder", controller.ViewSettingsFolder)
 	settingsEndpoint.Post("/insert_committee/", controller.AddCommittee)

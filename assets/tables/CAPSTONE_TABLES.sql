@@ -137,6 +137,7 @@ SELECT * FROM file_paths
 SELECT * FROM trackings
 SELECT * FROM FilingPaths
 
+SELECT * FROM view_borrower_history
 SELECT * FROM user_credentials
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees

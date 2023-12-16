@@ -938,7 +938,6 @@ func SaveFiling(c *fiber.Ctx) error {
 	}
 
 	if !requestFiling.IsBorrowed {
-		requestFiling.Borrower = ""
 		requestFiling.DateBorrowed = ""
 	}
 

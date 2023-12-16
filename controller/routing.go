@@ -967,11 +967,13 @@ func SaveFiling(c *fiber.Ctx) error {
 	var borrowerId int
 	database.DBConn.Debug().Raw("SELECT borrower_id FROM borrower_histories WHERE borrower = ?", filingFields.Borrower).Scan(&borrowerId)
 	fmt.Println("Borrowed ID:", borrowerId)
+
 	if filingFields.IsBorrowed {
-		if borrowerId == 0 {
-			database.DBConn.Debug().Exec("INSERT INTO borrower_histories (doc_id, borrower, date_borrowed) VALUES(?,?,?)", filingFields.DocId, filingFields.Borrower, filingFields.DateBorrowed)
-		}
+		borrowed := fmt.Sprintf("Borrowed - %v", filingFields.Borrower)
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = ?, updated_at = ? WHERE doc_id = ?", borrowed, dateNow, filingFields.DocId)
+		database.DBConn.Debug().Exec("INSERT INTO borrower_histories (doc_id, borrower, date_borrowed) VALUES(?,?,?)", filingFields.DocId, filingFields.Borrower, filingFields.DateBorrowed)
 	} else {
+		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Kept in Records', updated_at = ? WHERE doc_id = ?", dateNow, filingFields.DocId)
 		database.DBConn.Debug().Exec("UPDATE borrower_histories SET date_returned = ?, updated_at = ? WHERE doc_id = ?", filingFields.DateReturned, dateNow, filingFields.DocId)
 	}
 

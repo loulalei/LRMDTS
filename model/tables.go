@@ -193,7 +193,7 @@ type (
 	ViewBrrowerHistory struct {
 		BorrowerId   int    `json:"borrowerId"`
 		LawType      string `json:"lawType,omitempty"`
-		ResOrdfile   string `json:"resOrdfile,omitempty"`
+		ResOrdFile   string `json:"resOrdfile,omitempty"`
 		Borrower     string `json:"borrower,omitempty"`
 		DateBorrowed string `json:"dateBorrowed,omitempty"`
 		DateReturned string `json:"dateReturned,omitempty"`

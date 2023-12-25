@@ -26,14 +26,18 @@
     <div class="col-md-8 p-2 border-start">
       <div class="container-fluid py-2 table-responsive">
         <div class="text-center pb-md-2"><small><i class="fa-solid fa-book"></i> ACTIVITY LOGS</small></div>
-        <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
-          <tbody>
-            <tr class="border-bottom py-2">
-              <td> test</td>
-              <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i>test</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-wrapper" style="width:100%">
+          <table id="notif_table" class="table table-hover table-sm table-borderless" style="width:100%">
+            <tbody>
+              {{range .activities}}
+              <tr class="border-bottom py-2">
+                <td>{{ .Activity }} - {{.Event}}</td>
+                <td class="text-start text-nowrap"><i class="fa-solid fa-calendar-days"></i>{{.CreatedAt}}</td>
+              </tr>
+              {{end}}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

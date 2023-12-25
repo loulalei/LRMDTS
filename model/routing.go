@@ -143,6 +143,7 @@ type (
 
 	RequestFiling struct {
 		DocId         int    `json:"docId,omitempty"`
+		ItemNumber    string `json:"itemNumber,omitempty"`
 		FilingId      int    `json:"filingId" gorm:"primaryKey;autoIncrement:true"`
 		CabinetNumber string `json:"cabinetNumber,omitempty"`
 		FolderName    string `json:"folderName,omitempty"`
@@ -156,5 +157,15 @@ type (
 		Publisher     string `json:"publisher,omitempty"`
 		Encoder       string `json:"encoder,omitempty"`
 		ModifiedBy    string `json:"modifiedBy,omitempty"`
+	}
+)
+
+// PROFILE
+type (
+	ViewActivityLogs struct {
+		Activity  string `json:"activity"`
+		Event     string `json:"event"`
+		UserId    int    `json:"userId"`
+		CreatedAt string `json:"createdAt"`
 	}
 )

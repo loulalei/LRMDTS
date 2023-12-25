@@ -26,7 +26,8 @@ func main() {
 	controller.InitializeTables()
 
 	app := fiber.New(fiber.Config{
-		Views: html.New("./template", ".html"),
+		UnescapePath: true,
+		Views:        html.New("./template", ".html"),
 	})
 
 	app.Use(cors.New(cors.Config{

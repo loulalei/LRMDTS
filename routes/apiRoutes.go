@@ -16,6 +16,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	userEndpoint.Get("/register", controller.ViewRegistration)
 	userEndpoint.Post("/save", controller.RegisterUser)
 	userEndpoint.Get("/login", controller.ViewLogin).Name("login_page")
+	userEndpoint.Get("/logout", controller.Logout)
 	userEndpoint.Post("/verify", controller.VerifyUser)
 	userEndpoint.Get("/profile", controller.ViewProfile)
 

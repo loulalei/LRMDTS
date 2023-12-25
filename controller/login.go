@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"tech_tubbies/middleware/database"
 	utils "tech_tubbies/middleware/util"
 	"tech_tubbies/model"
@@ -21,15 +22,15 @@ func ViewLogin(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
+	event := fmt.Sprintf("%s successfully logged out", model.Fullname)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged out", event, model.UserID)
+	model.UserID = 0
 	model.Fullname = ""
-	return c.Render("login", fiber.Map{
-		"pageTitle": "Login",
-		"title":     "LOGIN",
-	})
+
+	return c.Redirect("/")
 }
 
 func VerifyUser(c *fiber.Ctx) error {
-
 	userCredentials := &model.UserCredentials{}
 	if parsErr := c.BodyParser(userCredentials); parsErr != nil {
 		return c.JSON(fiber.Map{
@@ -44,12 +45,17 @@ func VerifyUser(c *fiber.Ctx) error {
 		model.UserCodeLogged = userCredentials.DivisionCode
 		model.UserID = userCredentials.Id
 		if userCredentials.DivisionCode == "SPCRD" { //Records
+			event := fmt.Sprintf("%s successfully logged in as record admin", model.Fullname)
+			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, model.UserID)
 			return c.Redirect("/api/dashboard")
 		} else if userCredentials.DivisionCode == "SPCSD" { //Secretariat
+			event := fmt.Sprintf("%s successfully logged in as secretariat admin", model.Fullname)
+			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged in", event, model.UserID)
 			return c.Redirect("/api/dashboard/secretariat")
 		}
 	}
 
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event) VALUES(?,?)", "logged in", "failed to log in")
 	divisions := &[]model.Divisions{}
 	database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
 	return c.Render("login", fiber.Map{

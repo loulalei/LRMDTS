@@ -14,8 +14,10 @@ func ViewProfile(c *fiber.Ctx) error {
 	}
 
 	receiving := &[]model.Routings{}
-
 	database.DBConn.Raw("SELECT * FROM routings").Scan(receiving)
+
+	activityLogs := &[]model.ViewActivityLogs{}
+	database.DBConn.Debug().Raw("SELECT activity, event, TO_CHAR(created_at, 'MM-DD-YYYY | HH:MI:SS') AS created_at FROM activity_loggers WHERE user_id = ? ORDER BY created_at DESC", model.UserID).Scan(activityLogs)
 
 	return c.Render("profile", fiber.Map{
 		"pageTitle":   "Profile",
@@ -25,6 +27,7 @@ func ViewProfile(c *fiber.Ctx) error {
 		"userLogged":  model.UserCodeLogged,
 		"greetings":   utils.GetGreetings(),
 		"logs":        receiving,
+		"activities":  activityLogs,
 		"loginStatus": 101,
 		"baseURL":     c.BaseURL(),
 	})

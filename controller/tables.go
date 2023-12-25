@@ -42,6 +42,8 @@ func InitializeTables() {
 	fmt.Println("Folder Fields ✓")
 	database.CreateTable(model.DashboardTotal{})
 	fmt.Println("Dashboard Fields ✓")
+	database.CreateTable(model.ActivityLogger{})
+	fmt.Println("Activity Logger ✓")
 
 	// Insert Default Divisions
 	var count int

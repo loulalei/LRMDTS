@@ -16,3 +16,9 @@ a.no-underline {
     width: 75px;
     height: 75px;
 }
+
+.table-wrapper {
+    max-height: 350px;
+    overflow: auto;
+    display:inline-block;
+  }

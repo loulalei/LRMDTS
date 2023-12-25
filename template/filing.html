@@ -251,6 +251,14 @@
                         <small><a href="/api/routing/download/{{.ResOrdFile}}" class="btn btn-success fw-bold btn-sm"
                                 type="button"><i class="fa-solid fa-download"></i></a></small>
                     </div>
+                    {{else}}
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                                value="For information of the whole body	" disabled>
+                            <label for="receivedFile">Document Tag</label>
+                        </div>
+                    </div>
                     {{end}}
                 </div>
             </div>
@@ -373,6 +381,15 @@
                             </div>
                         </div>
                     </div><!-- END OF LOCAL -->
+
+                    {{else}}
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                                value="For information of the whole body	" disabled>
+                            <label for="receivedFile">Document Tag</label>
+                        </div>
+                    </div>
                     {{end}}
                 </div>
             </div>

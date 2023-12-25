@@ -77,11 +77,17 @@
                             <label for="receivingRemarks">Receiving Remarks</label>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="receivedFile" name="receivedFile"
                                 value="{{.ReceivedFile}}" disabled>
                             <label for="receivedFile">Received File</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="col-md-6 py-1">
+                            <small><a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                                    type="button"><i class="fa-solid fa-download"></i> Download</a></small>
                         </div>
                     </div>
                     {{end}}
@@ -258,8 +264,11 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <small><a href="/api/routing/download/{{.ResOrdFile}}" class="btn btn-success fw-bold btn-sm"
-                                type="button"><i class="fa-solid fa-download"></i></a></small>
+                        <div class="col-md-6 py-1">
+                            <small><a href="/api/routing/download/{{.ResOrdFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                                    type="button"><i class="fa-solid fa-download"></i> Download</a></small>
+
+                        </div>
                     </div>
                     {{end}}
                 </div>
@@ -360,6 +369,21 @@
                                     <label for="spResolutionNumber">SP Resolution No.</label>
                                 </div>
                             </div>
+                            {{if .SPResolutionFile}}
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="spResolutionFile"
+                                        name="spResolutionFile" value="{{.SPResolutionFile}}" disabled>
+                                    <label for="spResolutionFile">Attached Resolution File</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="col-md-6 py-1">
+                                    <small><a href="/api/routing/download/{{.SPResolutionFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                                            type="button"><i class="fa-solid fa-download"></i> Download</a></small>
+                                </div>
+                            </div>
+                            {{else}}
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="spResolutionFile"
@@ -367,6 +391,7 @@
                                     <label for="spResolutionFile">Attached Resolution File</label>
                                 </div>
                             </div>
+                            {{end}}
                         </div>
                     </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
                     <div class="col-md-4"> <!-- LOCAL -->
@@ -379,6 +404,21 @@
                                     <label for="localDateRelease">Date of Local Release</label>
                                 </div>
                             </div>
+                            {{if .EndorsementFile}}
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="endorsementFile" name="endorsementFile"
+                                        value="{{.EndorsementFile}}" disabled>
+                                    <label for="endorsementFile">Attached Endorsement File</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="col-md-6 py-1">
+                                    <small><a href="/api/routing/download/{{.EndorsementFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                                            type="button"><i class="fa-solid fa-download"></i> Download</a></small>
+                                </div>
+                            </div>
+                            {{else}}
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="endorsementFile" name="endorsementFile"
@@ -386,6 +426,7 @@
                                     <label for="endorsementFile">Attached Endorsement File</label>
                                 </div>
                             </div>
+                            {{end}}
                         </div>
                     </div><!-- END OF LOCAL -->
                     {{end}}
@@ -449,21 +490,20 @@
                 <div class="input-group-text">
                     <label for="isBorrowed">Is it borrowed?&nbsp;</label>
                     {{range .viewFilings}}
-                    {{if .IsBorrowed}}
-                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" checked>
-                    {{else}}
-                    <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed">
-                    {{end}}
+                        {{if .DateReturned}}
+                            <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" checked>
+                        {{else}}
+                            <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" checked readonly>
+                        {{end}}
                     {{end}}
                 </div>
                 <div class="form-floating">
                     {{range .viewFilings}}
-                    {{if .IsBorrowed}}
-                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed"
-                        value="{{.DateBorrowed}}">
-                    {{else}}
-                    <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" disabled>
-                    {{end}}
+                        {{if .DateBorrowed}}
+                            <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}" disabled>
+                        {{else}}
+                        <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}">
+                        {{end}}
                     {{end}}
                     <label for="dateBorrowed">Date Borrowed</label>
                 </div>
@@ -472,11 +512,15 @@
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 {{range .viewFilings}}
-                {{if .IsBorrowed}}
-                <input type="date" class="form-control" id="dateReturned" name="dateReturned" disabled>
-                {{else}}
-                <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}">
-                {{end}}
+                    {{if .DateReturned}}
+                        <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}" disabled>
+                    {{else}}
+                        {{if .IsBorrowed}}
+                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}">
+                        {{else}}
+                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}" disabled>
+                        {{end}}
+                    {{end}}
                 {{end}}
                 <label for="dateReturned">Date Returned</label>
             </div>
@@ -485,7 +529,7 @@
             {{range .viewFilings}}
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" {{if eq
-                    .IsBorrowed false}}disabled{{end}}>
+                    .IsBorrowed true}}disabled{{end}}>
                 <label for="borrower">Borrower</label>
             </div>
             {{end}}
@@ -579,11 +623,11 @@
             if ($('#isBorrowed').is(':checked')) {
                 $("#dateBorrowed").prop('disabled', false);
                 $("#borrower").prop('disabled', false);
-                $("#dateReturned").prop('disabled', true);
+                // $("#dateReturned").prop('disabled', true);
             } else {
                 $("#dateBorrowed").prop('disabled', true);
                 $("#borrower").prop('disabled', false);
-                $("#dateReturned").prop('disabled', false);
+                // $("#dateReturned").prop('disabled', false);
             }
         });
 
@@ -613,6 +657,7 @@
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
+            var borrower = document.getElementById("borrower").value
             Swal.fire({
                 title: "Do you want to update this record?",
                 icon: "question",
@@ -623,7 +668,12 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    $("#filingForm").submit(); // Submit the form
+                    if(borrower == ""){
+                        Swal.fire("Borrower is empty", "", "info");
+                        document.getElementById("borrower").focus()
+                    }else{
+                        $("#filingForm").submit(); // Submit the form
+                    }
                 } else if (result.isDenied) {
                     Swal.fire("Cancel update record", "", "info");
                 }

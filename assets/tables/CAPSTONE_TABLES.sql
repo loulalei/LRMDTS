@@ -91,11 +91,6 @@ INNER JOIN view_routings rtg
 ON rtg.doc_id = fil.doc_id
 INNER JOIN approves apr
 ON apr.item_number = rtg.item_number
-	
-
-SELECT * FROM trackings trk
-INNER JOIN routings rtg
-ON trk.tracking_number = rtg.
 
 SELECT * FROM filings
 -- TEST QUERY
@@ -137,6 +132,8 @@ SELECT * FROM file_paths
 SELECT * FROM trackings
 SELECT * FROM FilingPaths
 
+SELECT * FROM trackings WHERE calendared IS NOT NULL
+
 SELECT * FROM view_borrower_history
 SELECT * FROM user_credentials
 SELECT COUNT(*) FROM divisions
@@ -163,6 +160,7 @@ SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 SELECT * FROM view_committees WHERE item_number = '2023-0002'
 SELECT * FROM approves WHERE item_number = '2023-0002'
 
+SELECT * FROM activity_loggers
 SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 
 -- DEFAULT VALUES
@@ -260,6 +258,7 @@ CREATE OR REPLACE FUNCTION truncate_tables()
 RETURNS text AS
 $$
 BEGIN
+	TRUNCATE TABLE activity_loggers;
 	TRUNCATE TABLE receivings;
 	TRUNCATE TABLE agendas;
 	TRUNCATE TABLE approves;
@@ -279,8 +278,10 @@ $$
 BEGIN
 	DROP VIEW view_agendas;
 	DROP VIEW view_committees;
+	DROP VIEW view_borrower_history;
 	DROP VIEW view_routings;
 	DROP TABLE receivings;
+	DROP TABLE activity_loggers;
 	DROP TABLE agendas;
 	DROP TABLE approves;
 	DROP TABLE releasings;
@@ -294,3 +295,5 @@ $$
 LANGUAGE plpgsql;
 
 SELECT * FROM folders
+SELECT * FROM activity_loggers WHERE user_id = 5
+SELECT activity, event, TO_CHAR(created_at, 'MM-DD-YYYY | HH:MI:SS') AS created_at FROM activity_loggers WHERE user_id = 5

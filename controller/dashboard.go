@@ -50,6 +50,8 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 		"greetings":  utils.GetGreetings(),
 		"notifs":     routings,
 		"agendas":    CountForAgenda(),
+		"sessions":   CountSessions(),
+		"approved":   CountApproved(),
 		"baseURL":    c.BaseURL(),
 	})
 }
@@ -76,5 +78,15 @@ func CountOrdinances() int64 {
 
 func CountResolutions() int64 {
 	total := database.DBConn.Exec("SELECT * FROM trackings WHERE law_type = 'Resolution'").RowsAffected
+	return total
+}
+
+func CountSessions() int64 {
+	total := database.DBConn.Exec("SELECT * FROM trackings WHERE calendared IS NOT NULL").RowsAffected
+	return total
+}
+
+func CountApproved() int64 {
+	total := database.DBConn.Exec("SELECT * FROM trackings WHERE enacted_date IS NOT NULL").RowsAffected
 	return total
 }

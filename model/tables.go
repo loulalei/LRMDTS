@@ -174,8 +174,7 @@ type (
 	DocumentFolders struct {
 		FolderId   int    `json:"folderId" gorm:"primaryKey;autoIncrement"`
 		FolderName string `json:"folderName,omitempty"`
-
-		Encoder string `json:"encoder,omitempty"`
+		Encoder    string `json:"encoder,omitempty"`
 	}
 
 	BorrowerHistories struct {
@@ -186,6 +185,15 @@ type (
 		DateReturned string    `json:"dateReturned,omitempty"`
 		CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	ActivityLogger struct {
+		ActivityId int       `json:"activityId" gorm:"primaryKey;autoIncrement"`
+		Activity   string    `json:"activity"`
+		Event      string    `json:"event"`
+		UserId     int       `json:"userId"`
+		CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 )
 

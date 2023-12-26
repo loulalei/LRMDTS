@@ -84,7 +84,7 @@
             </div>
         </div>
         {{end}}
-        {{if .viewAgenda}}
+        {{if .agendaId}}
         <div class="accordion-item"> <!-- FOR AGENDA -->
             <h2 class="accordion-header" id="agenda">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -94,7 +94,7 @@
             <div id="collapseAgenda" class="accordion-collapse collapse" aria-labelledby="agenda"
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
-                    {{ range .viewAgenda}}
+                    {{range .viewAgenda}}
                     {{if .ModifiedBy}}
                     <span class="badge bg-secondary my-2 fw-bold"> Encoder:
                         <i>{{.Encoder}}</i> | Modified By:
@@ -183,7 +183,7 @@
             </div>
         </div>
         {{end}}
-        {{if .viewApproved}}
+        {{if .approveId}}
         <div class="accordion-item"> <!-- APRROVED -->
             <h2 class="accordion-header" id="approved">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -265,7 +265,7 @@
             </div>
         </div>
         {{end}}
-        {{if .viewReleasings}}
+        {{if .releasingId}}
         <div class="accordion-item"> <!-- RELEASING -->
             <h2 class="accordion-header" id="releasing">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -389,7 +389,7 @@
             </div>
         </div>
         {{end}}
-        {{if .viewFilings}}
+        {{if .filingId}}
         <div class="accordion-item"> <!-- FILING -->
             <h2 class="accordion-header" id="filing">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"

@@ -188,6 +188,8 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	event := fmt.Sprintf("you registered new document with tracking number %s", receivingData.TrackingNumber)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
+	recordsCaptured := "register receiving"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 	return c.Redirect("/api/routing")
 }
 
@@ -285,9 +287,12 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	receivings := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
 
-	event := "calendared for agenda"
-	activity := fmt.Sprintf("encoded item number %s", requestAgenda.ItemNumber)
+	event := fmt.Sprintf("calendared for agenda with item number %s and status %s", requestAgenda.ItemNumber, requestAgenda.AgendaTag)
+	activity := "encoded for agenda"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
+	recordsCaptured := "register agenda"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 
 	return c.Redirect("/api/routing/secretariat")
 }
@@ -320,9 +325,12 @@ func UpdateForAgenda(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE agendas SET agenda_tag = ?, agenda_remarks = ?, modified_by = ?,updated_at = ? WHERE item_number = ?", requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, model.Fullname, dateNow, requestAgenda.ItemNumber)
 	database.DBConn.Debug().Exec("UPDATE routings SET document_tag = ?, remarks = ?, updated_at = ? WHERE item_number = ?", requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, dateNow, requestAgenda.ItemNumber)
 
-	event := "updated for agenda"
-	activity := fmt.Sprintf("change status for item number %s", requestAgenda.ItemNumber)
+	activity := "updated for agenda"
+	event := fmt.Sprintf("change status for item number %s to %s ", requestAgenda.ItemNumber, requestAgenda.AgendaTag)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
+	recordsCaptured := "update agenda"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 
 	return c.Redirect("/api/routing/secretariat")
 }
@@ -529,6 +537,9 @@ func RegisterApproved(c *fiber.Ctx) error {
 	event := fmt.Sprintf("registered new %s No. %s S. %s", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
+	recordsCaptured := "register approved"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
+
 	return c.Redirect("/api/routing")
 }
 
@@ -660,6 +671,9 @@ func RegisterReleasing(c *fiber.Ctx) error {
 	activity := "encoded for release"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
+	recordsCaptured := "register releasing"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
+
 	return c.Redirect("/api/routing")
 }
 
@@ -751,25 +765,29 @@ func SaveReleasing(c *fiber.Ctx) error {
 
 	if requestReleasing.MayorDateForwarded != "" && (!requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved == "") {
 		event = fmt.Sprintf("forwarded item number %s to Mayor", requestReleasing.ItemNumber)
-		fmt.Println("mayor forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.MayorDateForwarded != "" && (requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved != "") {
-		event = fmt.Sprintf("approved item number %s by Mayor", requestReleasing.ItemNumber)
-		fmt.Println("mayor approved")
+		if requestReleasing.IsApprovedLachesMayor {
+			event = fmt.Sprintf("approved by laches with item number %s by Mayor", requestReleasing.ItemNumber)
+		} else {
+			event = fmt.Sprintf("approved item number %s by Mayor", requestReleasing.ItemNumber)
+		}
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (!requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved == "") {
 		event = fmt.Sprintf("forwarded item number %s  to Panlalawigan", requestReleasing.ItemNumber)
-		fmt.Println("sta cruz forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved != "") {
-		event = fmt.Sprintf("approved item number %s  by Panlalawigan", requestReleasing.ItemNumber)
-		fmt.Println("sta cruz approved")
+		if requestReleasing.IsApprovedLachesSP {
+			event = fmt.Sprintf("approved by laches item number %s by Panlalawigan", requestReleasing.ItemNumber)
+		} else {
+			event = fmt.Sprintf("approved item number %s  by Panlalawigan", requestReleasing.ItemNumber)
+		}
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
@@ -791,6 +809,9 @@ func SaveReleasing(c *fiber.Ctx) error {
 
 	activity := "updated for release"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
+	recordsCaptured := "update releasing"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 
 	return c.Redirect("/api/routing")
 }
@@ -902,6 +923,9 @@ func RegisterFiling(c *fiber.Ctx) error {
 	activity := "encoded for filing"
 	event := fmt.Sprintf("filed item number %s in folder %s ", requestFiling.ItemNumber, requestFiling.FolderName)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
+	recordsCaptured := "register filing"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 
 	return c.Redirect("/api/routing")
 }
@@ -1029,6 +1053,9 @@ func SaveFiling(c *fiber.Ctx) error {
 
 	activity := "updated for filing"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
+	recordsCaptured := "update filing"
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_captured,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
 
 	return c.Redirect("/api/routing")
 }

@@ -11,145 +11,182 @@
 </nav>
 
 <div class="container-fluid py-2 shadow mb-3">
-    <!-- RECEIVING -->
-    <div class="row">
-        {{range .viewRoutings}}
-        <span class="badge bg-secondary my-2 fw-bold">RECEIVING - Encoder: <i>{{.Encoder}}</i></span>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
-                    value="{{ .TrackingNumber}}" disabled>
-                <label for="trackingNumberx">Tracking Number</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="{{.ReceivedDate}}"
-                    disabled>
-                <label for="receivedDate">Date</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedTime" name="receivedTime" value="{{.ReceivedTime}}"
-                    disabled>
-                <label for="receivedTime">Time</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}" disabled>
-                <label for="receiver">Receiver</label>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="summary" name="summary" value="{{.Summary}}" disabled>
-                <label for="summary">Summary</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag"
-                    value="{{.DocumentTag}}" disabled>
-                <label for="recevingDocumentTag">Document Tag</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks"
-                    value="{{.Remarks}}" disabled>
-                <label for="receivingRemarks">Receiving Remarks</label>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedFile" name="receivedFile" value="{{.ReceivedFile}}"
-                    disabled>
-                <label for="receivedFile">Received File</label>
-            </div>
-        </div>
-    </div>
-    {{end}}
-    <!-- FOR AGENDA -->
-    <div class="row">
-        {{ range .viewAgenda}}
-        {{if .ModifiedBy}}
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i> | Modified By:
-            <i>{{.ModifiedBy}}</i></span>
-        {{else}}
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA - Encoder: <i>{{.Encoder}}</i></span>
-        {{end}}
-
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                {{if .IsUrgent}}
-                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="Yes" disabled>
-                {{else}}
-                <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="No" disabled>
-                {{end}}
-                <label for="receivedDate">Is this document URGENT?</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="itemNumberx" name="itemNumberx" value="{{.ItemNumber}}"
-                    disabled>
-                <label for="itemNumberx">Item Number</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dateCalendared" name="dateCalendared"
-                    value="{{.DateCalendared}}" disabled>
-                <label for="dateCalendared">Date Calendared</label>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dateReported" name="dateReported" value="{{.DateReported}}"
-                    disabled>
-                <label for="dateReported">Date Reported</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="source" name="source" value="{{.SourceResult}}" disabled>
-                <label for="source">Source</label>
-            </div>
-        </div>
-        {{end}}
-        <div class="col-md-8">
-            <table class="table table-striped table-hover border">
-                <thead>
-                    <tr>
-                        <th colspan="2">COMMITTEE LIST</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{range .itemCommittees}}
-                    <tr>
-                        <td>{{.Name}}</td>
-                    </tr>
+    <div class="accordion" id="accordionRouting">
+        <div class="accordion-item"> <!-- RECEIVING -->
+            <h2 class="accordion-header" id="receiving">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReceiving" aria-expanded="true" aria-controls="collapseReceiving">RECEIVING
+                </button>
+            </h2>
+            <div id="collapseReceiving" class="accordion-collapse collapse show" aria-labelledby="receiving"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewRoutings}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
+                        <i>{{.Encoder}}</i></span>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
+                                value="{{ .TrackingNumber}}" disabled>
+                            <label for="trackingNumberx">Tracking Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate"
+                                value="{{.ReceivedDate}}" disabled>
+                            <label for="receivedDate">Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedTime" name="receivedTime"
+                                value="{{.ReceivedTime}}" disabled>
+                            <label for="receivedTime">Time</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}"
+                                disabled>
+                            <label for="receiver">Receiver</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="summary" name="summary" disabled>{{.Summary}}</textarea>
+                            <label for="summary">Summary</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag"
+                                value="{{.DocumentTag}}" disabled>
+                            <label for="recevingDocumentTag">Document Tag</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks"
+                                value="{{.Remarks}}" disabled>
+                            <label for="receivingRemarks">Receiving Remarks</label>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                                value="{{.ReceivedFile}}" disabled>
+                            <label for="receivedFile">Received File</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="col-md-6 py-1">
+                            <small><a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                                    type="button"><i class="fa-solid fa-download"></i> Download</a></small>
+                        </div>
+                    </div>
                     {{end}}
-                </tbody>
-            </table>
-        </div>
-        {{ range .viewAgenda}}
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="documentTag" name="documentTag" value="{{.AgendaTag}}"
-                    disabled>
-                <label for="soudocumentTagrce">Document Tag</label>
+                </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="remarks" name="remarks" value="{{.AgendaRemarks}}" disabled>
-                <label for="remarks">Remarks</label>
+        <div class="accordion-item"> <!-- FOR AGENDA -->
+            <h2 class="accordion-header" id="agenda">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseAgenda" aria-expanded="true" aria-controls="collapseAgenda">AGENDA
+                </button>
+            </h2>
+            <div id="collapseAgenda" class="accordion-collapse collapse" aria-labelledby="agenda"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{ range .viewAgenda}}
+                    {{if .ModifiedBy}}
+                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
+                        <i>{{.Encoder}}</i> | Modified By:
+                        <i>{{.ModifiedBy}}</i></span>
+                    {{else}}
+                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
+                        <i>{{.Encoder}}</i></span>
+                    {{end}}
+
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            {{if .IsUrgent}}
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="Yes"
+                                disabled>
+                            {{else}}
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="No"
+                                disabled>
+                            {{end}}
+                            <label for="receivedDate">Is this document URGENT?</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="itemNumberx" name="itemNumberx"
+                                value="{{.ItemNumber}}" disabled>
+                            <label for="itemNumberx">Item Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="dateCalendared" name="dateCalendared"
+                                value="{{.DateCalendared}}" disabled>
+                            <label for="dateCalendared">Date Calendared</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="dateReported" name="dateReported"
+                                value="{{.DateReported}}" disabled>
+                            <label for="dateReported">Date Reported</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="source" name="source" value="{{.SourceResult}}"
+                                disabled>
+                            <label for="source">Source</label>
+                        </div>
+                    </div>
+                    {{end}}
+                    <!-- COMMITTEE LIST  -->
+                    <div class="col-md-8">
+                        <table class="table table-striped table-hover border">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">COMMITTEE LIST</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .itemCommittees}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END COMMITTEE LIST  -->
+                    {{ range .viewAgenda}}
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="documentTag" name="documentTag"
+                                value="{{.AgendaTag}}" disabled>
+                            <label for="soudocumentTagrce">Document Tag</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="remarks" name="remarks"
+                                value="{{.AgendaRemarks}}" disabled>
+                            <label for="remarks">Remarks</label>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
             </div>
         </div>
-        {{end}}
+        <hr>
     </div>
     <!-- APRROVED -->
     <form class="row" action="/api/routing/register_approved" method="post" enctype="multipart/form-data" id="approved"
@@ -190,7 +227,7 @@
             <div class="mb-12">
                 <label for="receiving_file" class="form-label">Attach Res/Ord File</label>
                 <input class="form-control form-control-sm" id="attachedFile" name="attachedFile" type="file"
-                accept="application/pdf,image/jpeg,,image/png" required>
+                    accept="application/pdf,image/jpeg,,image/png" required>
             </div>
         </div>
         <div class="col-md-3">

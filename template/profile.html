@@ -53,21 +53,13 @@
           </tr>
         </thead>
         <tbody>
+          {{range .employeePerformances}}
           <tr>
-            <td>2023-10-05</td>
-            <td>2</td>
-            <td>10</td>
+            <td>{{.Date}}</td>
+            <td>{{.RecordsCaptured}}</td>
+            <td>{{.RecordsRetrieved}}</td>
           </tr>
-          <tr>
-            <td>2023-10-04</td>
-            <td>5</td>
-            <td>5</td>
-          </tr>
-          <tr>
-            <td>2023-10-03</td>
-            <td>7</td>
-            <td>2</td>
-          </tr>
+          {{end}}
         </tbody>
       </table>
     </div>

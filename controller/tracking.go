@@ -80,5 +80,13 @@ func SearchTracking(c *fiber.Ctx) error {
 
 func DownloadAttachment(c *fiber.Ctx) error {
 	filename := c.Params("filename")
+
+	recordsCaptured := filename
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_retrieved,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
+
+	event := fmt.Sprintf("downloaded the file %s", filename)
+	activity := "file downloaded"
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
 	return c.Download("./assets/uploads/" + filename)
 }

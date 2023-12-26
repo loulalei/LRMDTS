@@ -55,11 +55,17 @@
                 <label for="recevingDocumentTag">Document Tag</label>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="receivedFile" name="receivedFile" value="{{.ReceivedFile}}"
-                    disabled>
+                <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                    value="{{.ReceivedFile}}" disabled>
                 <label for="receivedFile">Received File</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="col-md-6 py-1">
+                <small><a href="/api/routing/download/{{.ReceivedFile}}" class="btn btn-outline-info btn-sm fw-bold"
+                        type="button"><i class="fa-solid fa-download"></i> Download</a></small>
             </div>
         </div>
         <div class="col-md-4">
@@ -70,6 +76,9 @@
             </div>
         </div>
     </div>
+
+
+
     <!-- FOR AGENDA -->
     <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
         name="forAgenda">
@@ -204,7 +213,6 @@
                         class="fa-regular fa-hand"> CANCEL</i> </a></small>
         </div>
     </form>
-
 </div>
 
 <script>

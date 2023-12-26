@@ -193,7 +193,14 @@ type (
 		Event      string    `json:"event"`
 		UserId     int       `json:"userId"`
 		CreatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
-		UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+
+	EmployeePerformace struct {
+		PerformanceId    int       `json:"performanceId" gorm:"primaryKey;autoIncrement"`
+		RecordsCaptured  string    `json:"recordsCaptured"`
+		RecordsRetrieved string    `json:"RecordsRetrieved"`
+		UserId           int       `json:"userId"`
+		CreatedAt        time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 )
 

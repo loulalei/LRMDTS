@@ -105,6 +105,7 @@ SELECT * FROM approves
 SELECT * FROM releasings
 SELECT * FROM filings
 SELECT * FROM borrower_histories
+select * from employee_performaces
 
 SELECT * FROM divisions
 SELECT * FROM committees
@@ -114,6 +115,7 @@ SELECT * FROM proponents
 SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
+
 
 nextval('proponents_proponent_id_seq'::regclass)
 
@@ -259,6 +261,7 @@ RETURNS text AS
 $$
 BEGIN
 	TRUNCATE TABLE activity_loggers;
+	TRUNCATE TABLE employee_performaces;
 	TRUNCATE TABLE receivings;
 	TRUNCATE TABLE agendas;
 	TRUNCATE TABLE approves;
@@ -282,6 +285,7 @@ BEGIN
 	DROP VIEW view_routings;
 	DROP TABLE receivings;
 	DROP TABLE activity_loggers;
+	DROP TABLE employee_performaces;
 	DROP TABLE agendas;
 	DROP TABLE approves;
 	DROP TABLE releasings;
@@ -296,4 +300,6 @@ LANGUAGE plpgsql;
 
 SELECT * FROM folders
 SELECT * FROM activity_loggers WHERE user_id = 5
-SELECT activity, event, TO_CHAR(created_at, 'MM-DD-YYYY | HH:MI:SS') AS created_at FROM activity_loggers WHERE user_id = 5
+SELECT COUNT(records_captured) AS records_captured, TO_CHAR(created_at, 'Mon. DD,YYYY') AS date FROM employee_performaces WHERE user_id = 6 GROUP BY date
+
+SELECT DISTINCT TO_CHAR(created_at, 'Mon. DD,YYYY') AS date, COUNT(records_captured) as records_captured, COUNT(records_retrieved) as records_retrieved FROM employee_performaces WHERE user_id = 6 GROUP BY date

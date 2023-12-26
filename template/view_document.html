@@ -1,0 +1,523 @@
+{{template "header" .}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8-beta.17/jquery.inputmask.min.js"
+    integrity="sha512-zdfH1XdRONkxXKLQxCI2Ak3c9wNymTiPh5cU4OsUavFDATDbUzLR+SYWWz0RkhDmBDT0gNSUe4xrQXx8D89JIQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
+<nav class="navbar navbar-expand-sm bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="bi bi-calendar-week"></i> DOCUMENT - FILING CABINET</a>
+    </div>
+</nav>
+
+<div class="container-fluid py-2 shadow mb-3">
+    <div class="accordion" id="accordionRouting">
+        {{if .viewRoutings}}
+        <div class="accordion-item"> <!-- RECEIVING -->
+            <h2 class="accordion-header" id="receiving">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReceiving" aria-expanded="true" aria-controls="collapseReceiving">RECEIVING
+                </button>
+            </h2>
+            <div id="collapseReceiving" class="accordion-collapse collapse show" aria-labelledby="receiving"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewRoutings}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
+                        <i>{{.Encoder}}</i></span>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
+                                value="{{ .TrackingNumber}}" disabled>
+                            <label for="trackingNumberx">Tracking Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate"
+                                value="{{.ReceivedDate}}" disabled>
+                            <label for="receivedDate">Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedTime" name="receivedTime"
+                                value="{{.ReceivedTime}}" disabled>
+                            <label for="receivedTime">Time</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receiver" name="receiver" value="{{.Receiver}}"
+                                disabled>
+                            <label for="receiver">Receiver</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="summary" name="summary" disabled>{{.Summary}}</textarea>
+                            <label for="summary">Summary</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="recevingDocumentTag" name="recevingDocumentTag"
+                                value="{{.DocumentTag}}" disabled>
+                            <label for="recevingDocumentTag">Document Tag</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivingRemarks" name="receivingRemarks"
+                                value="{{.Remarks}}" disabled>
+                            <label for="receivingRemarks">Receiving Remarks</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                                value="{{.ReceivedFile}}" disabled>
+                            <label for="receivedFile">Received File</label>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+        {{if .viewAgenda}}
+        <div class="accordion-item"> <!-- FOR AGENDA -->
+            <h2 class="accordion-header" id="agenda">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseAgenda" aria-expanded="true" aria-controls="collapseAgenda">AGENDA
+                </button>
+            </h2>
+            <div id="collapseAgenda" class="accordion-collapse collapse" aria-labelledby="agenda"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{ range .viewAgenda}}
+                    {{if .ModifiedBy}}
+                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
+                        <i>{{.Encoder}}</i> | Modified By:
+                        <i>{{.ModifiedBy}}</i></span>
+                    {{else}}
+                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
+                        <i>{{.Encoder}}</i></span>
+                    {{end}}
+
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            {{if .IsUrgent}}
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="Yes"
+                                disabled>
+                            {{else}}
+                            <input type="text" class="form-control" id="receivedDate" name="receivedDate" value="No"
+                                disabled>
+                            {{end}}
+                            <label for="receivedDate">Is this document URGENT?</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="itemNumberx" name="itemNumberx"
+                                value="{{.ItemNumber}}" disabled>
+                            <label for="itemNumberx">Item Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="dateCalendared" name="dateCalendared"
+                                value="{{.DateCalendared}}" disabled>
+                            <label for="dateCalendared">Date Calendared</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="dateReported" name="dateReported"
+                                value="{{.DateReported}}" disabled>
+                            <label for="dateReported">Date Reported</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="source" name="source" value="{{.SourceResult}}"
+                                disabled>
+                            <label for="source">Source</label>
+                        </div>
+                    </div>
+                    {{end}}
+                    <!-- COMMITTEE LIST  -->
+                    <div class="col-md-8">
+                        <table class="table table-striped table-hover border">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">COMMITTEE LIST</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .itemCommittees}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END COMMITTEE LIST  -->
+                    {{ range .viewAgenda}}
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="documentTag" name="documentTag"
+                                value="{{.AgendaTag}}" disabled>
+                            <label for="soudocumentTagrce">Document Tag</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="remarks" name="remarks"
+                                value="{{.AgendaRemarks}}" disabled>
+                            <label for="remarks">Remarks</label>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+        {{if .viewApproved}}
+        <div class="accordion-item"> <!-- APRROVED -->
+            <h2 class="accordion-header" id="approved">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseApproved" aria-expanded="true" aria-controls="collapseApproved">APPROVED
+                </button>
+            </h2>
+            <div id="collapseApproved" class="accordion-collapse collapse" aria-labelledby="approved"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewApproved}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
+                        <i>{{.Encoder}}</i></span>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}"
+                                disabled>
+                            <label for="lawType">Legislative Measure</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="lawNumber" name="lawNumber"
+                                value="{{.LawNumber}}" disabled>
+                            <label for="lawNumber">Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="series" name="series" value="{{.Series}}"
+                                disabled>
+                            <label for="series">Series</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="enactedDate" name="enactedDate"
+                                value="{{.EnactedDate}}" disabled>
+                            <label for="enactedDate">Date Enacted</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="motionedBy" name="motionedBy"
+                                value="{{.MotionedBy}}" disabled>
+                            <label for="motionedBy">Motioned By</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="author" name="author" value="{{.Author}}"
+                                disabled>
+                            <label for="author">Author</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="titleBody" name="titleBody" style="height: 132px"
+                                disabled>{{.TitleBody}}</textarea>
+                            <label for="titleBody">Title/Body</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="resOrdFile" name="resOrdFile"
+                                value="{{.ResOrdFile}}" disabled>
+                            <label for="resOrdFile">Attached File</label>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="receivedFile" name="receivedFile"
+                                value="For information of the whole body	" disabled>
+                            <label for="receivedFile">Document Tag</label>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+        {{if .viewReleasings}}
+        <div class="accordion-item"> <!-- RELEASING -->
+            <h2 class="accordion-header" id="releasing">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseReleasing" aria-expanded="true" aria-controls="collapseReleasing">RELEASE
+                </button>
+            </h2>
+            <div id="collapseReleasing" class="accordion-collapse collapse" aria-labelledby="releasing"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewReleasings}}
+                    <span class="badge bg-secondary my-2 fw-bold">Encoder:<i>{{.Encoder}}</i></span>
+                    <div class="col-md-4"> <!-- TO MAYOR  -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">TO MAYOR</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="mayorDateForwarded"
+                                        name="mayorDateForwarded" value="{{.MayorDateForwarded}}" disabled>
+                                    <label for="mayorDateForwarded">Date Forwarded</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    {{if .IsApprovedLachesMayor}}
+                                    <input type="date" class="form-control" id="mayorDateApproved"
+                                        name="mayorDateApproved" value="None" disabled>
+                                    {{else}}
+                                    <input type="date" class="form-control" id="mayorDateApproved"
+                                        name="mayorDateApproved" value="{{.MayorDateApproved}}" disabled>
+                                    {{end}}
+                                    <label for="mayorDateApproved">Date Approved</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <div class="form-check form-switch">
+                                        {{if .IsApprovedLachesMayor}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
+                                            name="isApprovedLachesMayor" disabled checked>
+                                        {{else}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesMayor"
+                                            name="isApprovedLachesMayor" disabled>
+                                        {{end}}
+                                        <label class="form-check-label" for="isApprovedLachesMayor">Approved by
+                                            laches</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- END TO MAYOR  -->
+                    <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">SANGGUNIAN PANLALAWIGAN</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
+                                        value="{{.SPDateForwarded}}" disabled>
+                                    <label for="spDateForwarded">Date Forwarded</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    {{if .IsApprovedLachesSP }}
+                                    <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                                        value="None" disabled>
+                                    {{else}}
+                                    <input type="date" class="form-control" id="spDateApproved" name="spDateApproved"
+                                        value="{{.SPDateApproved}}" disabled>
+                                    {{end}}
+                                    <label for="spDateApproved">Date Approved</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <div class="form-check form-switch">
+                                        {{if .IsApprovedLachesSP }}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                            name="isApprovedLachesSP" disabled checked>
+                                        {{else}}
+                                        <input class="form-check-input" type="checkbox" id="isApprovedLachesSP"
+                                            name="isApprovedLachesSP" disabled>
+                                        {{end}}
+                                        <label class="form-check-label" for="isApprovedLachesSP">Approved by
+                                            laches</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="spResolutionNumber"
+                                        name="spResolutionNumber" value="{{.SPResolutionNumber}}" disabled>
+                                    <label for="spResolutionNumber">SP Resolution No.</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="spResolutionFile"
+                                        name="spResolutionFile" value="{{.SPResolutionFile}}" disabled>
+                                    <label for="spResolutionFile">Attached Resolution File</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
+                    <div class="col-md-4"> <!-- LOCAL -->
+                        <div class="row">
+                            <span class="badge bg-secondary mb-2 fw-bold">LOCAL</span>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="localDateRelease"
+                                        name="localDateRelease" value="{{.LocalDateRelease}}" disabled>
+                                    <label for="localDateRelease">Date of Local Release</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="endorsementFile" name="endorsementFile"
+                                        value="{{.EndorsementFile}}" disabled>
+                                    <label for="endorsementFile">Attached Endorsement File</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}<!-- END OF LOCAL -->
+                </div>
+            </div>
+        </div>
+        {{end}}
+        {{if .viewFilings}}
+        <div class="accordion-item"> <!-- FILING -->
+            <h2 class="accordion-header" id="filing">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseFiling" aria-expanded="true" aria-controls="collapseFiling">FILING
+                </button>
+            </h2>
+            <div id="collapseFiling" class="accordion-collapse collapse" aria-labelledby="filing"
+                data-bs-parent="#accordionRouting">
+                <div class="accordion-body row">
+                    {{range .viewFilings}}
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber" value="{{.CabinetNumber }}" disabled>
+                            <label for="cabinetNumber">File Folder/Cabinet No.</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber" disabled>
+                            <label for="cabinetNumber">Folder Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="dateFiled" name="dateFiled" disabled>
+                            <label for="dateFiled">Date Filed</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <label for="isBorrowed">Is it borrowed?&nbsp;</label>
+                                <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" disabled>
+                            </div>
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" disabled>
+                                <label for="dateBorrowed">Date Borrowed</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" disabled>
+                            <label for="dateReturned">Date Returned</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="borrower" name="borrower" disabled>
+                            <label for="borrower">Borrower</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="datePublished" name="datePublished" disabled>
+                            <label for="datePublished">Date Published</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="publisher" name="publisher" disabled>
+                            <label for="publisher">Publisher</label>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#isBorrowed").change(function () {
+            if ($('#isBorrowed').is(':checked')) {
+                $("#dateBorrowed").prop('disabled', false);
+                $("#borrower").prop('disabled', false);
+            } else {
+                $("#dateBorrowed").prop('disabled', true);
+                $("#borrower").prop('disabled', true);
+            }
+        });
+
+        $("#datePublished").change(function () {
+            var datePublished = $('#datePublished').val();
+            var dateLen = datePublished.length;
+            if (dateLen > 0) {
+                $("#publisher").prop('disabled', false);
+            } else {
+                $("#publisher").prop('disabled', true);
+            }
+        });
+
+        $("#folderName").change(function () {
+            var selectedValue = document.getElementById("folderName").value
+            if (selectedValue == "new") {
+                $("#newFolderName").prop('disabled', false);
+            } else {
+                $("#newFolderName").prop('disabled', true);
+                document.getElementById("newFolderName").focus()
+            }
+        });
+
+        $("#cabinetNumber").inputmask("CNO-99");
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+            Swal.fire({
+                title: "Do you want to save this record?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Save"
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $("#filingForm").submit(); // Submit the form
+                } else if (result.isDenied) {
+                    Swal.fire("Cancel saving record", "", "info");
+                }
+            });
+        });
+    });
+
+</script>
+
+{{template "footer" .}}

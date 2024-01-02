@@ -65,12 +65,14 @@
                             {{end}}
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" aria-current="page" href="/api/tracking"><i class="fa-solid fa-chart-gantt"></i>
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/tracking"><i
+                                    class="fa-solid fa-chart-gantt"></i>
                                 TRACKING</a>
                         </li>
                         {{if eq .userLogged "HOD"}}
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" aria-current="page" href="/api/settings"><i class="fa-solid fa-users"></i> SETTINGS</a>
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/settings"><i
+                                    class="fa-solid fa-users"></i> SETTINGS</a>
                         </li>
                         {{end}}
 
@@ -88,6 +90,8 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item fw-bold" href="/api/user/profile"><i
                                             class="bi bi-person-bounding-box"></i> PROFILE</a></li>
+                                <li><a class="dropdown-item fw-bold" href="#" id="change_password"><i
+                                            class="fa-solid fa-unlock-keyhole"></i> UPDATE PASSWORD</a></li>
                                 <li><a class="dropdown-item fw-bold pe-auto" id="logout"><i
                                             class="bi bi-box-arrow-left"></i> LOGOUT</a>
                                 </li>
@@ -97,6 +101,53 @@
                 </div>
             </div>
         </nav>
+
+
+        <!-- MODAL -->
+        <div class="modal fade" id="password_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="add" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="add">CHANGE PASSWORD</h1>
+                    </div>
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <label for="password"><i class="bi bi-key"></i>
+                                    Password</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                                <label for="cpassword"><i class="bi bi-key"></i>
+                                    Confirm Password</label>
+                                <small><span id="message"></span></small>
+                                <div class="row mx-2">
+                                    <div class="form-check form-switch mt-2 col-md-6">
+                                        <small><input class="form-check-input" type="checkbox" role="switch"
+                                                id="showPassword" checked>
+                                            <figcaption class="figure-caption fw-bold" for="showPassword">Hide password
+                                            </figcaption>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="update_password"
+                            name="register_user">Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script>
             $('#logout').click(function () {
                 Swal.fire({
@@ -112,5 +163,90 @@
                         )
                     }
                 })
+            });
+        </script>
+
+
+        <script>
+            // Show Modal
+            $("#change_password").click(function () {
+                var myModal = new bootstrap.Modal(document.getElementById("password_modal"), {});
+                myModal.show();
+            });
+
+
+            $("#showPassword").click(function () {
+                var pass = document.getElementById("password");
+                var cpass = document.getElementById("cpassword");
+                if (pass.type === "password" && cpass.type === "password") {
+                    pass.type = "text";
+                    cpass.type = "text";
+                } else {
+                    pass.type = "password"
+                    cpass.type = "password"
+                };
+            });
+
+            $('#password, #cpassword').on('keyup', function () {
+                if ($('#password').val() != $('#cpassword').val()) {
+                    $('#message').html('Password does not match').css('color', 'red');
+                } else $('#message').html('');
+            });
+
+            $("#update_password").click(function () {
+                var userId = $('#userId').val()
+                var password = $('#password').val()
+                var cpassword = $('#cpassword').val()
+                var endpoint = "/api/user/update_password"
+
+                if (password != cpassword) {
+                    Swal.fire(
+                        'Update Error',
+                        'Password does not match',
+                        'info'
+                    )
+                } else if (password == "" || cpassword == "") {
+                    Swal.fire(
+                        'Update Error',
+                        'Enter password',
+                        'info'
+                    )
+                } else {
+                    $.post(endpoint,
+                        {
+                            "id": userId,
+                            "password": password
+                        },
+                        function (response, status) {
+                            if (response.status == 100) {
+                                Swal.fire({
+                                    title: response.data,
+                                    text: response.message,
+                                    icon: "success",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    confirmButtonText: "Done",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        Swal.fire("Saved!", "", "success");
+                                        window.location.href = "/api/user/logout";
+                                    }
+                                });
+                            } else {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: response.message,
+                                });
+                            }
+                        },
+                    );
+                }
             });
         </script>

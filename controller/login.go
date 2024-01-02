@@ -50,11 +50,11 @@ func VerifyUser(c *fiber.Ctx) error {
 			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, model.UserID)
 			return c.Redirect("/api/dashboard")
 		} else if userCredentials.DivisionCode == "SPCSD" { //Secretariat
-			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset =  WHERE id = ?", false, userCredentials.Id)
+			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
 			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged in", event, model.UserID)
 			return c.Redirect("/api/dashboard/secretariat")
 		} else if userCredentials.DivisionCode == "HOD" { //Secretariat
-			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset =  WHERE id = ?", false, userCredentials.Id)
+			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
 			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, model.UserID)
 			return c.Redirect("/api/dashboard/head_office")
 		}
@@ -171,5 +171,26 @@ func ResetPasssword(c *fiber.Ctx) error {
 		Status:  100,
 		Message: "Successful password reset, please take a screenshot of this passcode to login.",
 		Data:    passCode,
+	})
+}
+
+func ChangePasssword(c *fiber.Ctx) error {
+	userCredentials := &model.UserCredentials{}
+	if parsErr := c.BodyParser(userCredentials); parsErr != nil {
+		return c.JSON(parsErr.Error())
+	}
+
+	encryptPassword, encErr := utils.Encrypt(userCredentials.Password, utils.GetEnv("SECRET_KEY"))
+	if encErr != nil {
+		return c.JSON(fiber.Map{
+			"error": encErr.Error(),
+		})
+	}
+
+	database.DBConn.Debug().Exec("UPDATE user_credentials SET password = ?, is_reset = ? WHERE id = ?", encryptPassword, false, userCredentials.Id)
+
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "Successful password update.",
 	})
 }

@@ -27,19 +27,27 @@ func ViewSettings(c *fiber.Ctx) error {
 	})
 }
 
-func ViewSettingsUser(c *fiber.Ctx) error {
-	fmt.Println("Process: User Settings")
+func ViewSettingsUsers(c *fiber.Ctx) error {
+	fmt.Println("Process: Users Settings")
 	if model.Fullname == "" {
 		return c.Redirect("/")
 	}
 
-	return c.Render("settingsuser", fiber.Map{
+	userList := &[]model.ViewUsers{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_users").Scan(userList)
+
+	divisions := &[]model.Divisions{}
+	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
+
+	return c.Render("settingsusers", fiber.Map{
 		"pageTitle":  "Settings",
-		"title":      "USER SETTINGS",
+		"title":      "USERS SETTINGS",
 		"yearNow":    model.YearNow,
 		"user":       model.Fullname,
 		"userLogged": model.UserCodeLogged,
 		"userId":     model.UserID,
+		"userList":   userList,
+		"divisions":  divisions,
 		"greetings":  utils.GetGreetings(),
 		"baseURL":    c.BaseURL(),
 	})

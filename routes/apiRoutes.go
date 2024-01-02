@@ -13,8 +13,10 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 
 	apiEndpoint := app.Group("/api")
 	userEndpoint := apiEndpoint.Group("/user")
-	userEndpoint.Get("/register", controller.ViewRegistration)
+	userEndpoint.Get("/_r3gM3", controller.ViewRegistration)
+	userEndpoint.Post("/reset", controller.ResetPasssword)
 	userEndpoint.Post("/save", controller.RegisterUser)
+	userEndpoint.Post("/add_user", controller.AddUser)
 	userEndpoint.Get("/login", controller.ViewLogin).Name("login_page")
 	userEndpoint.Get("/logout", controller.Logout)
 	userEndpoint.Post("/verify", controller.VerifyUser)
@@ -23,6 +25,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	dashboardEndpoint := apiEndpoint.Group("/dashboard")
 	dashboardEndpoint.Get("/", controller.ViewDashboard)
 	dashboardEndpoint.Get("/secretariat", controller.ViewDashboardSecretariat)
+	dashboardEndpoint.Get("/head_office", controller.ViewDashboardHeadOffice)
 
 	routingEndpoint := apiEndpoint.Group("/routing")
 	routingEndpoint.Get("/", controller.ViewRouting)
@@ -58,7 +61,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	// Settings
 	settingsEndpoint := apiEndpoint.Group("/settings")
 	settingsEndpoint.Get("/", controller.ViewSettings)
-	settingsEndpoint.Get("/uses", controller.ViewSettingsUser)
+	settingsEndpoint.Get("/users", controller.ViewSettingsUsers)
 	settingsEndpoint.Get("/proponents", controller.ViewSettingsProponents)
 	settingsEndpoint.Post("/insert_proponent", controller.AddProponents)
 	settingsEndpoint.Post("/remove_proponent/", controller.DeleteProponent)

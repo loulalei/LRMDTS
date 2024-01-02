@@ -51,7 +51,7 @@ func InitializeTables() {
 	var count int
 	database.DBConn.Raw("SELECT COUNT(*) FROM divisions").Scan(&count)
 	if count == 0 {
-		database.DBConn.Exec("INSERT INTO divisions (name, code) VALUES ('Records','SPCRD'), ('Secretariat','SPCSD')")
+		database.DBConn.Exec("INSERT INTO divisions (name, code) VALUES ('Head Office','HOD'), ('Records','SPCRD'), ('Secretariat','SPCSD')")
 		fmt.Println("Success")
 	}
 
@@ -92,4 +92,9 @@ func InitializeTables() {
 	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_borrower_history AS SELECT brw.borrower_id, apr.law_type, apr.res_ord_file, brw.borrower, brw.date_borrowed, brw.date_returned FROM borrower_histories brw INNER JOIN filings fil ON brw.doc_id = fil.doc_id INNER JOIN view_routings rtg ON rtg.doc_id = fil.doc_id INNER JOIN approves apr ON apr.item_number = rtg.item_number").Error; database.DBErr != nil {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
+
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_users AS SELECT id, fullname, password, div.name, division_code, is_reset, to_char(created_at, 'Mon. DD,YYYY') AS date_registered  FROM user_credentials usr INNER JOIN divisions div ON div.code = usr.division_code").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
+	}
+
 }

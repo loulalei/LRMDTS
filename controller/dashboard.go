@@ -56,6 +56,35 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	})
 }
 
+func ViewDashboardHeadOffice(c *fiber.Ctx) error {
+	if model.Fullname == "" {
+		return c.Redirect("/")
+	}
+
+	proponents := &[]model.Proponents{}
+	database.DBConn.Debug().Raw("SELECT DISTINCT * FROM proponents ORDER BY proponent_id ASC").Scan(proponents)
+
+	tracking := &[]model.Trackings{}
+	database.DBConn.Debug().Raw("SELECT * FROM trackings").Scan(tracking)
+
+	months := utils.GetMonths()
+	years := utils.GetYears()
+
+	return c.Render("dashboard_head", fiber.Map{
+		"pageTitle":  "Dashboard - Head Office",
+		"title":      "DASHBOARD - HEAD OFFICE",
+		"monthLists": months,
+		"yearLists":  years,
+		"yearNow":    model.YearNow,
+		"user":       model.Fullname,
+		"userLogged": model.UserCodeLogged,
+		"greetings":  utils.GetGreetings(),
+		"tracking":   tracking,
+		"proponents": proponents,
+		"baseURL":    c.BaseURL(),
+	})
+}
+
 func CountForAgenda() int64 {
 	total := database.DBConn.Exec("SELECT * FROM routings WHERE document_tag = 'For Agenda' ").RowsAffected
 	return total

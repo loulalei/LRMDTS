@@ -5,7 +5,9 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"log"
+	"math/rand"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -152,4 +154,37 @@ func GetGreetings() string {
 		greeting = "Good evening,"
 	}
 	return greeting
+}
+
+func GeneratePasscode() string {
+	var passcode string
+	// Seed the random number generator
+	rand.Seed(time.Now().UnixNano())
+
+	// Generate and print 5 random numbers
+	for i := 0; i < 10; i++ {
+		randomNumber := rand.Intn(100) // Adjust the range as needed
+		passcode = passcode + strconv.Itoa(randomNumber)
+	}
+
+	result := RandomLetters(4) + passcode[0:4]
+	return result
+}
+
+func RandomLetters(max int) string {
+	// Define the pool of letters
+	ctr := 0
+	letters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	result := ""
+	// Seed the random number generator
+	rand.Seed(time.Now().UnixNano())
+
+	for ctr < max {
+		// Generate a random index for the first letter
+		index := rand.Intn(len(letters))
+		result = result + string(letters[index])
+		ctr++
+	}
+
+	return result
 }

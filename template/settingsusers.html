@@ -1,4 +1,7 @@
 {{template "header" .}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
         <small class="navbar-brand col-md-1 border-end border-2">SETTINGS</small>
@@ -9,27 +12,262 @@
         <div class="collapse navbar-collapse" id="settingNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-users-gear"></i>
-                        USER MANGEMENT</a>
+                    <a class="nav-link active" aria-current="page" href="/api/settings/users"><i
+                            class="fa-solid fa-users-gear"></i> USER MANGEMENT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-users-gear"></i>
+                    <a class="nav-link" href="/api/settings/proponents"><i class="fa-solid fa-users-gear"></i>
                         PROPONENTS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-people-group"></i>
+                    <a class="nav-link" href="/api/settings/committees"><i class="fa-solid fa-people-group"></i>
                         COMMITTEES</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-folder-tree"></i>
                         FOLDERS</a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container-fluid py-2 shadow mb-3">
-    
+    <div class="row my-2">
+        <div class="col-md-12 d-grid gap-2 d-md-block my-1">
+            <a href class="btn btn-success btn-sm fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add"><i
+                    class="fa-solid fa-plus"></i> REGISTER USER
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid table-responsive">
+        <table id="users_table" class="table table-borderless table-hover table-sm">
+            <thead>
+                <tr>
+                    <th class="text-center small">ID</th>
+                    <th class="text-center small">FULLNAME</th>
+                    <th class="text-center small">DIVISION CODE</th>
+                    <th class="text-center small">DATE REGISTERED</th>
+                    <th class="text-center small">STATUS</th>
+                    <th class="text-center small">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .userList}}
+                <tr>
+                    <td class="text-center" id="user_id">{{.Id}}</td>
+                    <td class="text-center">{{.Fullname}}</td>
+                    <td class="text-center">{{.Name}}</td>
+                    <td class="text-center">{{.DateRegistered}}</td>
+                    {{if eq .IsReset false}}
+                    <td class="text-center">Active</td>
+                    {{else}}
+                    <td class="text-center">Inactive</td>
+                    {{end}}
+                    <td class="text-center small">
+                        <div class="d-grid gap-2 d-md-block">
+                            <button class="btn btn-danger btn-sm fw-bold" id="reset_password"><i
+                                    class="fa-solid fa-rotate"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- MODAL -->
+<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="add">REGISTER USER</h1>
+            </div>
+            <div class="modal-body row">
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="divisioncode" name="divisioncode"
+                            aria-label="Floating label select example">
+                            <option disabled selected>Select division</option>
+                            {{range .divisions}}
+                            <option value={{.Code}}>{{.Name}}</option>
+                            {{end}}
+                        </select>
+                        <label for="divisioncode">Sanggunian Division</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="fullname" name="fullname" required>
+                        <label for="fullname">Fullname</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <label for="password"><i class="bi bi-key"></i>
+                            Password</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                        <label for="cpassword"><i class="bi bi-key"></i>
+                            Confirm Password</label>
+                        <small><span id="message"></span></small>
+                        <div class="row mx-2">
+                            <div class="form-check form-switch mt-2 col-md-6">
+                                <small><input class="form-check-input" type="checkbox" role="switch" id="showPassword"
+                                        checked>
+                                    <figcaption class="figure-caption fw-bold" for="showPassword">Hide password
+                                    </figcaption>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="register_user" name="register_user">Register</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#users_table').DataTable({
+            order: [[2, 'desc']]
+        });
+    });
+</script>
+
+<script>
+    $("#showPassword").click(function () {
+        var pass = document.getElementById("password");
+        var cpass = document.getElementById("cpassword");
+        if (pass.type === "password" && cpass.type === "password") {
+            pass.type = "text";
+            cpass.type = "text";
+        } else {
+            pass.type = "password"
+            cpass.type = "password"
+        };
+    });
+
+    $('#password, #cpassword').on('keyup', function () {
+        if ($('#password').val() != $('#cpassword').val()) {
+            $('#message').html('Password does not match').css('color', 'red');
+        } else $('#message').html('');
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#register_user").click(function () {
+            var divisionCode = $('#divisioncode').val();
+            var fullname = $('#fullname').val();
+            var password = $('#password').val();
+            var cpassword = $('#password').val();
+            // var baseURL = $('#baseURL').val();
+            var endpoint = "/api/user/add_user"
+
+            if (password != cpassword) {
+                Swal.fire(
+                    'Adding Error',
+                    'Password does not match',
+                    'info'
+                )
+            } if (fullname == "") {
+                Swal.fire(
+                    'Adding Error',
+                    'Enter fullname',
+                    'info'
+                )
+            } else {
+                $.post(endpoint,
+                    {
+                        "fullname": fullname,
+                        "password": password,
+                        "divisionCode": divisionCode
+                    },
+                    function (response, status) {
+                        if (response.status == 100) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: response.message,
+                            });
+                            location.reload(true);
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: response.message,
+                            });
+                        }
+                    });
+            }
+        });
+
+        $("#reset_password").click(function () {
+            var currentRow = $(this).closest("tr");
+            var userId = currentRow.find("td:eq(0)").html();
+
+            var endpoint = "/api/user/reset"
+
+            $.post(endpoint,
+                {
+                    "id": userId,
+                },
+                function (response, status) {
+                    if (response.status == 100) {
+                        Swal.fire({
+                            title: response.data,
+                            text: response.message,
+                            icon: "success",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonText: "Done",
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                Swal.fire("Saved!", "", "success");
+                                location.reload(true);
+                            }
+                        });
+                    } else {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                        Toast.fire({
+                            icon: "error",
+                            title: response.message,
+                        });
+                    }
+                },
+            );
+        });
+    });
+</script>
 {{template "footer" .}}

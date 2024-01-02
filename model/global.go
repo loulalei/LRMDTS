@@ -15,6 +15,7 @@ var (
 	Fullname       string
 	UserCodeLogged string
 	UserID         int
+	Token          string
 	Interface      []interface{}
 	SessionManager *session.Session
 )

@@ -1,59 +1,5 @@
 -- un:Rec_Admin
 -- pw:Letmein.Recadmin
-CREATE TABLE departments(
-	department_id serial primary key,
-	name text
-)
-
-CREATE TABLE committee_lists(
-	list_id serial primary key,
-	item_number text,
-	committee_id bigint,
-	user_id bigint,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
--- ROUTINGS
-CREATE TABLE receivings(
-	receiving_id serial primary key,
-	tracking_number text,
-	received_date text,
-	received_time text,
-	receiver text,
-	summary text,
-	receiving_tag text,
-	receiving_remarks text,
-	received_file text,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
-CREATE TABLE agendas(
-	agenda_id serial primary key,
-	item_number text,
-	isUrgent bool,
-	date_calendared text,
-	date_reported text,
-	source text,
-	source_result text,
-	agenda_tag text,
-	agenda_remarks text,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
-CREATE TABLE routings(
-	doc_id serial primary key,
-	receiving_id int,
-	agenda_id int,
-	approval_id int,
-	releasing_id int,
-	filing_id int,
-	item_number text,
-	document_tag text,
-	remarks text,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
 -- VIEW
 CREATE VIEW view_committees AS
 SELECT list_id, item_number, name, fullname, cmt.committee_id
@@ -91,6 +37,12 @@ INNER JOIN view_routings rtg
 ON rtg.doc_id = fil.doc_id
 INNER JOIN approves apr
 ON apr.item_number = rtg.item_number
+
+CREATE VIEW view_users AS
+SELECT id, fullname, password, div.name, division_code, is_reset, to_char(created_at, 'Mon. DD,YYYY') AS date_registered 
+FROM user_credentials usr
+INNER JOIN divisions div
+ON div.code = usr.division_code
 
 SELECT * FROM filings
 -- TEST QUERY
@@ -149,10 +101,12 @@ SELECT reset_tables()
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'For information of the whole body'
 SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Kept in Secretariat'
 SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'
-INSERT INTO divisions (name, code) VALUES ('Records','SPCRD'), ('Secretariat','SPCSD'), ('Administration','SPCAD')
+INSERT INTO divisions (name, code) VALUES ('Head Office','HOD'), ('Records','SPCRD'), ('Secretariat','SPCSD')
 
 UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 2
 
+SELECT id, fullname, password, division_code, is_reset, to_char(created_at, 'Mon. DD,YYYY') AS date_registered FROM user_credentials
+SELECT * FROM view_users 
 INSERT INTO committees (name) VALUES ('Agriculture And Economic Productivity'), ('Anti-Drug Abuse'),('Barangay Affairs'), ('Basic Education'),('Blue Ribbon Committee'), ('Civil Society Organizations and Cooperatives'),('Disaster Risk Reduction and Management'), ('Energy, Transportation & Telecommunication'),('Environmental Protection and Solid Waste Management'), ('Ethics & Discipline'),('Finance and Appropriations'), ('Games, Amusements and Illegal Gambling'),('Government Contracts, Legal Matters, Engineering, Public Works and Zonification'), ('Health and Sanitation'),('Higher Education, Technical and Vocational Courses'), ('History, Arts and Culture'),('Housing, Land Use and Estate Development'), ('Human Resources, Good Governance, Public Ethics and Accountability'),('Human Rights and Public Information'), ('Information Technology, e-Commerce and Mass Media'),('International Affairs'), ('Labor and Employment'),('Markets, Slaughterhouse and Government Economic Enterprise'), ('Rules and Privileges'),('Sports Development'), ('Tourism'),('Trade, Commerce, and Industry'), ('Urban Poor and Livelihood'),('Water Resources Management & Development'), ('Ways and Means'),('Welfare and Protection of Family, Women, Children, Senior Citizens, Persons with Disability and Gender Equality'), ('Youth')
 
 SELECT COUNT(agenda_id) FROM routings WHERE agenda_id IS NULL

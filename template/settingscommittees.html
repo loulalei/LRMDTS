@@ -11,18 +11,14 @@
         </button>
         <div class="collapse navbar-collapse" id="settingNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#"><i class="fa-solid fa-users-gear"></i>
-                        USER MANGEMENT</a>
-                </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/api/settings/proponents"><i
-                            class="fa-solid fa-users-gear"></i>
-                        PROPONENTS</a>
+                    <a class="nav-link" href="/api/settings/users"><i class="fa-solid fa-users-gear"></i> USER MANGEMENT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/api/settings/committees"><i
-                            class="fa-solid fa-people-group"></i>
+                    <a class="nav-link" href="/api/settings/proponents"><i class="fa-solid fa-users-gear"></i> PROPONENTS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/api/settings/committees"><i class="fa-solid fa-people-group"></i>
                         COMMITTEES</a>
                 </li>
                 <!-- <li class="nav-item">
@@ -153,7 +149,7 @@
         $("#remove").click(function () {
             var currentRow = $(this).closest("tr");
             var committeeName = currentRow.find("td:eq(1)").html();
-            
+
             var baseURL = $('#baseURL').val();
             var endpoint = baseURL + "/api/settings/remove_committee"
 
@@ -173,7 +169,7 @@
                         });
                         Toast.fire({
                             icon: "success",
-                            title: response.message,
+                            title: response.message + "<b>"+ response.data + "</b>",
                         });
                         location.reload(true);
                     } else {

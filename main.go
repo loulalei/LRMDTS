@@ -6,12 +6,14 @@ import (
 	"tech_tubbies/controller"
 	"tech_tubbies/middleware/database"
 	"tech_tubbies/middleware/envRouting"
+
 	"tech_tubbies/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 )
@@ -29,6 +31,8 @@ func main() {
 		UnescapePath: true,
 		Views:        html.New("./template", ".html"),
 	})
+
+	app.Use(recover.New())
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",

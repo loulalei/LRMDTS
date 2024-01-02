@@ -5,12 +5,12 @@ import "time"
 type (
 	UserCredentials struct {
 		Id           int       `json:"id" gorm:"primaryKey;autoIncrement"`
-		Fullname     string    `json:"fullname,omitempty"`
-		Password     string    `json:"password,omitempty"`
-		DivisionCode string    `json:"divisionCode,omitempty"`
-		IsReset      bool      `json:"isReset,omitempty" gorm:"default:0"`
-		CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP,omitempty"`
-		UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP,omitempty"`
+		Fullname     string    `json:"fullname"`
+		Password     string    `json:"password"`
+		DivisionCode string    `json:"divisionCode"`
+		IsReset      bool      `json:"isReset" gorm:"default:0"`
+		CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	ViewUsers struct {

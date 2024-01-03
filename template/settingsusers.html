@@ -35,8 +35,7 @@
 <div class="container-fluid py-2 shadow mb-3">
     <div class="row my-2">
         <div class="col-md-12 d-grid gap-2 d-md-block my-1">
-            <a href class="btn btn-success btn-sm fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add"><i
-                    class="fa-solid fa-plus"></i> REGISTER USER
+            <a  href="#" id="register_user" class="btn btn-success btn-sm fw-bold"><i class="fa-solid fa-plus"></i> REGISTER USER
             </a>
         </div>
     </div>
@@ -79,12 +78,12 @@
 </div>
 
 <!-- MODAL -->
-<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add"
-    aria-hidden="true">
+<div class="modal fade" id="register_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="register_modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="add">REGISTER USER</h1>
+                <h1 class="modal-title fs-5">REGISTER USER</h1>
             </div>
             <div class="modal-body row">
                 <div class="col-md-12">
@@ -131,7 +130,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="register_user" name="register_user">Register</button>
+                <button type="button" class="btn btn-primary" id="register" name="register">Register</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
             </div>
         </div>
@@ -167,8 +166,15 @@
 </script>
 
 <script>
+    // Show Modal
+    $("#register_user").click(function () {
+        var myModal = new bootstrap.Modal(document.getElementById("register_modal"), {});
+        myModal.show();
+    });
+
+
     $(document).ready(function () {
-        $("#register_user").click(function () {
+        $("#register").click(function () {
             var divisionCode = $('#divisioncode').val();
             var fullname = $('#fullname').val();
             var password = $('#password').val();

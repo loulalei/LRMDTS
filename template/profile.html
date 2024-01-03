@@ -32,7 +32,7 @@
               {{range .activities}}
               <tr class="border-bottom py-2">
                 <td>{{ .Activity }} - {{.Event}}</td>
-                <td class="text-start text-nowrap"><i class="fa-solid fa-calendar-days"></i>{{.CreatedAt}}</td>
+                <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{.CreatedAt}}</td>
               </tr>
               {{end}}
             </tbody>

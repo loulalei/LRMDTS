@@ -77,8 +77,6 @@
         </div>
     </div>
 
-
-
     <!-- FOR AGENDA -->
     <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
         name="forAgenda">
@@ -194,7 +192,7 @@
         </div>
         <hr>
         <div class="col-md-12">
-            <table class="table table-striped table-hover border">
+            <table class="table table-striped table-hover border" id="committee_table">
                 <thead>
                     <tr>
                         <th colspan="2">COMMITTEE LIST</th>
@@ -375,6 +373,18 @@
                     }
                 );
             }
+        });
+
+
+        $('#committee_table').on('click', '#remove_committee', function () {
+            var row = $(this).closest('tr');
+            var fieldValues = [];
+
+            row.find('td').each(function () {
+                fieldValues.push($(this).text());
+            });
+
+            alert("VALUES: "+fieldValues);
         });
 
         $("#remove_committee").click(function () {

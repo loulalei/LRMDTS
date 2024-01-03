@@ -44,6 +44,7 @@ func VerifyUser(c *fiber.Ctx) error {
 		model.Fullname = userCredentials.Fullname
 		model.UserCodeLogged = userCredentials.DivisionCode
 		model.UserID = userCredentials.Id
+		model.DivisionCode = userCredentials.DivisionCode
 		event := fmt.Sprintf("%s successfull logged in", model.Fullname)
 		if userCredentials.DivisionCode == "SPCRD" { //Records
 			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
@@ -140,7 +141,7 @@ func AddUser(c *fiber.Ctx) error {
 
 	database.DBConn.Debug().Raw("INSERT INTO user_credentials (fullname,password,division_code) VALUES (?,?,?)", userCredentials.Fullname, userCredentials.Password, userCredentials.DivisionCode).Find(userCredentials)
 
-	activity := "user registration"
+	activity := "user management"
 	event := fmt.Sprintf("added new user %s from %s", userCredentials.Fullname, userCredentials.DivisionCode)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
@@ -166,6 +167,10 @@ func ResetPasssword(c *fiber.Ctx) error {
 	}
 
 	database.DBConn.Debug().Exec("UPDATE user_credentials SET password = ?, is_reset = ? WHERE id = ?", encryptPassword, true, userCredentials.Id)
+
+	activity := "user management"
+	event := fmt.Sprintf("password of user %s from %s has been reset", userCredentials.Fullname, userCredentials.DivisionCode)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
 	return c.JSON(model.ResponseBody{
 		Status:  100,

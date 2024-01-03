@@ -12,13 +12,16 @@
         <div class="collapse navbar-collapse" id="settingNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/api/settings/users"><i class="fa-solid fa-users-gear"></i> USER MANGEMENT</a>
+                    <a class="nav-link" href="/api/settings/users"><i class="fa-solid fa-users-gear"></i> USER
+                        MANGEMENT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/api/settings/proponents"><i class="fa-solid fa-users-gear"></i> PROPONENTS</a>
+                    <a class="nav-link" href="/api/settings/proponents"><i class="fa-solid fa-users-gear"></i>
+                        PROPONENTS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/api/settings/committees"><i class="fa-solid fa-people-group"></i>
+                    <a class="nav-link active" aria-current="page" href="/api/settings/committees"><i
+                            class="fa-solid fa-people-group"></i>
                         COMMITTEES</a>
                 </li>
                 <!-- <li class="nav-item">
@@ -33,8 +36,8 @@
 <div class="container-fluid py-2 shadow mb-3">
     <div class="row my-2">
         <div class="col-md-12 d-grid gap-2 d-md-block my-1">
-            <a href class="btn btn-success btn-sm fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#add"><i
-                    class="fa-solid fa-plus"></i> INSERT NEW COMMITTEE
+            <a href="#" id="register_committee" class="btn btn-success btn-sm fw-bold"><i class="fa-solid fa-plus"></i>
+                REGISTER COMMITTEE
             </a>
         </div>
     </div>
@@ -54,7 +57,7 @@
                     <td class="small">{{.Name}}</td>
                     <td class="text-center small">
                         <div class="d-grid gap-2 d-md-block">
-                            <button class="btn btn-danger btn-sm fw-bold" id="remove"><i
+                            <button class="btn btn-danger btn-sm fw-bold" id="remove_btn"><i
                                     class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>
@@ -68,8 +71,8 @@
 
 
 <!-- MODAL -->
-<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add"
-    aria-hidden="true">
+<div class="modal fade" id="committee_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="add" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -98,6 +101,13 @@
 </script>
 
 <script>
+    // Show Modal
+    $("#register_committee").click(function () {
+        var myModal = new bootstrap.Modal(document.getElementById("committee_modal"), {});
+        myModal.show();
+    });
+
+
     $(document).ready(function () {
         $("#add_committee").click(function () {
             var committeeName = $('#committeeName').val();
@@ -146,17 +156,21 @@
             }
         });
 
-        $("#remove").click(function () {
-            var currentRow = $(this).closest("tr");
-            var committeeName = currentRow.find("td:eq(1)").html();
+
+        $('#committees_table').on('click', '#remove_btn', function () {
+            var row = $(this).closest('tr');
+            var fieldValues = [];
+
+            row.find('td').each(function () {
+                fieldValues.push($(this).text());
+            });
 
             var baseURL = $('#baseURL').val();
             var endpoint = baseURL + "/api/settings/remove_committee"
 
-
             $.post(endpoint,
                 {
-                    "name": committeeName,
+                    "name": fieldValues[1],
                 },
                 function (response, status) {
                     if (response.status == 100) {
@@ -169,7 +183,7 @@
                         });
                         Toast.fire({
                             icon: "success",
-                            title: response.message + "<b>"+ response.data + "</b>",
+                            title: response.message + "<b>" + response.data + "</b>",
                         });
                         location.reload(true);
                     } else {
@@ -188,6 +202,8 @@
                 }
             );
         });
+
+
     });
 </script>
 {{template "footer" .}}

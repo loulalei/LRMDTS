@@ -178,11 +178,11 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	database.DBConn.Debug().Raw("SELECT receiving_id FROM receivings WHERE tracking_number = ?", receivingData.TrackingNumber).Scan(&receivingID)
 	// INSERT NEW ROUTING RECORD
 	database.DBConn.Debug().Exec("INSERT INTO routings (receiving_id, document_tag, remarks) VALUES (?,?,?) ", receivingID, "For Agenda", "Forwarded to Secretariat")
-	// INSERT NEW TRACKING RECORD
-	database.DBConn.Exec("INSERT INTO trackings (tracking_number, summary, received_date) VALUES (?,?,?)", receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
 	// VIEW RESULTS
-	viewRoutings := &[]model.ViewRoutings{}
-	database.DBConn.Raw("SELECT * FROM view_routings").Scan(viewRoutings)
+	viewRoutings := &model.ViewRoutings{}
+	database.DBConn.Raw("SELECT * FROM view_routings WHERE receiving_id = ?", receivingID).Scan(viewRoutings)
+	// INSERT NEW TRACKING RECORD
+	database.DBConn.Exec("INSERT INTO trackings (doc_id, tracking_number, summary, received_date) VALUES (?,?,?,?)", viewRoutings.DocId, receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
 
 	activity := "encoded received document"
 	event := fmt.Sprintf("you registered new document with tracking number %s", receivingData.TrackingNumber)
@@ -394,10 +394,10 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 			Message: message,
 		})
 	}
-	if count > 2 {
+	if count > 4 {
 		return c.JSON(model.ResponseBody{
 			Status:  101,
-			Message: "Maximum of 3 committees only",
+			Message: "Maximum of 5 committees only",
 		})
 	} else {
 		committeesLists := &model.ViewCommittees{}
@@ -435,6 +435,7 @@ func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
 	committeeId := c.Params("committeeId")
 	database.DBConn.Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ?", committeeId, itemNo)
 	return c.JSON(fiber.Map{
+		"status":  100,
 		"message": "successs",
 		"ItemNo":  itemNo,
 	})

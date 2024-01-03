@@ -52,6 +52,7 @@ func ViewDocument(c *fiber.Ctx) error {
 		"yearNow":        model.YearNow,
 		"user":           model.Fullname,
 		"userLogged":     model.UserCodeLogged,
+		"divisionCode":   model.DivisionCode,
 		"viewRoutings":   viewRoutings,
 		"viewAgenda":     viewAgenda,
 		"viewApproved":   viewApproved,

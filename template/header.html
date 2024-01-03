@@ -114,15 +114,15 @@
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" name="password" required>
-                                <label for="password"><i class="bi bi-key"></i>
+                                <input type="password" class="form-control" id="header_password" name="header_password" required>
+                                <label for="header_password"><i class="bi bi-key"></i>
                                     Password</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="cpassword" name="cpassword" required>
-                                <label for="cpassword"><i class="bi bi-key"></i>
+                                <input type="password" class="form-control" id="header_cpassword" name="header_cpassword" required>
+                                <label for="header_cpassword"><i class="bi bi-key"></i>
                                     Confirm Password</label>
                                 <small><span id="message"></span></small>
                                 <div class="row mx-2">
@@ -175,8 +175,8 @@
 
 
             $("#showPassword").click(function () {
-                var pass = document.getElementById("password");
-                var cpass = document.getElementById("cpassword");
+                var pass = document.getElementById("header_password");
+                var cpass = document.getElementById("header_cpassword");
                 if (pass.type === "password" && cpass.type === "password") {
                     pass.type = "text";
                     cpass.type = "text";
@@ -186,16 +186,16 @@
                 };
             });
 
-            $('#password, #cpassword').on('keyup', function () {
-                if ($('#password').val() != $('#cpassword').val()) {
+            $('#header_password, #header_cpassword').on('keyup', function () {
+                if ($('#header_password').val() != $('#header_cpassword').val()) {
                     $('#message').html('Password does not match').css('color', 'red');
                 } else $('#message').html('');
             });
 
             $("#update_password").click(function () {
                 var userId = $('#userId').val()
-                var password = $('#password').val()
-                var cpassword = $('#cpassword').val()
+                var password = $('#header_password').val()
+                var cpassword = $('#header_cpassword').val()
                 var endpoint = "/api/user/update_password"
 
                 if (password != cpassword) {

@@ -68,6 +68,8 @@ SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
 
+SELECT * FROM committee_lists WHERE item_number = '4411-2312'
+DELETE FROM committee_lists WHERE item_number = '4411-2312'
 
 nextval('proponents_proponent_id_seq'::regclass)
 
@@ -106,7 +108,9 @@ INSERT INTO divisions (name, code) VALUES ('Head Office','HOD'), ('Records','SPC
 UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 2
 
 SELECT id, fullname, password, division_code, is_reset, to_char(created_at, 'Mon. DD,YYYY') AS date_registered FROM user_credentials
-SELECT * FROM view_users 
+SELECT * FROM view_users
+SELECT * FROM trackings
+SELECT * FROM view_routings
 INSERT INTO committees (name) VALUES ('Agriculture And Economic Productivity'), ('Anti-Drug Abuse'),('Barangay Affairs'), ('Basic Education'),('Blue Ribbon Committee'), ('Civil Society Organizations and Cooperatives'),('Disaster Risk Reduction and Management'), ('Energy, Transportation & Telecommunication'),('Environmental Protection and Solid Waste Management'), ('Ethics & Discipline'),('Finance and Appropriations'), ('Games, Amusements and Illegal Gambling'),('Government Contracts, Legal Matters, Engineering, Public Works and Zonification'), ('Health and Sanitation'),('Higher Education, Technical and Vocational Courses'), ('History, Arts and Culture'),('Housing, Land Use and Estate Development'), ('Human Resources, Good Governance, Public Ethics and Accountability'),('Human Rights and Public Information'), ('Information Technology, e-Commerce and Mass Media'),('International Affairs'), ('Labor and Employment'),('Markets, Slaughterhouse and Government Economic Enterprise'), ('Rules and Privileges'),('Sports Development'), ('Tourism'),('Trade, Commerce, and Industry'), ('Urban Poor and Livelihood'),('Water Resources Management & Development'), ('Ways and Means'),('Welfare and Protection of Family, Women, Children, Senior Citizens, Persons with Disability and Gender Equality'), ('Youth')
 
 SELECT COUNT(agenda_id) FROM routings WHERE agenda_id IS NULL

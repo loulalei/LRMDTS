@@ -90,8 +90,11 @@
             <td class="text-center">
               <div class="d-grid gap-2 d-md-block">
                 <!-- view -->
-                <a href class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-solid fa-eye"></i>
-                </a>
+                {{if .ItemNumber}}
+                <a href="/api/view/{{.DocId}}/{{.ItemNumber}}" class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-regular fa-folder-open"></i></a>
+                {{else}}
+                <a href="/api/view/{{.DocId}}/0" class="btn btn-success btn-sm fw-bold" type="button"><i class="fa-regular fa-folder-open"></i></a>
+                {{end}}
               </div>
             </td>
           </tr>

@@ -34,7 +34,7 @@ func ViewSettingsUsers(c *fiber.Ctx) error {
 	}
 
 	userList := &[]model.ViewUsers{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_users").Scan(userList)
+	database.DBConn.Debug().Raw("SELECT * FROM view_users WHERE id NOT IN (?)", model.UserID).Scan(userList)
 
 	divisions := &[]model.Divisions{}
 	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
@@ -130,6 +130,10 @@ func AddProponents(c *fiber.Ctx) error {
 
 	database.DBConn.Debug().Exec("INSERT INTO proponents (name, term) VALUES (?,?)", proponentFields.Name, proponentFields.Term)
 
+	activity := "proponents management"
+	event := fmt.Sprintf("%s has been added", proponentFields.Name)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
 	return c.JSON(model.ResponseBody{
 		Status:  100,
 		Message: "Added successfuly",
@@ -150,11 +154,16 @@ func DeleteProponent(c *fiber.Ctx) error {
 
 	database.DBConn.Debug().Exec("DELETE FROM proponents WHERE name = ?", proponentFields.Name)
 
+	activity := "proponents management"
+	event := fmt.Sprintf("%s has been removed", proponentFields.Name)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+
 	return c.JSON(model.ResponseBody{
 		Status:  100,
 		Message: "Remove successfuly",
 	})
 }
+
 func AddCommittee(c *fiber.Ctx) error {
 	if model.Fullname == "" {
 		return c.Redirect("/")
@@ -173,6 +182,10 @@ func AddCommittee(c *fiber.Ctx) error {
 
 	if name == "" {
 		database.DBConn.Debug().Exec("INSERT INTO committees (name) VALUES (?)", committeeFields.Name)
+
+		activity := "committees management"
+		event := fmt.Sprintf("%s has been added", committeeFields.Name)
+		database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 	} else {
 		return c.JSON(model.ResponseBody{
 			Status:  101,
@@ -200,6 +213,10 @@ func DeleteCommittee(c *fiber.Ctx) error {
 	}
 
 	database.DBConn.Debug().Exec("DELETE FROM committees WHERE name = ?", committeeFields.Name)
+
+	activity := "committees management"
+	event := fmt.Sprintf("%s has been removed", committeeFields.Name)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
 
 	return c.JSON(model.ResponseBody{
 		Status:  100,

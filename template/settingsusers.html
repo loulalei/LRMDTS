@@ -35,7 +35,8 @@
 <div class="container-fluid py-2 shadow mb-3">
     <div class="row my-2">
         <div class="col-md-12 d-grid gap-2 d-md-block my-1">
-            <a  href="#" id="register_user" class="btn btn-success btn-sm fw-bold"><i class="fa-solid fa-plus"></i> REGISTER USER
+            <a href="#" id="register_user" class="btn btn-success btn-sm fw-bold"><i class="fa-solid fa-plus"></i>
+                REGISTER USER
             </a>
         </div>
     </div>
@@ -45,7 +46,7 @@
                 <tr>
                     <th class="text-center small">ID</th>
                     <th class="text-center small">FULLNAME</th>
-                    <th class="text-center small">DIVISION CODE</th>
+                    <th class="text-center small">DIVISION</th>
                     <th class="text-center small">DATE REGISTERED</th>
                     <th class="text-center small">STATUS</th>
                     <th class="text-center small">ACTION</th>
@@ -63,7 +64,7 @@
                     {{else}}
                     <td class="text-center">Inactive</td>
                     {{end}}
-                    <td class="text-center small">
+                    <td class="text-center small" id="reset_btn">
                         <div class="d-grid gap-2 d-md-block">
                             <button class="btn btn-danger btn-sm fw-bold" id="reset_password"><i
                                     class="fa-solid fa-rotate"></i>
@@ -232,15 +233,21 @@
             }
         });
 
-        $("#reset_password").click(function () {
-            var currentRow = $(this).closest("tr");
-            var userId = currentRow.find("td:eq(0)").html();
+        $('#users_table').on('click', '#reset_btn', function () {
+            var row = $(this).closest('tr');
+            var fieldValues = [];
+
+            row.find('td').each(function () {
+                fieldValues.push($(this).text());
+            });
 
             var endpoint = "/api/user/reset"
 
             $.post(endpoint,
                 {
-                    "id": userId,
+                    "id": fieldValues[0],
+                    "fullname": fieldValues[1],
+                    "divisionCode": fieldValues[2],
                 },
                 function (response, status) {
                     if (response.status == 100) {
@@ -273,7 +280,9 @@
                     }
                 },
             );
+
         });
+
     });
 </script>
 {{template "footer" .}}

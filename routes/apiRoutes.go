@@ -77,6 +77,8 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
+	routingEndpoint.Get("/delete_committee/:itemNo/:committeeId/:userId", controller.RemoveCommitteeForAgenda)
+
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
 
 	testEndpoint := apiEndpoint.Group("/test")

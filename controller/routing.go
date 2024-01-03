@@ -431,12 +431,14 @@ func PostInsertCommitteeForAgenda(c *fiber.Ctx) error {
 }
 
 func RemoveCommitteeForAgenda(c *fiber.Ctx) error {
+
 	itemNo := c.Params("itemNo")
 	committeeId := c.Params("committeeId")
-	database.DBConn.Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ?", committeeId, itemNo)
+	userId := c.Params("userId")
+	database.DBConn.Debug().Exec("DELETE FROM committee_lists WHERE committee_id = ? AND item_number = ? AND user_id = ?", committeeId, itemNo, userId)
 	return c.JSON(fiber.Map{
 		"status":  100,
-		"message": "successs",
+		"message": "You can now insert committee",
 		"ItemNo":  itemNo,
 	})
 }

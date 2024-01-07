@@ -54,11 +54,16 @@ func ValidateUser(c *fiber.Ctx) error {
 		session.Set("userId", strconv.Itoa(userCredentials.Id))
 		session.Save()
 
+		event := fmt.Sprintf("%s successfull logged in", global.Fullname)
+
 		if userCredentials.DivisionCode == "SPCRD" { //Records
+			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, userCredentials.Id)
 			return c.Redirect("/api/dashboard")
 		} else if userCredentials.DivisionCode == "SPCSD" { //Secretariat
+			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, userCredentials.Id)
 			return c.Redirect("/api/dashboard/secretariat")
 		} else if userCredentials.DivisionCode == "HOD" { //Secretariat
+			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, userCredentials.Id)
 			return c.Redirect("/api/dashboard/head_office")
 		} else {
 			return c.JSON(model.ResponseBody{

@@ -2,6 +2,8 @@ package model
 
 import "time"
 
+var UserActivity = &UserActivities{}
+
 type (
 	UserCredentials struct {
 		Id           int       `json:"id" gorm:"primaryKey;autoIncrement"`

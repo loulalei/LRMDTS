@@ -217,3 +217,14 @@ type (
 		Name string `json:"name"`
 	}
 )
+
+type (
+	UserActivities struct {
+		UAId      int       `json:"uaid" gorm:"primaryKey;autoIncrement"`
+		UserId    int       `json:"userId"`
+		Activity  string    `json:"activity"`
+		IsLogged  bool      `json:"isLogged" gorm:"default:false"`
+		CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+		UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	}
+)

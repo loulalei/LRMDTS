@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"tech_tubbies/global"
 	"tech_tubbies/middleware/database"
 	utils "tech_tubbies/middleware/util"
 	"tech_tubbies/model"
@@ -10,8 +11,22 @@ import (
 )
 
 func ViewTracking(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	proponents := &[]model.Proponents{}
@@ -27,8 +42,8 @@ func ViewTracking(c *fiber.Ctx) error {
 		"title":      "TRACKING",
 		"monthLists": months,
 		"yearLists":  years,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
 		"proponents": proponents,
 		"tracking":   tracking,
@@ -39,8 +54,22 @@ func ViewTracking(c *fiber.Ctx) error {
 // TRACKING
 func SearchTracking(c *fiber.Ctx) error {
 	fmt.Println("Process: Search Tracking")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	requestTracking := &model.RequestTracking{}
@@ -69,8 +98,8 @@ func SearchTracking(c *fiber.Ctx) error {
 	return c.Render("tracking", fiber.Map{
 		"pageTitle":  "Tracking",
 		"title":      "TRACKING",
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
 		"greetings":  utils.GetGreetings(),
 		"proponents": proponents,
 		"tracking":   responseTrackings,
@@ -82,11 +111,11 @@ func DownloadAttachment(c *fiber.Ctx) error {
 	filename := c.Params("filename")
 
 	recordsCaptured := filename
-	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_retrieved,user_id) VALUES (?,?)", recordsCaptured, model.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO employee_performaces (records_retrieved,user_id) VALUES (?,?)", recordsCaptured, global.UserID)
 
 	event := fmt.Sprintf("downloaded the file %s", filename)
 	activity := "file downloaded"
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	return c.Download("./assets/uploads/" + filename)
 }

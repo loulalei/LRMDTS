@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"tech_tubbies/global"
 	"tech_tubbies/middleware/database"
 	utils "tech_tubbies/middleware/util"
 	"tech_tubbies/model"
@@ -11,17 +12,31 @@ import (
 
 func ViewSettings(c *fiber.Ctx) error {
 	fmt.Println("Process: View Settings")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	return c.Render("settings", fiber.Map{
 		"pageTitle":  "Settings",
 		"title":      "SYSTEM SETTINGS",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"userId":     model.UserID,
+		"yearNow":    global.YearNow,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
+		"userId":     global.UserID,
 		"greetings":  utils.GetGreetings(),
 		"baseURL":    c.BaseURL(),
 	})
@@ -29,12 +44,26 @@ func ViewSettings(c *fiber.Ctx) error {
 
 func ViewSettingsUsers(c *fiber.Ctx) error {
 	fmt.Println("Process: Users Settings")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	userList := &[]model.ViewUsers{}
-	database.DBConn.Debug().Raw("SELECT * FROM view_users WHERE id NOT IN (?)", model.UserID).Scan(userList)
+	database.DBConn.Debug().Raw("SELECT * FROM view_users WHERE id NOT IN (?)", global.UserID).Scan(userList)
 
 	divisions := &[]model.Divisions{}
 	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
@@ -42,10 +71,10 @@ func ViewSettingsUsers(c *fiber.Ctx) error {
 	return c.Render("settingsusers", fiber.Map{
 		"pageTitle":  "Settings",
 		"title":      "USERS SETTINGS",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"userId":     model.UserID,
+		"yearNow":    global.YearNow,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
+		"userId":     global.UserID,
 		"userList":   userList,
 		"divisions":  divisions,
 		"greetings":  utils.GetGreetings(),
@@ -55,8 +84,22 @@ func ViewSettingsUsers(c *fiber.Ctx) error {
 
 func ViewSettingsProponents(c *fiber.Ctx) error {
 	fmt.Println("Process: Proponents Settings")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	proponentList := &[]model.Proponents{}
@@ -65,10 +108,10 @@ func ViewSettingsProponents(c *fiber.Ctx) error {
 	return c.Render("settingsproponents", fiber.Map{
 		"pageTitle":     "Settings",
 		"title":         "PROPONENTS SETTINGS",
-		"yearNow":       model.YearNow,
-		"user":          model.Fullname,
-		"userLogged":    model.UserCodeLogged,
-		"userId":        model.UserID,
+		"yearNow":       global.YearNow,
+		"user":          global.Fullname,
+		"userLogged":    global.UserCodeLogged,
+		"userId":        global.UserID,
 		"proponentList": proponentList,
 		"greetings":     utils.GetGreetings(),
 		"baseURL":       c.BaseURL(),
@@ -77,8 +120,22 @@ func ViewSettingsProponents(c *fiber.Ctx) error {
 
 func ViewSettingsCommittees(c *fiber.Ctx) error {
 	fmt.Println("Process: Committee Settings")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	committeeList := &[]model.Committees{}
@@ -87,10 +144,10 @@ func ViewSettingsCommittees(c *fiber.Ctx) error {
 	return c.Render("settingscommittees", fiber.Map{
 		"pageTitle":     "Settings",
 		"title":         "COMMITTEE SETTINGS",
-		"yearNow":       model.YearNow,
-		"user":          model.Fullname,
-		"userLogged":    model.UserCodeLogged,
-		"userId":        model.UserID,
+		"yearNow":       global.YearNow,
+		"user":          global.Fullname,
+		"userLogged":    global.UserCodeLogged,
+		"userId":        global.UserID,
 		"committeeList": committeeList,
 		"greetings":     utils.GetGreetings(),
 		"baseURL":       c.BaseURL(),
@@ -99,25 +156,53 @@ func ViewSettingsCommittees(c *fiber.Ctx) error {
 
 func ViewSettingsFolder(c *fiber.Ctx) error {
 	fmt.Println("Process: Folder Settings")
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	return c.Render("settings", fiber.Map{
 		"pageTitle":  "Settings",
 		"title":      "FOLDER SETTINGS",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"userId":     model.UserID,
+		"yearNow":    global.YearNow,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
+		"userId":     global.UserID,
 		"greetings":  utils.GetGreetings(),
 		"baseURL":    c.BaseURL(),
 	})
 }
 
 func AddProponents(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	proponentFields := &model.Proponents{}
@@ -132,7 +217,7 @@ func AddProponents(c *fiber.Ctx) error {
 
 	activity := "proponents management"
 	event := fmt.Sprintf("%s has been added", proponentFields.Name)
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	return c.JSON(model.ResponseBody{
 		Status:  100,
@@ -141,9 +226,24 @@ func AddProponents(c *fiber.Ctx) error {
 }
 
 func DeleteProponent(c *fiber.Ctx) error {
-	if model.Fullname == "" {
-		return c.Redirect("/")
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
 	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
+		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
+	}
+
 	proponentFields := &model.Proponents{}
 	if parsErr := c.BodyParser(proponentFields); parsErr != nil {
 		return c.JSON(model.ResponseBody{
@@ -156,7 +256,7 @@ func DeleteProponent(c *fiber.Ctx) error {
 
 	activity := "proponents management"
 	event := fmt.Sprintf("%s has been removed", proponentFields.Name)
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	return c.JSON(model.ResponseBody{
 		Status:  100,
@@ -165,8 +265,22 @@ func DeleteProponent(c *fiber.Ctx) error {
 }
 
 func AddCommittee(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	committeeFields := &model.Committees{}
@@ -185,7 +299,7 @@ func AddCommittee(c *fiber.Ctx) error {
 
 		activity := "committees management"
 		event := fmt.Sprintf("%s has been added", committeeFields.Name)
-		database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+		database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 	} else {
 		return c.JSON(model.ResponseBody{
 			Status:  101,
@@ -200,8 +314,22 @@ func AddCommittee(c *fiber.Ctx) error {
 }
 
 func DeleteCommittee(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	committeeFields := &model.Committees{}
@@ -216,7 +344,7 @@ func DeleteCommittee(c *fiber.Ctx) error {
 
 	activity := "committees management"
 	event := fmt.Sprintf("%s has been removed", committeeFields.Name)
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, model.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	return c.JSON(model.ResponseBody{
 		Status:  100,

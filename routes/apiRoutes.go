@@ -4,10 +4,9 @@ import (
 	"tech_tubbies/controller"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/session"
 )
 
-func AppRoutes(app *fiber.App, sess *session.Store) {
+func AppRoutes(app *fiber.App) {
 	// ROOT ENDPOINT
 	app.Get("/", controller.ViewLogin)
 
@@ -21,6 +20,7 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 	userEndpoint.Get("/login", controller.ViewLogin).Name("login_page")
 	userEndpoint.Get("/logout", controller.Logout)
 	userEndpoint.Post("/verify", controller.VerifyUser)
+	userEndpoint.Post("/validate", controller.ValidateUser)
 	userEndpoint.Get("/profile", controller.ViewProfile)
 
 	dashboardEndpoint := apiEndpoint.Group("/dashboard")
@@ -81,7 +81,5 @@ func AppRoutes(app *fiber.App, sess *session.Store) {
 
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
 
-	testEndpoint := apiEndpoint.Group("/test")
-	testEndpoint.Get("/set_cookie", controller.SetCookie)
-	testEndpoint.Get("/get_cookie", controller.GetCookie)
+	// testEndpoint := apiEndpoint.Group("/test")
 }

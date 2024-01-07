@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"tech_tubbies/global"
 	"tech_tubbies/middleware/database"
 	utils "tech_tubbies/middleware/util"
 	"tech_tubbies/model"
@@ -9,8 +10,22 @@ import (
 )
 
 func ViewDashboard(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	routings := &[]model.ViewRoutings{}
@@ -19,10 +34,10 @@ func ViewDashboard(c *fiber.Ctx) error {
 	return c.Render("dashboard", fiber.Map{
 		"pageTitle":   "Dashboard",
 		"title":       "DASHBOARD",
-		"yearNow":     model.YearNow,
-		"user":        model.Fullname,
-		"userLogged":  model.UserCodeLogged,
-		"userId":      model.UserID,
+		"yearNow":     global.YearNow,
+		"user":        global.Fullname,
+		"userLogged":  global.UserCodeLogged,
+		"userId":      global.UserID,
 		"greetings":   utils.GetGreetings(),
 		"notifs":      routings,
 		"filings":     CountForFiling(),
@@ -35,9 +50,24 @@ func ViewDashboard(c *fiber.Ctx) error {
 }
 
 func ViewDashboardSecretariat(c *fiber.Ctx) error {
-	if model.Fullname == "" {
-		return c.Redirect("/")
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
 	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
+		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
+	}
+
 	routings := &[]model.ViewRoutings{}
 
 	database.DBConn.Raw("SELECT * FROM view_routings WHERE document_tag = 'For Agenda' OR document_tag = 'Referred to Committee'").Scan(routings)
@@ -45,10 +75,10 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 	return c.Render("dashboard_secretarial", fiber.Map{
 		"pageTitle":  "Dashboard - Secretariat",
 		"title":      "DASHBOARD - SECRETARIAT",
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"userId":     model.UserID,
+		"yearNow":    global.YearNow,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
+		"userId":     global.UserID,
 		"greetings":  utils.GetGreetings(),
 		"notifs":     routings,
 		"agendas":    CountForAgenda(),
@@ -59,8 +89,22 @@ func ViewDashboardSecretariat(c *fiber.Ctx) error {
 }
 
 func ViewDashboardHeadOffice(c *fiber.Ctx) error {
-	if model.Fullname == "" {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := session.Get("userId").(string)
+
+	if userId == "" {
 		return c.Redirect("/")
+	} else {
+		userCredentials := &model.UserCredentials{}
+		database.DBConn.Debug().Raw("SELECT * FROM user_credentials WHeRE id = ?", userId).Scan(userCredentials)
+		global.Fullname = userCredentials.Fullname
+		global.UserCodeLogged = userCredentials.DivisionCode
+		global.UserID = userCredentials.Id
+		global.DivisionCode = userCredentials.DivisionCode
 	}
 
 	proponents := &[]model.Proponents{}
@@ -77,10 +121,10 @@ func ViewDashboardHeadOffice(c *fiber.Ctx) error {
 		"title":      "DASHBOARD - HEAD OFFICE",
 		"monthLists": months,
 		"yearLists":  years,
-		"yearNow":    model.YearNow,
-		"user":       model.Fullname,
-		"userLogged": model.UserCodeLogged,
-		"userId":     model.UserID,
+		"yearNow":    global.YearNow,
+		"user":       global.Fullname,
+		"userLogged": global.UserCodeLogged,
+		"userId":     global.UserID,
 		"greetings":  utils.GetGreetings(),
 		"tracking":   tracking,
 		"proponents": proponents,

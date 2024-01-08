@@ -145,6 +145,13 @@
                   {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
                 </a>
                 {{end}}
+                <!-- FILED -->
+                {{if eq .DocumentTag "Filed"}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/routing/update_filing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-solid fa-boxes-packing"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
               </td>
               <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceivedDate}} </td>
             </tr>

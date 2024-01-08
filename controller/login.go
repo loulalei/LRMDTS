@@ -86,6 +86,11 @@ func ValidateUser(c *fiber.Ctx) error {
 			})
 		}
 	} else {
+		global.Fullname = ""
+		global.UserCodeLogged = ""
+		global.UserID = 0
+		global.DivisionCode = ""
+
 		divisions := &[]model.Divisions{}
 		database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
 		return c.Render("login", fiber.Map{

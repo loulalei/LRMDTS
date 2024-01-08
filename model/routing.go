@@ -30,6 +30,7 @@ type (
 		DocumentTag string `json:"documentTag"`
 		// Receivings
 		ReceivingId    int    `json:"receivingId"`
+		ReleasingId    int    `json:"releasingId"`
 		TrackingNumber string `json:"trackingNumber"`
 		ReceivedDate   string `json:"receivedDate"`
 		ReceivedTime   string `json:"receivedTime"`

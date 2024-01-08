@@ -83,7 +83,7 @@ func InitializeTables() {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
-	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_routings AS SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, to_char(route.updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at, rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by FROM routings route INNER JOIN receivings rcv ON route.receiving_id = rcv.receiving_id ORDER BY route.updated_at DESC").Error; database.DBErr != nil {
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_routings AS SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, to_char(route.updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at, rcv.receiving_id, route.releasing_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by FROM routings route INNER JOIN receivings rcv ON route.receiving_id = rcv.receiving_id ORDER BY route.updated_at DESC").Error; database.DBErr != nil {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 

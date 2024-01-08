@@ -12,6 +12,11 @@ import (
 )
 
 func ViewLogin(c *fiber.Ctx) error {
+	global.Fullname = ""
+	global.UserCodeLogged = ""
+	global.UserID = 0
+	global.DivisionCode = ""
+
 	divisions := &[]model.Divisions{}
 	database.DBConn.Raw("SELECT * FROM divisions").Scan(divisions)
 
@@ -24,11 +29,20 @@ func ViewLogin(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
+	// Get session from storage
+	session, err := global.Store.Get(c)
+	if err != nil {
+		panic(err)
+	}
+
 	event := fmt.Sprintf("%s successfully logged out", global.Fullname)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged out", event, global.UserID)
-	global.UserID = 0
 	global.Fullname = ""
+	global.UserCodeLogged = ""
+	global.UserID = 0
+	global.DivisionCode = ""
 
+	session.Destroy()
 	return c.Redirect("/")
 }
 

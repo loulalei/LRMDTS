@@ -57,7 +57,8 @@ SELECT * FROM approves
 SELECT * FROM releasings
 SELECT * FROM filings
 SELECT * FROM borrower_histories
-select * from employee_performaces
+SELECT * from employee_performaces
+SELECT * FROM user_activities
 
 SELECT * FROM divisions
 SELECT * FROM committees
@@ -92,6 +93,7 @@ SELECT * FROM trackings WHERE calendared IS NOT NULL
 
 SELECT * FROM view_borrower_history
 SELECT * FROM user_credentials
+SELECT * FROM view_users
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
 

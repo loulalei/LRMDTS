@@ -114,14 +114,16 @@
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="header_password" name="header_password" required>
+                                <input type="password" class="form-control" id="header_password" name="header_password"
+                                    required>
                                 <label for="header_password"><i class="bi bi-key"></i>
                                     Password</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="header_cpassword" name="header_cpassword" required>
+                                <input type="password" class="form-control" id="header_cpassword"
+                                    name="header_cpassword" required>
                                 <label for="header_cpassword"><i class="bi bi-key"></i>
                                     Confirm Password</label>
                                 <small><span id="message"></span></small>
@@ -248,4 +250,22 @@
                     );
                 }
             });
+        </script>
+
+        <script type="text/javascript" language="javascript">
+            var idleMax = 30; // Logout after ng 30 minutes na pakikipag kwentuhan
+            var idleTime = 0;
+
+            var idleInterval = setInterval("timerIncrement()", 60000);  // 1 minute interval    
+            $("body").mousemove(function (event) {
+                idleTime = 0; // reset to zero
+            });
+
+            // count minutes
+            function timerIncrement() {
+                idleTime = idleTime + 1;
+                if (idleTime > idleMax) {
+                    window.location = "/api/user/logout";
+                }
+            }       
         </script>

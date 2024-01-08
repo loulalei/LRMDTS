@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- bdges end -->
   </div>
   <div class="row p-2 gx-2">
@@ -86,14 +86,65 @@
             {{range .notifs}}
             <tr class="border-bottom py-2">
               <td>
-                {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-regular fa-newspaper"></i>{{end}}
-                {{if eq .DocumentTag "For Agenda"}}<i class="fa-regular fa-newspaper"></i>{{end}}
-                {{if eq .DocumentTag "For information of the whole body"}}<i class="fa-solid fa-box-open"></i>{{end}}
-                {{if eq .DocumentTag "Approved"}}<i class="fa-regular fa-thumbs-up"></i>{{end}}
-                {{if eq .DocumentTag "Referred to Committee"}}<i class="fa-regular fa-newspaper"></i>{{end}}
-                {{if eq .DocumentTag "For Filing"}}<i class="fa-solid fa-boxes-packing"></i>{{end}}
-                {{if eq .DocumentTag "For Releasing"}}<i class="fa-regular fa-paper-plane"></i>{{end}}
-                {{ .Summary}} is {{.Remarks}} - {{.DocumentTag}}
+                <!-- SECRETARIAT -->
+                <!-- REFERED TO COMMITTEE -->
+                {{if eq .DocumentTag "Referred to Committee"}}
+                {{if eq .ItemNumber ""}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/view/{{.DocId}}/0"><i class="fa-regular fa-newspaper"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{else}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/view/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-newspaper"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
+                {{end}}
+                <!-- AGENDA -->
+                {{if eq .DocumentTag "For Agenda"}}
+                {{if eq .ItemNumber ""}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/view/{{.DocId}}/0"><i class="fa-regular fa-newspaper"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{else}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/view/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-newspaper"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
+                {{end}}
+
+                <!-- RECORD -->
+                {{if eq .DocumentTag "For information of the whole body"}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/routing/viewagenda/{{.DocId}}/{{.ItemNumber}}"><i class="fa-solid fa-box-open"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
+                <!-- APPROVED -->
+                {{if eq .DocumentTag "Approved"}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/routing/approved/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-thumbs-up"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
+                <!-- RELEASING -->
+                {{if eq .DocumentTag "For Releasing"}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i
+                    class="fa-regular fa-paper-plane"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
+                <!-- FILING -->
+                {{if eq .DocumentTag "For Filing"}}
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                  href="/api/routing/filing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-solid fa-boxes-packing"></i>
+                  {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}
+                </a>
+                {{end}}
               </td>
               <td class="text-end text-nowrap"><i class="fa-solid fa-calendar-days"></i> {{ .ReceivedDate}} </td>
             </tr>

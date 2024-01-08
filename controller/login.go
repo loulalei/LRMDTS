@@ -86,9 +86,14 @@ func ValidateUser(c *fiber.Ctx) error {
 			})
 		}
 	} else {
-		return c.JSON(fiber.Map{
-			"status":  101,
-			"message": "Login failed, invalid credentials",
+		divisions := &[]model.Divisions{}
+		database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
+		return c.Render("login", fiber.Map{
+			"pageTitle": "Login",
+			"title":     "LOGIN",
+			"yearNow":   global.YearNow,
+			"status":    101,
+			"divisions": divisions,
 		})
 	}
 }
@@ -141,8 +146,6 @@ func VerifyUser(c *fiber.Ctx) error {
 			return c.Redirect("/api/dashboard/head_office")
 		}
 	}
-
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event) VALUES(?,?)", "logged in", "failed to log in")
 	divisions := &[]model.Divisions{}
 	database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
 	return c.Render("login", fiber.Map{

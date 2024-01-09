@@ -15,7 +15,7 @@ func ShowCalendar(c *fiber.Ctx) error {
 
 func GetEvent(c *fiber.Ctx) error {
 	events := &[]model.EventCalendar{}
-	database.DBConn.Debug().Raw("SELECT * FROM event_calendars").Scan(events)
+	database.DBConn.Debug().Raw("SELECT CONCAT(title, COUNT(*)) title, start FROM event_calendars GROUP BY start, title").Scan(events)
 
 	endpoint := fmt.Sprintf("%v%v", c.BaseURL(), c.Path())
 	return c.JSON(model.ResponseBody{

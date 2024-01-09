@@ -188,10 +188,15 @@ $$
 LANGUAGE plpgsql;
 
 
+SELECT * FROM event_calendars
 INSERT INTO event_calendars (title,start) 
-VALUES ('Start of Working Calendar','2024-01-09'),
-('Uwi ni dadiyow','2024-01-20'),
-('Birthday','2024-01-27')
+VALUES ('Session Day!','2024-01-09'),
+('Session Day!','2024-01-20'),
+('Session Day!','2024-01-27')
+
+SELECT CONCAT(title, COUNT(*)) title, start
+FROM event_calendars
+GROUP BY start, title
 
 SELECT * FROM folders
 SELECT * FROM activity_loggers WHERE user_id = 5

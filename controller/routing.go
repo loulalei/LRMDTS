@@ -386,6 +386,10 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	receivings := &[]model.Routings{}
 	database.DBConn.Debug().Raw("SELECT * FROM routings").Scan(receivings)
 
+	//-- Register to calendar event
+	eventTitle := "Session Day - "
+	database.DBConn.Debug().Exec("INSERT INTO event_calendars (title, start) VALUES(?,?)", eventTitle, requestAgenda.DateCalendared)
+
 	event := fmt.Sprintf("calendared for agenda with item number %s and status %s", requestAgenda.ItemNumber, requestAgenda.AgendaTag)
 	activity := "encoded for agenda"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)

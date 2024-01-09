@@ -4,32 +4,18 @@
     #calendar {
         max-width: 1100px;
         margin: 40px auto;
+        font-size: 14px;
     }
 </style>
 
 <div id="calendar"></div>
 
-<!-- 
 <script>
     $(document).ready(function () {
         var endpoint = "/api/calendar/events"
         $.get(endpoint,
             function (response, status) {
                 if (response.status == 100) {
-                    
-                }
-            },
-        );
-    });
-</script> -->
-
-
-<script>
-    var endpoint = "/api/calendar/events"
-    $.get(endpoint,
-        function (response, status) {
-            if (response.status == 100) {
-                document.addEventListener('DOMContentLoaded', function () {
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         initialView: 'dayGridMonth',
@@ -39,20 +25,18 @@
                             center: 'title',
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                         },
-                        events: JSON.stringify(response.data)
+                        events: response.data
                     });
                     calendar.render();
-                });
-            } else {
-                Swal.fire(
-                    'Error calendar',
-                    'Can not fetch events data',
-                    'info'
-                )
-            }
-        },
-    );
-
-
+                } else {
+                    Swal.fire(
+                        'Error calendar',
+                        'Can not fetch events data',
+                        'info'
+                    )
+                }
+            },
+        );
+    });
 </script>
 {{end}}

@@ -135,9 +135,9 @@
                   {{if .ReleasingId}}
                     {{if eq .Remarks "Forwarded to Mayor" .Remarks "Approved by Mayor" .Remarks "Forwarded to Panlalawigan" .Remarks "Approved by Panlalawigan" .Remarks "Approved by Panlalawigan" }}
                       <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
-                    {{else}}
-                      <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
                     {{end}}
+                    {{else}}
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
                   {{end}}
                 {{end}}
                 <!-- FILING -->

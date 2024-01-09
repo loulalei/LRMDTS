@@ -48,6 +48,8 @@ func InitializeTables() {
 	fmt.Println("Employee Performance Logger ✓")
 	database.CreateTable(model.UserActivities{})
 	fmt.Println("User Activities ✓")
+	database.CreateTable(model.EventCalendar{})
+	fmt.Println("Event Calendar ✓")
 
 	// Insert Default Divisions
 	var count int

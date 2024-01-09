@@ -227,4 +227,12 @@ type (
 		CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 		UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
+
+	EventCalendar struct {
+		EventId int    `json:"-" gorm:"primaryKey;autoIncrement"`
+		Title   string `json:"title"`
+		Start   string `json:"start"`
+		GroupId string `json:"groupId,omitempty"`
+		End     string `json:"end,omitempty"`
+	}
 )

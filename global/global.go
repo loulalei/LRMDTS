@@ -13,6 +13,7 @@ import (
 // Page Parameters
 var (
 	YearNow        = time.Now().Year()
+	CurrentDate    = time.Now().Format("2006-01-02")
 	Page           string
 	Title          string
 	LoginStatus    int

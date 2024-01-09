@@ -12,9 +12,11 @@ ORDER BY cmtl.list_id DESC
 
 SELECT to_char(updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at FROM routings
 
+SELECT * FROM routings
+
 CREATE VIEW view_routings AS
 SELECT route.doc_id, route.item_number, route.document_tag, route.remarks, to_char(route.updated_at, 'Mon. DD,YYYY | HH12:MI AM') AS updated_at,
-	rcv.receiving_id, rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by
+	rcv.receiving_id, route.releasing_id , rcv.tracking_number, rcv.received_date, rcv.received_time, rcv.receiver, rcv.summary, rcv.received_file, rcv.encoder, rcv.modified_by
 FROM routings route
 INNER JOIN receivings rcv
 ON route.receiving_id = rcv.receiving_id
@@ -93,6 +95,7 @@ SELECT * FROM trackings WHERE calendared IS NOT NULL
 
 SELECT * FROM view_borrower_history
 SELECT * FROM user_credentials
+SELECT * FROM view_routings
 SELECT * FROM view_users
 SELECT COUNT(*) FROM divisions
 SELECT COUNT(*) FROM view_committees
@@ -125,84 +128,6 @@ SELECT * FROM approves WHERE item_number = '2023-0002'
 SELECT * FROM activity_loggers
 SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 
--- DEFAULT VALUES
-INSERT INTO departments (name) VALUES 
-('City Accountant Office'), 
-('City Budget Office'),
-('City Administrator Office'),
-('City Auditor Office'),
-('City Treasurer Office'),
-('City Planning and Development Coordinator Office'),
-('City Agriculture Office'),
-('City Assesor Office'),
-('City Business Permit & Licensing Office'),
-('City Building Office'),
-('City Environment & Natural Resource Office'),
-('City Health Office'),
-('City Human Resource & Management Office'),
-('City Information Office'),
-('City Population Office'),
-('City Prosecutor Office'),
-('City Traffic Management Office'),
-('Civil Registrar Office'),
-('Cooperative Office'),
-('Disaster Risk Reduction Management Office'),
-('Engineering Office'),
-('General Services Office'),
-('Legal Office'),
-('LEDIPO'),
-('Municipal Trial Court'),
-('Pamantasan ng Lungsod ng San Pablo'),
-('Public Employment Office'),
-('Regional Trial Court'),
-('San Pablo City General Hospital'),
-('San Pablo City General Hospital-Dialysis Unit'),
-('Sangguniang Panlungsod'),
-('Sangguniang Panlungsod-Library'),
-('Senior Citizen Affairs'),
-('Social Welfare & Development Office'),
-('Solid Waste Management Office'),
-('Tourism Office'),
-('Veterinarian Office')
-
-INSERT INTO departments (name) VALUES 
-('City Accountant Office'),
-('City Budget Office'),
-('City Administrator Office'), 
-('City Auditor Office'),
-('City Treasurer Office'), 
-('City Planning and Development Coordinator Office'),
-('City Agriculture Office'), 
-('City Assesor Office'),
-('City Business Permit & Licensing Office'),
-('City Building Office'), 
-('City Environment & Natural Resource Office'),
-('City Health Office'), 
-('City Human Resource & Management Office'),
-('City Information Office'), 
-('City Population Office'),
-('City Prosecutor Office'),
-('City Traffic Management Office'),
-('Civil Registrar Office'), 
-('Cooperative Office'),
-('Disaster Risk Reduction Management Office'),
-('Engineering Office'),
-('General Services Office'),
-('Legal Office'),('LEDIPO'), 
-('Municipal Trial Court'),
-('Pamantasan ng Lungsod ng San Pablo'), 
-('Public Employment Office'),
-('Regional Trial Court'), 
-('San Pablo City General Hospital'),
-('San Pablo City General Hospital-Dialysis Unit'), 
-('Sangguniang Panlungsod'), 
-('Sangguniang Panlungsod-Library'), 
-('Senior Citizen Affairs'), 
-('Social Welfare & Development Office'), 
-('Solid Waste Management Office'),
-('Tourism Office'), 
-('Veterinarian Office')
-
 -- FUNCTIONS
 CREATE OR REPLACE FUNCTION update_agenda(_agenda_id int, _tag text, _remarks text, _encoder)
 RETURNS int AS
@@ -222,6 +147,8 @@ $$
 BEGIN
 	TRUNCATE TABLE activity_loggers;
 	TRUNCATE TABLE employee_performaces;
+	TRUNCATE TABLE borrower_histories;
+	TRUNCATE TABLE activity_loggers;
 	TRUNCATE TABLE receivings;
 	TRUNCATE TABLE agendas;
 	TRUNCATE TABLE approves;
@@ -243,9 +170,11 @@ BEGIN
 	DROP VIEW view_committees;
 	DROP VIEW view_borrower_history;
 	DROP VIEW view_routings;
+	DROP VIEW view_users;
 	DROP TABLE receivings;
 	DROP TABLE activity_loggers;
 	DROP TABLE employee_performaces;
+	DROP TABLE borrower_histories;
 	DROP TABLE agendas;
 	DROP TABLE approves;
 	DROP TABLE releasings;
@@ -257,6 +186,12 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+
+INSERT INTO event_calendars (title,start) 
+VALUES ('Start of Working Calendar','2024-01-09'),
+('Uwi ni dadiyow','2024-01-20'),
+('Birthday','2024-01-27')
 
 SELECT * FROM folders
 SELECT * FROM activity_loggers WHERE user_id = 5

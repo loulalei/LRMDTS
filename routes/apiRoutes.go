@@ -78,8 +78,12 @@ func AppRoutes(app *fiber.App) {
 	// OTHER
 	routingEndpoint.Get("/add_committee/:itemNo/:committeeId/:userId", controller.InsertCommitteeForAgenda)
 	routingEndpoint.Get("/delete_committee/:itemNo/:committeeId/:userId", controller.RemoveCommitteeForAgenda)
-
 	routingEndpoint.Post("/add_committee", controller.PostInsertCommitteeForAgenda)
+
+	// CALENDAR
+	calendarEndpoint := apiEndpoint.Group("/calendar")
+	calendarEndpoint.Get("/", controller.ShowCalendar)
+	calendarEndpoint.Get("/events", controller.GetEvent)
 
 	// testEndpoint := apiEndpoint.Group("/test")
 }

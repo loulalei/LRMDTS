@@ -47,6 +47,9 @@
       <table id="example" class="table table-striped table-hover table-sm" style="width:100%">
         <thead>
           <tr>
+            {{if eq .loggedDivision "HOD"}}
+            <th class="text-center">EMPLOYEE NAME</th>
+            {{end}}
             <th class="text-center">DATE</th>
             <th class="text-center">RECORDS CAPTURED</th>
             <th class="text-center">RECORDS RETRIEVED</th>
@@ -55,6 +58,9 @@
         <tbody>
           {{range .employeePerformances}}
           <tr>
+            {{if .Fullname}}
+            <th class="text-center">{{.Fullname}}</th>
+            {{end}}
             <td>{{.Date}}</td>
             <td>{{.RecordsCaptured}}</td>
             <td>{{.RecordsRetrieved}}</td>
@@ -68,7 +74,7 @@
 <script>
   $(document).ready(function () {
     $('#example').DataTable({
-      order: [[0, 'desc']],
+      order: [[0, 'asc']],
       columnDefs: [
         {
           className: 'dt-body-center',

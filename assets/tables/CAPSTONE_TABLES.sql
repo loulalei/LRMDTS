@@ -189,7 +189,6 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
 SELECT * FROM event_calendars
 INSERT INTO event_calendars (title,start) 
 VALUES ('Session Day!','2024-01-09'),
@@ -204,5 +203,15 @@ SELECT * FROM event_calendars
 SELECT * FROM folders
 SELECT * FROM activity_loggers WHERE user_id = 5
 SELECT COUNT(records_captured) AS records_captured, TO_CHAR(created_at, 'Mon. DD,YYYY') AS date FROM employee_performaces WHERE user_id = 6 GROUP BY date
+
+SELECT DISTINCT usr.fullname, TO_CHAR(emp.created_at, 'Mon. DD,YYYY') AS date, 
+COUNT(emp.records_captured) as records_captured, 
+COUNT(emp.records_retrieved) as records_retrieved 
+FROM employee_performaces emp
+INNER JOIN user_credentials usr
+ON usr.id = emp.user_id
+WHERE user_id = 2
+GROUP BY date, usr.fullname
+
 
 SELECT DISTINCT TO_CHAR(created_at, 'Mon. DD,YYYY') AS date, COUNT(records_captured) as records_captured, COUNT(records_retrieved) as records_retrieved FROM employee_performaces WHERE user_id = 6 GROUP BY date

@@ -66,6 +66,7 @@ type (
 		ReceivedDate     string `json:"receivedDate,omitempty"`
 		ReceivedTime     string `json:"receivedTime,omitempty"`
 		Receiver         string `json:"receiver,omitempty"`
+		Description      string `json:"description,omitempty"`
 		Summary          string `json:"summary,omitempty"`
 		ReceivingTag     string `json:"receivingTag,omitempty"`
 		ReceivingRemarks string `json:"receivingRemarks,omitempty"`

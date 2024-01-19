@@ -21,8 +21,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewRoutings}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
-                        <i>{{.Encoder}}</i></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -93,14 +96,19 @@
                 <div class="accordion-body row">
                     {{ range .viewAgenda}}
                     {{if .ModifiedBy}}
-                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
-                        <i>{{.Encoder}}</i> | Modified By:
-                        <i>{{.ModifiedBy}}</i></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i> | Modified By:
+                            <i>{{.ModifiedBy}}</i>
+                        </h6>
+                    </span>
                     {{else}}
-                    <span class="badge bg-secondary my-2 fw-bold"> Encoder:
-                        <i>{{.Encoder}}</i></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     {{end}}
-
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
                             {{if .IsUrgent}}
@@ -189,8 +197,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewApproved}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:
-                        <i>{{.Encoder}}</i></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-2">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}"
@@ -273,7 +284,9 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewReleasings}}
-                    <span class="badge bg-secondary my-2 fw-bold">Encoder:<i>{{.Encoder}}</i></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:<i>{{.Encoder}}</i></h6>
+                    </span>
                     <div class="col-md-4"> <!-- TO MAYOR  -->
                         <div class="row">
                             <span class="badge bg-secondary mb-2 fw-bold">TO MAYOR</span>
@@ -409,13 +422,23 @@
         </div>
         <div class="col-md-5">
             <div class="form-floating">
-                <select class="form-select" id="folderName" name="folderName">
+                <input class="form-control" list="folderList" id="folderName" name="folderName"
+                    placeholder="Search folder...">
+                <datalist id="folderList">
                     <option selected disabled>Select</option>
                     {{range .folder}}
                     <option value="{{.Name}}">{{.Name}}</option>
                     {{end}}
                     <option value="new">Add New</option>
-                </select>
+                </datalist>
+
+                <!-- <select class="form-select" id="folderName" name="folderName">
+                    <option selected disabled>Select</option>
+                    {{range .folder}}
+                    <option value="{{.Name}}">{{.Name}}</option>
+                    {{end}}
+                    <option value="new">Add New</option>
+                </select> -->
                 <label for="folderName">Folder</label>
             </div>
         </div>
@@ -517,21 +540,32 @@
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
-            Swal.fire({
-                title: "Do you want to save this record?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Save"
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    $("#filingForm").submit(); // Submit the form
-                } else if (result.isDenied) {
-                    Swal.fire("Cancel saving record", "", "info");
-                }
-            });
+            var dateFiled = document.getElementById("dateFiled").value
+
+            if (dateFiled == "") {
+                Swal.fire(
+                'Error saving',
+                'Date filed is empty',
+                'info'
+            )
+            } else {
+                Swal.fire({
+                    title: "Do you want to save this record?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Save"
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $("#filingForm").submit(); // Submit the form
+                    } else if (result.isDenied) {
+                        Swal.fire("Cancel saving record", "", "info");
+                    }
+                });
+
+            }
         });
     });
 

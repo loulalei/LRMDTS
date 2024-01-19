@@ -157,6 +157,7 @@ BEGIN
 	TRUNCATE TABLE committee_lists;
 	TRUNCATE TABLE routings;
 	TRUNCATE TABLE trackings;
+	TRUNCATE TABLE event_calendars;
 	RETURN 'All tables are truncated';
 END;
 $$
@@ -182,6 +183,7 @@ BEGIN
 	DROP TABLE committee_lists;
 	DROP TABLE routings;
 	DROP TABLE trackings;
+	DROP TABLE event_calendars;
 	RETURN 'All tables are DROPPED!';
 END;
 $$
@@ -198,6 +200,7 @@ SELECT CONCAT(title, COUNT(*)) title, start
 FROM event_calendars
 GROUP BY start, title
 
+SELECT * FROM event_calendars
 SELECT * FROM folders
 SELECT * FROM activity_loggers WHERE user_id = 5
 SELECT COUNT(records_captured) AS records_captured, TO_CHAR(created_at, 'Mon. DD,YYYY') AS date FROM employee_performaces WHERE user_id = 6 GROUP BY date

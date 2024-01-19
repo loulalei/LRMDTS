@@ -239,9 +239,9 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	receivingData.ReceivedFile = file.Filename
 
 	// INSERT NEW RECEIVING RECORD
-	database.DBConn.Debug().Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?)",
+	database.DBConn.Debug().Exec("INSERT INTO receivings (tracking_number, received_date, received_time, receiver, description, summary, receiving_tag, receiving_remarks, received_file, encoder) VALUES (?,?,?,?,?,?,?,?,?,?)",
 		receivingData.TrackingNumber, receivingData.ReceivedDate, receivingData.ReceivedTime, receivingData.Receiver,
-		receivingData.Summary, "For Agenda", "Forwarded to Secretariat", receivingData.ReceivedFile, global.Fullname,
+		receivingData.Description, receivingData.Summary, "For Agenda", "Forwarded to Secretariat", receivingData.ReceivedFile, global.Fullname,
 	)
 
 	// GET RECEIVING ID
@@ -253,7 +253,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	viewRoutings := &model.ViewRoutings{}
 	database.DBConn.Raw("SELECT * FROM view_routings WHERE receiving_id = ?", receivingID).Scan(viewRoutings)
 	// INSERT NEW TRACKING RECORD
-	database.DBConn.Exec("INSERT INTO trackings (doc_id, tracking_number, summary, received_date) VALUES (?,?,?,?)", viewRoutings.DocId, receivingData.TrackingNumber, receivingData.Summary, receivingData.ReceivedDate)
+	database.DBConn.Exec("INSERT INTO trackings (doc_id, tracking_number, description, summary, received_date) VALUES (?,?,?,?,?)", viewRoutings.DocId, receivingData.TrackingNumber, receivingData.Description, receivingData.Summary, receivingData.ReceivedDate)
 
 	activity := "encoded received document"
 	event := fmt.Sprintf("you registered new document with tracking number %s", receivingData.TrackingNumber)

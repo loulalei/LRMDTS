@@ -47,6 +47,9 @@ func ViewDocument(c *fiber.Ctx) error {
 	viewFilings := &[]model.Filings{}
 	database.DBConn.Debug().Raw("SELECT * FROM filings WHERE doc_id = ?", docId).Scan(viewFilings)
 
+	ItemCommittees := &[]model.ViewCommittees{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_committees WHERE item_number = ?", itemNumber).Scan(ItemCommittees)
+
 	// Check availability
 	var agendaId int
 	database.DBConn.Debug().Raw("SELECT agenda_id FROM agendas WHERE item_number = ?", itemNumber).Scan(&agendaId)
@@ -78,6 +81,7 @@ func ViewDocument(c *fiber.Ctx) error {
 		"filingId":       filingId,
 		"docId":          docId,
 		"itemNumber":     itemNumber,
+		"itemCommittees": ItemCommittees,
 		"greetings":      utils.GetGreetings(),
 		"baseURL":        c.BaseURL(),
 	})

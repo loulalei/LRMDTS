@@ -9,6 +9,7 @@ type (
 		ReceivedDate     string    `json:"receivedDate,omitempty"`
 		ReceivedTime     string    `json:"receivedTime,omitempty"`
 		Receiver         string    `json:"receiver,omitempty"`
+		Description      string    `json:"description,omitempty"`
 		Summary          string    `json:"summary,omitempty"`
 		ReceivingTag     string    `json:"receivingTag,omitempty"`
 		ReceivingRemarks string    `json:"receivingRemarks,omitempty"`
@@ -112,6 +113,7 @@ type (
 		LawType        string `json:"lawType,omitempty"`
 		LawNumber      string `json:"lawNumber,omitempty"`
 		Series         string `json:"series,omitempty"`
+		Description    string `json:"description,omitempty"`
 		Summary        string `json:"summary,omitempty"`
 		ReceivedDate   string `json:"receivedDate,omitempty"`
 		Calendared     string `json:"calendared,omitempty"`
@@ -161,14 +163,6 @@ type (
 	Divisions struct {
 		Name string `json:"name"`
 		Code string `json:"code"`
-	}
-
-	FilePaths struct {
-		FileCode    int       `json:"fileCode"`
-		FileName    string    `json:"filename"`
-		Description string    `json:"description"`
-		CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
-		UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	}
 
 	DocumentFolders struct {

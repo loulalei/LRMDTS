@@ -64,8 +64,8 @@ func ViewDocument(c *fiber.Ctx) error {
 	database.DBConn.Debug().Raw("SELECT filing_id FROM filings WHERE doc_id = ?", docId).Scan(&filingId)
 
 	return c.Render("view_document", fiber.Map{
-		"pageTitle":      "forFiling",
-		"title":          "FOR FILING",
+		"pageTitle":      "viewDocument",
+		"title":          "View Document",
 		"yearNow":        global.YearNow,
 		"user":           global.Fullname,
 		"userLogged":     global.UserCodeLogged,

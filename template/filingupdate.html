@@ -439,6 +439,7 @@
         name="filingForm" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i><h6>FILING</h6></span>
         {{range .viewFilings}}
         {{if .ModifiedBy}}
         <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder: <i>{{.Encoder}} | Modified By: {{.ModifiedBy}}</i></h6></span>

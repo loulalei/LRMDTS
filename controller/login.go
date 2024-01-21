@@ -36,7 +36,7 @@ func Logout(c *fiber.Ctx) error {
 	}
 
 	event := fmt.Sprintf("%s successfully logged out", global.Fullname)
-	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged out", event, global.UserID)
+	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity,event,user_id) VALUES(?,?,?)", "logged out", event, global.UserID)
 	global.Fullname = ""
 	global.UserCodeLogged = ""
 	global.UserID = 0
@@ -67,7 +67,7 @@ func ValidateUser(c *fiber.Ctx) error {
 		session.Set("userId", strconv.Itoa(userCredentials.Id))
 		session.Save()
 
-		event := fmt.Sprintf("%s successfull logged in", global.Fullname)
+		event := fmt.Sprintf("%s successfully logged in", global.Fullname)
 
 		if userCredentials.DivisionCode == "SPCRD" { //Records
 			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, userCredentials.Id)
@@ -117,7 +117,7 @@ func VerifyUser(c *fiber.Ctx) error {
 		global.UserCodeLogged = userCredentials.DivisionCode
 		global.UserID = userCredentials.Id
 		global.DivisionCode = userCredentials.DivisionCode
-		event := fmt.Sprintf("%s successfull logged in", global.Fullname)
+		event := fmt.Sprintf("%s successfully logged in", global.Fullname)
 
 		database.DBConn.Debug().Raw("SELECT * FROM user_activities WHERE user_id = ?", global.UserID).Scan(model.UserActivity)
 

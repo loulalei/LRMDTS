@@ -256,7 +256,7 @@ func RegisterReceiving(c *fiber.Ctx) error {
 	database.DBConn.Exec("INSERT INTO trackings (doc_id, tracking_number, description, summary, received_date) VALUES (?,?,?,?,?)", viewRoutings.DocId, receivingData.TrackingNumber, receivingData.Description, receivingData.Summary, receivingData.ReceivedDate)
 
 	activity := "encoded received document"
-	event := fmt.Sprintf("you registered new document with tracking number %s", receivingData.TrackingNumber)
+	event := fmt.Sprintf("%s registered new document with tracking number %s", receivingData.Receiver, receivingData.TrackingNumber)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	recordsCaptured := "register receiving"
@@ -390,7 +390,7 @@ func RegisterForAgenda(c *fiber.Ctx) error {
 	eventTitle := "Session Day - "
 	database.DBConn.Debug().Exec("INSERT INTO event_calendars (title, start) VALUES(?,?)", eventTitle, requestAgenda.DateCalendared)
 
-	event := fmt.Sprintf("calendared for agenda with item number %s and status %s", requestAgenda.ItemNumber, requestAgenda.AgendaTag)
+	event := fmt.Sprintf("%s calendared for agenda with item number %s and status %s", global.Fullname, requestAgenda.ItemNumber, requestAgenda.AgendaTag)
 	activity := "encoded for agenda"
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
@@ -443,7 +443,7 @@ func UpdateForAgenda(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE routings SET document_tag = ?, remarks = ?, updated_at = ? WHERE item_number = ?", requestAgenda.AgendaTag, requestAgenda.AgendaRemarks, dateNow, requestAgenda.ItemNumber)
 
 	activity := "updated for agenda"
-	event := fmt.Sprintf("change status for item number %s to %s ", requestAgenda.ItemNumber, requestAgenda.AgendaTag)
+	event := fmt.Sprintf("%s change status for item number %s to %s ", global.Fullname, requestAgenda.ItemNumber, requestAgenda.AgendaTag)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	recordsCaptured := "update agenda"
@@ -696,7 +696,7 @@ func RegisterApproved(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE trackings SET law_type = ?, law_number = ?, series = ?, enacted_date = ?, author = ?, motioned_by = ? , updated_at = ? WHERE item_number = ?", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series, requestApproved.EnactedDate, requestApproved.Author, requestApproved.MotionedBy, dateNow, requestApproved.ItemNumber)
 
 	activity := "encoded approved"
-	event := fmt.Sprintf("registered new %s No. %s S. %s", requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series)
+	event := fmt.Sprintf("%s registered new %s No. %s S. %s", global.Fullname, requestApproved.LawType, requestApproved.LawNumber, requestApproved.Series)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	recordsCaptured := "register approved"
@@ -818,31 +818,31 @@ func RegisterReleasing(c *fiber.Ctx) error {
 
 	var event string
 	if requestReleasing.MayorDateForwarded != "" && (!requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved == "") {
-		event = fmt.Sprintf("forwarded item number %s to Mayor", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s forwarded item number %s to Mayor", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("mayor forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.MayorDateForwarded != "" && (requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved != "") {
-		event = fmt.Sprintf("approved item number %s by Mayor", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s approved item number %s by Mayor", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("mayor approved")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (!requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved == "") {
-		event = fmt.Sprintf("forwarded item number %s  to Panlalawigan", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s forwarded item number %s  to Panlalawigan", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("sta cruz forwarded")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved != "") {
-		event = fmt.Sprintf("approved item number %s  by Panlalawigan", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s approved item number %s  by Panlalawigan", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("sta cruz approved")
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.LocalDateRelease != "" {
-		event = fmt.Sprintf("local relased item number %s", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s local released item number %s", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("local released")
 		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
@@ -982,35 +982,35 @@ func SaveReleasing(c *fiber.Ctx) error {
 	var event string
 
 	if requestReleasing.MayorDateForwarded != "" && (!requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved == "") {
-		event = fmt.Sprintf("forwarded item number %s to Mayor", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s forwarded item number %s to Mayor", global.Fullname, requestReleasing.ItemNumber)
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.MayorDateForwarded != "" && (requestReleasing.IsApprovedLachesMayor || requestReleasing.MayorDateApproved != "") {
 		if requestReleasing.IsApprovedLachesMayor {
-			event = fmt.Sprintf("approved by laches with item number %s by Mayor", requestReleasing.ItemNumber)
+			event = fmt.Sprintf("%s approved by laches with item number %s by Mayor", global.Fullname, requestReleasing.ItemNumber)
 		} else {
-			event = fmt.Sprintf("approved item number %s by Mayor", requestReleasing.ItemNumber)
+			event = fmt.Sprintf("%s approved item number %s by Mayor", global.Fullname, requestReleasing.ItemNumber)
 		}
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Mayor', updated_at = ? WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (!requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved == "") {
-		event = fmt.Sprintf("forwarded item number %s  to Panlalawigan", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s forwarded item number %s to Panlalawigan", global.Fullname, requestReleasing.ItemNumber)
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Forwarded to Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.SPDateForwarded != "" && (requestReleasing.IsApprovedLachesSP || requestReleasing.SPDateApproved != "") {
 		if requestReleasing.IsApprovedLachesSP {
-			event = fmt.Sprintf("approved by laches item number %s by Panlalawigan", requestReleasing.ItemNumber)
+			event = fmt.Sprintf("%s approved by laches item number %s by Panlalawigan", global.Fullname, requestReleasing.ItemNumber)
 		} else {
-			event = fmt.Sprintf("approved item number %s  by Panlalawigan", requestReleasing.ItemNumber)
+			event = fmt.Sprintf("%s approved item number %s by Panlalawigan", global.Fullname, requestReleasing.ItemNumber)
 		}
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Approved by Panlalawigan', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
 	if requestReleasing.LocalDateRelease != "" {
-		event = fmt.Sprintf("local relased item number %s", requestReleasing.ItemNumber)
+		event = fmt.Sprintf("%s local relased item number %s", global.Fullname, requestReleasing.ItemNumber)
 		fmt.Println("local released")
 		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
@@ -1167,7 +1167,7 @@ func RegisterFiling(c *fiber.Ctx) error {
 	database.DBConn.Debug().Exec("UPDATE trackings SET filed_date = ?, published_date = ?, updated_at = ? WHERE doc_id = ?", filingFields.DateFiled, filingFields.DatePublished, dateNow, filingFields.DocId)
 
 	activity := "encoded for filing"
-	event := fmt.Sprintf("filed item number %s in folder %s ", requestFiling.ItemNumber, requestFiling.FolderName)
+	event := fmt.Sprintf("%s filed item number %s in folder %s ", global.Fullname, requestFiling.ItemNumber, requestFiling.FolderName)
 	database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", activity, event, global.UserID)
 
 	recordsCaptured := "register filing"
@@ -1312,16 +1312,16 @@ func SaveFiling(c *fiber.Ctx) error {
 
 	if filingFields.IsBorrowed {
 		borrowed := fmt.Sprintf("Borrowed - %v", filingFields.Borrower)
-		event = fmt.Sprintf("filed item number %s in folder %s - borrowed", requestFiling.ItemNumber, requestFiling.FolderName)
+		event = fmt.Sprintf("%s filed item number %s in folder %s - borrowed", global.Fullname, requestFiling.ItemNumber, requestFiling.FolderName)
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = ?, updated_at = ? WHERE doc_id = ?", borrowed, dateNow, filingFields.DocId)
 		database.DBConn.Debug().Exec("INSERT INTO borrower_histories (doc_id, borrower, date_borrowed) VALUES(?,?,?)", filingFields.DocId, filingFields.Borrower, filingFields.DateBorrowed)
 
 	} else if filingFields.DateReturned != "" {
-		event = fmt.Sprintf("filed item number %s in folder %s - returned", requestFiling.ItemNumber, requestFiling.FolderName)
+		event = fmt.Sprintf("%s filed item number %s in folder %s - returned", global.Fullname, requestFiling.ItemNumber, requestFiling.FolderName)
 		database.DBConn.Debug().Exec("UPDATE routings SET remarks = 'Kept in Records', updated_at = ? WHERE doc_id = ?", dateNow, filingFields.DocId)
 		database.DBConn.Debug().Exec("UPDATE borrower_histories SET date_returned = ?, updated_at = ? WHERE doc_id = ? AND borrower = ?", filingFields.DateReturned, dateNow, filingFields.DocId, filingFields.Borrower)
 	} else {
-		event = fmt.Sprintf("filed item number %s in folder %s", requestFiling.ItemNumber, requestFiling.FolderName)
+		event = fmt.Sprintf("%s filed item number %s in folder %s", global.Fullname, requestFiling.ItemNumber, requestFiling.FolderName)
 	}
 
 	activity := "updated for filing"

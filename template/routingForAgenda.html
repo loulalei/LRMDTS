@@ -80,7 +80,7 @@
     <!-- FOR AGENDA -->
     <form class="row" action="/api/routing/register_agenda" method="post" enctype="multipart/form-data" id="forAgenda"
         name="forAgenda">
-        <span class="badge bg-secondary my-2 fw-bold">AGENDA</span>
+        <span class="badge bg-secondary my-2 fw-bold"><h6>AGENDA</h6></span>
         <input type="text" id="trackingNumber" name="trackingNumber" value="{{ .TrackingNumber}}" hidden readonly>
         {{end}}
         <input type="text" id="docId" name="docId" value="{{ .docId}}" hidden readonly>

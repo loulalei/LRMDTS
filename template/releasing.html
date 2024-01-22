@@ -270,7 +270,7 @@
                 <span class="badge bg-secondary my-2 fw-bold"><h6>TO MAYOR</h6></span>
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded">
+                        <input type="date" class="form-control" id="mayorDateForwarded" name="mayorDateForwarded" value="{{.dateNow}}">
                         <label for="mayorDateForwarded">Date Forwarded</label>
                     </div>
                 </div>
@@ -370,7 +370,7 @@
             }
         });
 
-        document.getElementById('mayorDateForwarded').valueAsDate = new Date();
+        // document.getElementById('mayorDateForwarded').valueAsDate = new Date();
        
     });
 </script>

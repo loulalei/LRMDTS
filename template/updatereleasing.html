@@ -4,6 +4,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <input type="text" id="baseURL" value="{{.baseURL}}" readonly hidden>
+<input type="text" id="dateNow" value="{{.dateNow}}" readonly hidden>
 
 <nav class="navbar navbar-expand-sm bg-body-tertiary">
     <div class="container-fluid">
@@ -402,9 +403,10 @@
         });
 
         if ($('#mayorDateApproved').val()){
-            document.getElementById('spDateForwarded').valueAsDate = new Date();
+            // document.getElementById('spDateForwarded').valueAsDate = new Date();
+            const currDate = document.getElementById("dateNow").value;
+            document.getElementById('spDateForwarded').value = currDate;
         }
-        
     });
 </script>
 

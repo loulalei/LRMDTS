@@ -747,6 +747,7 @@ func ViewReleasing(c *fiber.Ctx) error {
 		"pageTitle":      "Routing - Releasing",
 		"title":          "ROUTING RELEASING",
 		"yearNow":        global.YearNow,
+		"dateNow":        time.Now().Format(time.DateOnly),
 		"user":           global.Fullname,
 		"userLogged":     global.UserCodeLogged,
 		"viewRoutings":   viewRoutings,
@@ -918,6 +919,7 @@ func UpdateReleasing(c *fiber.Ctx) error {
 		"itemCommittees": ItemCommittees,
 		"docId":          docId,
 		"itemNumber":     itemNumber,
+		"dateNow":        time.Now().Format(time.DateOnly),
 		"greetings":      utils.GetGreetings(),
 		"baseURL":        c.BaseURL(),
 	})

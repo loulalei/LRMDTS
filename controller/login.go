@@ -67,8 +67,8 @@ func ValidateUser(c *fiber.Ctx) error {
 		session.Set("userId", strconv.Itoa(userCredentials.Id))
 		session.Save()
 
-		event := fmt.Sprintf("%s successfully logged in", global.Fullname)
-
+		event := fmt.Sprintf("%s successfully logged in", userCredentials.Fullname)
+		fmt.Println("EVENT:", event)
 		if userCredentials.DivisionCode == "SPCRD" { //Records
 			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, userCredentials.Id)
 			return c.Redirect("/api/dashboard")
@@ -100,65 +100,6 @@ func ValidateUser(c *fiber.Ctx) error {
 			"divisions": divisions,
 		})
 	}
-}
-
-func VerifyUser(c *fiber.Ctx) error {
-	userCredentials := &model.UserCredentials{}
-	if parsErr := c.BodyParser(userCredentials); parsErr != nil {
-		return c.JSON(fiber.Map{
-			"error": parsErr,
-		})
-	}
-
-	encryptedPass, _ := utils.Encrypt(userCredentials.Password, utils.GetEnv("SECRET_KEY"))
-	database.DBConn.Raw("SELECT * FROM user_credentials WHERE division_code = ? AND password = ?", userCredentials.DivisionCode, encryptedPass).Scan(userCredentials)
-	if userCredentials.Id == 0 {
-		global.Fullname = userCredentials.Fullname
-		global.UserCodeLogged = userCredentials.DivisionCode
-		global.UserID = userCredentials.Id
-		global.DivisionCode = userCredentials.DivisionCode
-		event := fmt.Sprintf("%s successfully logged in", global.Fullname)
-
-		database.DBConn.Debug().Raw("SELECT * FROM user_activities WHERE user_id = ?", global.UserID).Scan(model.UserActivity)
-
-		if userCredentials.DivisionCode == "SPCRD" { //Records
-			if model.UserActivity.UserId == 0 {
-				database.DBConn.Debug().Exec("INSERT INTO user_activities (user_id, activity, is_logged) VALUES(?,?,?)", global.UserID, "LOGGED IN", true)
-			} else {
-				database.DBConn.Debug().Exec("UPDATE user_activities SET activity = 'LOGGED IN', is_logged = true WHERE user_id = ?", global.UserID)
-			}
-			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
-			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, global.UserID)
-			return c.Redirect("/api/dashboard")
-		} else if userCredentials.DivisionCode == "SPCSD" { //Secretariat
-			if model.UserActivity.UserId == 0 {
-				database.DBConn.Debug().Exec("INSERT INTO user_activities (user_id, activity, is_logged) VALUES(?,?,?)", global.UserID, "LOGGED IN", true)
-			} else {
-				database.DBConn.Debug().Exec("UPDATE user_activities SET activity = 'LOGGED IN', is_logged = true WHERE user_id = ?", global.UserID)
-			}
-			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
-			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event,user_id) VALUES(?,?,?)", "logged in", event, global.UserID)
-			return c.Redirect("/api/dashboard/secretariat")
-		} else if userCredentials.DivisionCode == "HOD" { //Secretariat
-			if model.UserActivity.UserId == 0 {
-				database.DBConn.Debug().Exec("INSERT INTO user_activities (user_id, activity, is_logged) VALUES(?,?,?)", global.UserID, "LOGGED IN", true)
-			} else {
-				database.DBConn.Debug().Exec("UPDATE user_activities SET activity = 'LOGGED IN', is_logged = true WHERE user_id = ?", global.UserID)
-			}
-			database.DBConn.Debug().Exec("UPDATE user_credentials SET is_reset = ? WHERE id = ?", false, userCredentials.Id)
-			database.DBConn.Debug().Exec("INSERT INTO activity_loggers (activity, event, user_id) VALUES(?,?,?)", "logged in", event, global.UserID)
-			return c.Redirect("/api/dashboard/head_office")
-		}
-	}
-	divisions := &[]model.Divisions{}
-	database.DBConn.Debug().Raw("SELECT * FROM divisions").Scan(divisions)
-	return c.Render("login", fiber.Map{
-		"pageTitle":   "Login",
-		"title":       "LOGIN",
-		"yearNow":     global.YearNow,
-		"loginStatus": 101,
-		"divisions":   divisions,
-	})
 }
 
 func ViewRegistration(c *fiber.Ctx) error {

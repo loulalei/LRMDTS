@@ -160,6 +160,12 @@ type (
 		Name     string `json:"name"`
 	}
 
+	Cabinet struct {
+		CabinetNumber string `json:"cabinetNumber"`
+		FolderId      int    `json:"folderId"`
+		DocId         int    `json:"docId"`
+	}
+
 	Divisions struct {
 		Name string `json:"name"`
 		Code string `json:"code"`

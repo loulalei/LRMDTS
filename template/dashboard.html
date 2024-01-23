@@ -131,18 +131,8 @@
                 {{end}}
                 <!-- RELEASING -->
                 {{if eq .DocumentTag "For Releasing"}}
-                
                   {{if .ReleasingId}}
-                    {{if eq .Remarks "Forwarded to Mayor"}}
-                      <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
-                    {{end}}
-                    {{if eq .Remarks "Approved by Mayor"}}
-                      <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
-                    {{end}}
-                    {{if eq .Remarks "Forwarded to Panlalawigan"}}
-                      <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
-                    {{end}}
-                    {{if eq .Remarks "Approved by Panlalawigan"}}
+                    {{if eq .Remarks "Forwarded to Mayor" "Approved by Mayor" "Forwarded to Panlalawigan" "Approved by Panlalawigan"}}
                       <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/api/routing/update_releasing/{{.DocId}}/{{.ItemNumber}}"><i class="fa-regular fa-paper-plane"></i> {{ .Summary}} is {{.Remarks}} {{.DocumentTag}}</a>
                     {{end}}
                   {{else}}

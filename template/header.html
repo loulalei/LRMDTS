@@ -71,17 +71,11 @@
                                     class="fa-solid fa-chart-gantt"></i>
                                 TRACKING</a>
                         </li>
-                        {{if eq .userLogged "HOD"}}
+                        {{if eq .userLogged "HOD" "SPCRD"}}
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" aria-current="page" href="/api/settings"><i
-                                    class="fa-solid fa-users"></i> SETTINGS</a>
+                            <a class="nav-link fw-bold" aria-current="page" href="/api/settings"><i class="fa-solid fa-sliders"></i> SETTINGS</a>
                         </li>
                         {{end}}
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link fw-bold" aria-current="page" href="/api/routing/filing/1/2023-0001"><i
-                                    class="fa-regular fa-folder-open"></i> TEST PAGE</a>
-                        </li> -->
                     </ul>
                     <form class="d-flex">
                         <li class="nav-item dropdown d-flex">

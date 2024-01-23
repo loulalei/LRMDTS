@@ -289,7 +289,9 @@
                     </span>
                     <div class="col-md-4"> <!-- TO MAYOR  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>TO MAYOR</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>TO MAYOR</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="mayorDateForwarded"
@@ -326,7 +328,9 @@
                     </div> <!-- END TO MAYOR  -->
                     <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>SANGGUNIAN PANLALAWIGAN</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>SANGGUNIAN PANLALAWIGAN</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
@@ -377,7 +381,9 @@
                     </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
                     <div class="col-md-4"> <!-- LOCAL -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>LOCAL</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>LOCAL</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="localDateRelease"
@@ -414,7 +420,9 @@
         name="filingForm" autocomplete="off">
         <input type="text" id="docId" name="docId" value="{{.docId}}" readonly hidden>
         <input type="text" id="itemNumber" name="itemNumber" value="{{.itemNumber}}" readonly hidden>
-        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i><h6>FILING</h6></span>
+        <span class="badge bg-secondary my-2 fw-bold"><i class="fa-regular fa-paper-plane"></i>
+            <h6>FILING</h6>
+        </span>
         <div class="col-md-2">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber" required>
@@ -432,14 +440,6 @@
                     {{end}}
                     <option value="new">Add New</option>
                 </datalist>
-
-                <!-- <select class="form-select" id="folderName" name="folderName">
-                    <option selected disabled>Select</option>
-                    {{range .folder}}
-                    <option value="{{.Name}}">{{.Name}}</option>
-                    {{end}}
-                    <option value="new">Add New</option>
-                </select> -->
                 <label for="folderName">Folder</label>
             </div>
         </div>
@@ -541,14 +541,29 @@
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
-            var dateFiled = document.getElementById("dateFiled").value
+            var dateFiled = $("#dateFiled").val();
+            var cabinetNo = $('#cabinetNumber').val().length;
+            var folder = $('#folderName').val();
+            var newFolder = $('#newFolderName').val();
 
-            if (dateFiled == "") {
+            if (cabinetNo == 0) {
                 Swal.fire(
-                'Error saving',
-                'Date filed is empty',
-                'info'
-            )
+                    'Error saving',
+                    'Please enter cabinet number',
+                    'info'
+                )
+            } else if (folder == "" && newFolder == "") {
+                Swal.fire(
+                    'Error saving',
+                    'Please select folder',
+                    'info'
+                )
+            } else if (dateFiled == "") {
+                Swal.fire(
+                    'Error saving',
+                    'Date filed is empty',
+                    'info'
+                )
             } else {
                 Swal.fire({
                     title: "Do you want to save this record?",

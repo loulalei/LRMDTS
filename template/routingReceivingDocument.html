@@ -58,7 +58,7 @@
         </div>
         <div class="col-md-5">
             <div class="mb-3">
-                <label for="receivedFile" class="form-label">Attach received
+                <label for="receivedFile" id="receivedFileLabel" class="form-label">Attach received
                     file</label>
                 <input class="form-control form-control-sm" id="receivedFile" name="receivedFile" type="file"
                     accept="application/pdf,image/jpeg,,image/png" required>
@@ -76,11 +76,21 @@
 <script>
     $(document).ready(function () {
         $("#submitBtn").click(function () {
+            console.log("Submit Receiving")
+            var fileReceived = $('#receivedFile').val();
             var trackingNumber = $('#trackingNumber').val();
             var noSC = trackingNumber.replace(/([-,.€~!@#$%^&*()_+=`{}\[\]\|\\:;'<>])+/g, '');
             var trackingNumberLen = noSC.length;
 
-            if (trackingNumber == "") {
+            if (fileReceived == "") {
+                Swal.fire(
+                    'Saving record error',
+                    'Please attach the received file',
+                    'info'
+                )
+                label = document.getElementById("receivedFileLabel");
+                label.style.color = "red";
+            } else if (trackingNumber == "") {
                 Swal.fire(
                     'Saving record error',
                     'Tracking number is empty',

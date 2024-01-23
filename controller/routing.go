@@ -1162,6 +1162,11 @@ func RegisterFiling(c *fiber.Ctx) error {
 		filingFields.IsBorrowed, filingFields.DateBorrowed, filingFields.Borrower,
 		filingFields.DatePublished, filingFields.Publisher, filingFields.Encoder)
 
+	var folderId int
+	database.DBConn.Debug().Raw("SELECT folder_id FROM folders WHERE name = ?", filingFields.FolderName).Scan(&folderId)
+
+	database.DBConn.Debug().Exec("INSERT INTO cabinets (cabinet_number, folder_id, doc_id) VALUES (?,?,?)", filingFields.CabinetNumber, folderId, filingFields.DocId)
+
 	var filingId int
 	database.DBConn.Debug().Raw("SELECT filing_id FROM filings WHERE doc_id = ?", filingFields.DocId).Scan(&filingId)
 

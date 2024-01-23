@@ -24,8 +24,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewRoutings}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -102,12 +105,18 @@
                 <div class="accordion-body row">
                     {{range .viewAgenda}}
                     {{if .ModifiedBy}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i> | Modified By:
-                        <i>{{.ModifiedBy}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i> | Modified By:
+                            <i>{{.ModifiedBy}}</i>
+                        </h6>
+                    </span>
                     {{else}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     {{end}}
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
@@ -199,8 +208,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewApproved}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-2">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}"
@@ -285,10 +297,14 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewReleasings}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:<i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:<i>{{.Encoder}}</i></h6>
+                    </span>
                     <div class="col-md-4"> <!-- TO MAYOR  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>TO MAYOR</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>TO MAYOR</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="mayorDateForwarded"
@@ -325,7 +341,9 @@
                     </div> <!-- END TO MAYOR  -->
                     <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>SANGGUNIAN PANLALAWIGAN</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>SANGGUNIAN PANLALAWIGAN</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
@@ -374,8 +392,9 @@
                                 </div>
                             </div>
                             <div class="col-md-1 py-1">
-                                <a href="/api/routing/download/{{.SPResolutionFile}}" class="btn btn-outline-success fw-bold btn-lg"
-                                    type="button"><i class="fa-solid fa-download"></i></a>
+                                <a href="/api/routing/download/{{.SPResolutionFile}}"
+                                    class="btn btn-outline-success fw-bold btn-lg" type="button"><i
+                                        class="fa-solid fa-download"></i></a>
                             </div>
                             {{else}}
                             <div class="col-md-6">
@@ -390,7 +409,9 @@
                     </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
                     <div class="col-md-4"> <!-- LOCAL -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>LOCAL</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>LOCAL</h6>
+                            </span>
                             <div class="col-md-5">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="localDateRelease"
@@ -407,8 +428,9 @@
                                 </div>
                             </div>
                             <div class="col-md-1 py-1">
-                                <a href="/api/routing/download/{{.EndorsementFile}}" class="btn btn-outline-success fw-bold btn-lg"
-                                    type="button"><i class="fa-solid fa-download"></i></a>
+                                <a href="/api/routing/download/{{.EndorsementFile}}"
+                                    class="btn btn-outline-success fw-bold btn-lg" type="button"><i
+                                        class="fa-solid fa-download"></i></a>
                             </div>
                             {{else}}
                             <div class="col-md-6">
@@ -438,12 +460,18 @@
                 <div class="accordion-body row">
                     {{range .viewFilings}}
                     {{if .ModifiedBy}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i> | Modified By:
-                        <i>{{.ModifiedBy}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i> | Modified By:
+                            <i>{{.ModifiedBy}}</i>
+                        </h6>
+                    </span>
                     {{else}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     {{end}}
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
@@ -454,50 +482,50 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber" disabled>
-                            <label for="cabinetNumber">Folder Name</label>
+                            <input type="text" class="form-control" id="folderName" name="folderName" value="{{.FolderName}}" disabled>
+                            <label for="folderName">Folder Name</label>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="dateFiled" name="dateFiled" disabled>
+                            <input type="date" class="form-control" id="dateFiled" name="dateFiled" value="{{.DateFiled}}" disabled>
                             <label for="dateFiled">Date Filed</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="input-group">
                             <div class="input-group-text">
                                 <label for="isBorrowed">Is it borrowed?&nbsp;</label>
-                                <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed"
+                                <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" {{if .IsBorrowed}} checked {{end}}
                                     disabled>
                             </div>
                             <div class="form-floating">
-                                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" disabled>
+                                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}" disabled>
                                 <label for="dateBorrowed">Date Borrowed</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" disabled>
+                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}" disabled>
                             <label for="dateReturned">Date Returned</label>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="borrower" name="borrower" disabled>
+                            <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" disabled>
                             <label for="borrower">Borrower</label>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="datePublished" name="datePublished" disabled>
+                            <input type="date" class="form-control" id="datePublished" name="datePublished" value="{{.DatePublished}}" disabled>
                             <label for="datePublished">Date Published</label>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="publisher" name="publisher" disabled>
+                            <input type="text" class="form-control" id="publisher" name="publisher" value="{{.Publisher}}" disabled>
                             <label for="publisher">Publisher</label>
                         </div>
                     </div>
@@ -521,8 +549,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewRoutings}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="trackingNumberx" name="trackingNumberx"
@@ -595,12 +626,18 @@
                 <div class="accordion-body row">
                     {{range .viewAgenda}}
                     {{if .ModifiedBy}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i> | Modified By:
-                        <i>{{.ModifiedBy}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i> | Modified By:
+                            <i>{{.ModifiedBy}}</i>
+                        </h6>
+                    </span>
                     {{else}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     {{end}}
 
                     <div class="col-md-2">
@@ -693,8 +730,11 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewApproved}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:
+                            <i>{{.Encoder}}</i>
+                        </h6>
+                    </span>
                     <div class="col-md-2">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" id="lawType" name="lawType" value="{{.LawType}}"
@@ -775,10 +815,14 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewReleasings}}
-                    <span class="badge bg-secondary my-2 fw-bold"><h6>Encoder:<i>{{.Encoder}}</i></h6></span>
+                    <span class="badge bg-secondary my-2 fw-bold">
+                        <h6>Encoder:<i>{{.Encoder}}</i></h6>
+                    </span>
                     <div class="col-md-4"> <!-- TO MAYOR  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>TO MAYOR</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>TO MAYOR</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="mayorDateForwarded"
@@ -815,7 +859,9 @@
                     </div> <!-- END TO MAYOR  -->
                     <div class="col-md-4"> <!-- SANGGUNIAN PANLALAWIGAN  -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>SANGGUNIAN PANLALAWIGAN</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>SANGGUNIAN PANLALAWIGAN</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="spDateForwarded" name="spDateForwarded"
@@ -866,7 +912,9 @@
                     </div> <!-- END OF SANGGUNIAN PANLALAWIGAN  -->
                     <div class="col-md-4"> <!-- LOCAL -->
                         <div class="row">
-                            <span class="badge bg-secondary mb-2 fw-bold"><h6>LOCAL</h6></span>
+                            <span class="badge bg-secondary mb-2 fw-bold">
+                                <h6>LOCAL</h6>
+                            </span>
                             <div class="col-md-6">
                                 <div class="form-floating mb-2">
                                     <input type="date" class="form-control" id="localDateRelease"
@@ -899,71 +947,95 @@
                 data-bs-parent="#accordionRouting">
                 <div class="accordion-body row">
                     {{range .viewFilings}}
-                    {{if .ModifiedBy}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i> | Modified By:
-                        <i>{{.ModifiedBy}}</i></h6></span>
-                    {{else}}
-                    <span class="badge bg-secondary my-2 fw-bold"> <h6>Encoder:
-                        <i>{{.Encoder}}</i></h6></span>
+                        {{if .ModifiedBy}}
+                            <span class="badge bg-secondary my-2 fw-bold">
+                                <h6>Encoder:
+                                <i>{{.Encoder}}</i> | Modified By:
+                                <i>{{.ModifiedBy}}</i>
+                            </h6>
+                            </span>
+                        {{else}}
+                            <span class="badge bg-secondary my-2 fw-bold">
+                                <h6>Encoder:
+                                    <i>{{.Encoder}}</i>
+                                </h6>
+                            </span>
+                        {{end}}
                     {{end}}
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
+                            {{range .viewFilings}}
                             <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber"
                                 value="{{.CabinetNumber }}" disabled>
                             <label for="cabinetNumber">File Folder/Cabinet No.</label>
+                            {{end}}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="cabinetNumber" name="cabinetNumber" disabled>
-                            <label for="cabinetNumber">Folder Name</label>
+                            {{range .viewFilings}}
+                            <input type="text" class="form-control" id="folderName" name="folderName" value="{{.FolderName}}" disabled>
+                            <label for="folderName">Folder Name</label>
+                            {{end}}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="dateFiled" name="dateFiled" disabled>
+                            {{range .viewFilings}}
+                            <input type="date" class="form-control" id="dateFiled" name="dateFiled" value="{{.DateFiled}}" disabled>
                             <label for="dateFiled">Date Filed</label>
+                            {{end}}
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="input-group">
                             <div class="input-group-text">
+                                {{range .viewFilings}}
                                 <label for="isBorrowed">Is it borrowed?&nbsp;</label>
-                                <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed"
-                                    disabled>
+                                <input class="form-check-input mt-0" type="checkbox" id="isBorrowed" name="isBorrowed" {{if .IsBorrowed}}checked{{end}} disabled>
+                                {{end}}
                             </div>
                             <div class="form-floating">
-                                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" disabled>
+                                {{range .viewFilings}}
+                                <input type="date" class="form-control" id="dateBorrowed" name="dateBorrowed" value="{{.DateBorrowed}}" disabled>
                                 <label for="dateBorrowed">Date Borrowed</label>
+                                {{end}}
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" disabled>
+                            {{range .viewFilings}}
+                            <input type="date" class="form-control" id="dateReturned" name="dateReturned" value="{{.DateReturned}}" disabled>
                             <label for="dateReturned">Date Returned</label>
+                            {{end}}
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="borrower" name="borrower" disabled>
+                            {{range .viewFilings}}
+                            <input type="text" class="form-control" id="borrower" name="borrower" value="{{.Borrower}}" disabled>
                             <label for="borrower">Borrower</label>
+                            {{end}}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="datePublished" name="datePublished" disabled>
+                            {{range .viewFilings}}
+                            <input type="date" class="form-control" id="datePublished" name="datePublished" value="{{.DatePublished}}" disabled>
                             <label for="datePublished">Date Published</label>
+                            {{end}}
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="publisher" name="publisher" disabled>
+                        <div class="form-floating mb-6">
+                            {{range .viewFilings}}
+                            <input type="text" class="form-control" id="publisher" name="publisher" value="{{.Publisher}}" disabled>
                             <label for="publisher">Publisher</label>
+                            {{end}}
                         </div>
                     </div>
-                    {{end}}
+                   
                 </div>
             </div>
         </div>

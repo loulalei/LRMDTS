@@ -38,6 +38,8 @@ func InitializeTables() {
 	fmt.Println("Departments ✓")
 	database.CreateTable(model.Folders{})
 	fmt.Println("Folder Fields ✓")
+	database.CreateTable(model.Cabinet{})
+	fmt.Println("Cabinet Fields ✓")
 	database.CreateTable(model.ActivityLogger{})
 	fmt.Println("Activity Logger ✓")
 	database.CreateTable(model.EmployeePerformace{})
@@ -97,4 +99,7 @@ func InitializeTables() {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_cabinet AS SELECT DISTINCT name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab INNER JOIN folders fdr ON fdr.folder_id = cab.folder_id GROUP BY name").Error; database.DBErr != nil {
+		fmt.Println("DB ERROR:", database.DBErr.Error())
+	}
 }

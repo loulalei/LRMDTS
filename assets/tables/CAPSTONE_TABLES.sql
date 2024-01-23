@@ -46,6 +46,12 @@ FROM user_credentials usr
 INNER JOIN divisions div
 ON div.code = usr.division_code
 
+CREATE VIEW view_cabinet AS
+SELECT DISTINCT name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab
+INNER JOIN folders fdr
+ON fdr.folder_id = cab.folder_id
+GROUP BY name
+
 SELECT * FROM filings
 -- TEST QUERY
 SELECT cmtl.list_id, cmtl.item_number FROM committee_lists cmtl
@@ -70,11 +76,13 @@ SELECT * FROM proponents
 SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
+SELECT * FROM cabinets
+
 
 SELECT * FROM committee_lists WHERE item_number = '4411-2312'
 DELETE FROM committee_lists WHERE item_number = '4411-2312'
 
-nextval('proponents_proponent_id_seq'::regclass)
+
 
 DELETE FROM proponents WHERE name = '';
 UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 4
@@ -111,6 +119,8 @@ SELECT * FROM view_routings WHERE document_tag = 'Forwarded to Secretariat'
 INSERT INTO divisions (name, code) VALUES ('Head Office','HOD'), ('Records','SPCRD'), ('Secretariat','SPCSD')
 
 UPDATE routings SET remarks = 'Forwarded to Mayor' WHERE doc_id = 2
+
+SELECT * FROM filings WHERE doc_id = '1'
 
 SELECT id, fullname, password, division_code, is_reset, to_char(created_at, 'Mon. DD,YYYY') AS date_registered FROM user_credentials
 SELECT * FROM view_users
@@ -158,6 +168,7 @@ BEGIN
 	TRUNCATE TABLE routings;
 	TRUNCATE TABLE trackings;
 	TRUNCATE TABLE event_calendars;
+	TRUNCATE TABLE cabinets;
 	RETURN 'All tables are truncated';
 END;
 $$
@@ -172,6 +183,7 @@ BEGIN
 	DROP VIEW view_borrower_history;
 	DROP VIEW view_routings;
 	DROP VIEW view_users;
+	DROP VIEW view_cabinet;
 	DROP TABLE receivings;
 	DROP TABLE activity_loggers;
 	DROP TABLE employee_performaces;
@@ -184,6 +196,7 @@ BEGIN
 	DROP TABLE routings;
 	DROP TABLE trackings;
 	DROP TABLE event_calendars;
+	DROP TABLE cabinets;
 	RETURN 'All tables are DROPPED!';
 END;
 $$

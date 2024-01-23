@@ -847,15 +847,15 @@ func RegisterReleasing(c *fiber.Ctx) error {
 		database.DBConn.Debug().Exec("UPDATE routings SET document_tag = 'For Filing', remarks = 'Kept in Records', updated_at = ?  WHERE doc_id = ?", dateNow, requestReleasing.DocId)
 	}
 
+	releasingsFields := &model.Releasings{}
 	database.DBConn.Debug().Exec("INSERT INTO releasings (doc_id,mayor_date_forwarded, mayor_date_approved, is_approved_laches_mayor, sp_date_forwarded, sp_date_approved, is_approved_laches_sp, sp_resolution_number, sp_resolution_file, local_date_release, local_date_published, endorsement_file, encoder) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
 		requestReleasing.DocId, requestReleasing.MayorDateForwarded, requestReleasing.MayorDateApproved, requestReleasing.IsApprovedLachesMayor,
 		requestReleasing.SPDateForwarded, requestReleasing.SPDateApproved, requestReleasing.IsApprovedLachesSP, requestReleasing.SPResolutionNumber,
-		requestReleasing.SPResolutionFile, requestReleasing.LocalDateRelease, requestReleasing.LocalDatePublished, requestReleasing.EndorsementFile, global.Fullname)
+		requestReleasing.SPResolutionFile, requestReleasing.LocalDateRelease, requestReleasing.LocalDatePublished, requestReleasing.EndorsementFile, global.Fullname).Find(releasingsFields)
 
-	var releasingId int
-	database.DBConn.Debug().Raw("SELECT releasing_id FROM releasings WHERE doc_id = ?", requestReleasing.DocId).Scan(releasingId)
+	fmt.Println("Releasing:", releasingsFields)
 
-	database.DBConn.Debug().Exec("UPDATE routings SET releasing_id = ?, updated_at = ? WHRERE doc_id = ?", releasingId, dateNow, requestReleasing.DocId)
+	database.DBConn.Debug().Exec("UPDATE routings SET releasing_id = ?, updated_at = ? WHERE doc_id = ?", releasingsFields.ReleasingId, dateNow, requestReleasing.DocId)
 	database.DBConn.Debug().Exec("UPDATE trackings SET mayor_date = ?, sta_cruz_date = ?, released_date = ?, published_date = ?, updated_at = ? WHERE item_number = ?", requestReleasing.MayorDateForwarded, requestReleasing.SPDateForwarded, requestReleasing.LocalDateRelease, requestReleasing.LocalDatePublished, dateNow, requestReleasing.ItemNumber)
 
 	activity := "encoded for release"

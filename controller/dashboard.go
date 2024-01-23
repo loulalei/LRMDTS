@@ -29,7 +29,7 @@ func ViewDashboard(c *fiber.Ctx) error {
 	}
 
 	routings := &[]model.ViewRoutings{}
-	database.DBConn.Raw("SELECT * FROM view_routings").Scan(routings)
+	database.DBConn.Debug().Raw("SELECT * FROM view_routings").Scan(routings)
 
 	return c.Render("dashboard", fiber.Map{
 		"pageTitle":   "Dashboard",

@@ -63,7 +63,6 @@ func ValidateUser(c *fiber.Ctx) error {
 	encryptedPass, _ := utils.Encrypt(userCredentials.Password, utils.GetEnv("SECRET_KEY"))
 	database.DBConn.Raw("SELECT * FROM user_credentials WHERE division_code = ? AND password = ?", userCredentials.DivisionCode, encryptedPass).Scan(userCredentials)
 
-	fmt.Println("CREDENTIALS:", userCredentials)
 	if userCredentials.Id > 0 {
 		session.Set("userId", strconv.Itoa(userCredentials.Id))
 		session.Save()

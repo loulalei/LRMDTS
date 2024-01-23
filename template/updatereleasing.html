@@ -401,7 +401,10 @@
             }
         });
 
-        document.getElementById('spDateForwarded').valueAsDate = new Date();
+        if ($('#mayorDateApproved').val()){
+            document.getElementById('spDateForwarded').valueAsDate = new Date();
+        }
+        
     });
 </script>
 

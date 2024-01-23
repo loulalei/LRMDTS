@@ -8,21 +8,29 @@
         </button>
         <div class="collapse navbar-collapse" id="settingNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {{if eq .userLogged "HOD"}}
                 <li class="nav-item">
                     <a class="nav-link" href="/api/settings/users"><i class="fa-solid fa-users-gear"></i> USER MANGEMENT</a>
                 </li>
+                {{end}}
+                {{if eq .userLogged "HOD"}}
                 <li class="nav-item">
                     <a class="nav-link" href="/api/settings/proponents"><i class="fa-solid fa-users-gear"></i>
                         PROPONENTS</a>
                 </li>
+                {{end}}
+                {{if eq .userLogged "HOD"}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/api/settings/committees"><i class="fa-solid fa-people-group"></i>
                         COMMITTEES</a>
                 </li>
+                {{end}}
+                {{if eq .userLogged "HOD" "SPCRD"}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/api/settings/folder"><i class="fa-solid fa-folder-tree"></i>
                         FOLDERS</a>
                 </li>
+                {{end}}
             </ul>
         </div>
     </div>

@@ -174,18 +174,57 @@ func ViewSettingsFolder(c *fiber.Ctx) error {
 		global.DivisionCode = userCredentials.DivisionCode
 	}
 
-	return c.Render("settings", fiber.Map{
-		"pageTitle":  "Settings",
-		"title":      "FOLDER SETTINGS",
-		"yearNow":    global.YearNow,
-		"user":       global.Fullname,
-		"userLogged": global.UserCodeLogged,
-		"userId":     global.UserID,
-		"greetings":  utils.GetGreetings(),
-		"baseURL":    c.BaseURL(),
+	viewFolders := &[]model.ViewCabinet{}
+	database.DBConn.Debug().Raw("SELECT * FROM view_cabinet").Scan(viewFolders)
+
+	return c.Render("settingsfolders", fiber.Map{
+		"pageTitle":   "Settings",
+		"title":       "FOLDER SETTINGS",
+		"yearNow":     global.YearNow,
+		"user":        global.Fullname,
+		"userLogged":  global.UserCodeLogged,
+		"userId":      global.UserID,
+		"viewFolders": viewFolders,
+		"greetings":   utils.GetGreetings(),
+		"baseURL":     c.BaseURL(),
 	})
 }
 
+func UpdateFolder(c *fiber.Ctx) error {
+	cabinet := &model.ViewCabinet{}
+	if parsErr := c.BodyParser(cabinet); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "Error parsing data",
+			Data:    parsErr.Error(),
+		})
+	}
+
+	database.DBConn.Debug().Exec("UPDATE folders SET name = ? WHERE folder_id = ?", cabinet.Folder, cabinet.FolderId)
+
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "Update success",
+	})
+}
+
+func RemoveFolder(c *fiber.Ctx) error {
+	cabinet := &model.ViewCabinet{}
+	if parsErr := c.BodyParser(cabinet); parsErr != nil {
+		return c.JSON(model.ResponseBody{
+			Status:  101,
+			Message: "Error parsing data",
+			Data:    parsErr.Error(),
+		})
+	}
+
+	database.DBConn.Debug().Exec("DELETE FROM folders WHERE folder_id = ?", cabinet.FolderId)
+
+	return c.JSON(model.ResponseBody{
+		Status:  100,
+		Message: "Folder removed",
+	})
+}
 func AddProponents(c *fiber.Ctx) error {
 	// Get session from storage
 	session, err := global.Store.Get(c)

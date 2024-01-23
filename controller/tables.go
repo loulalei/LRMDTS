@@ -99,7 +99,7 @@ func InitializeTables() {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 
-	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_cabinet AS SELECT DISTINCT name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab INNER JOIN folders fdr ON fdr.folder_id = cab.folder_id GROUP BY name").Error; database.DBErr != nil {
+	if database.DBErr = database.DBConn.Exec("CREATE VIEW view_cabinet AS SELECT DISTINCT fdr.folder_id, name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab RIGHT JOIN folders fdr ON fdr.folder_id = cab.folder_id GROUP BY name, fdr.folder_id").Error; database.DBErr != nil {
 		fmt.Println("DB ERROR:", database.DBErr.Error())
 	}
 }

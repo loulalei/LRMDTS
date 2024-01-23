@@ -67,6 +67,8 @@ func AppRoutes(app *fiber.App) {
 	settingsEndpoint.Post("/remove_proponent/", controller.DeleteProponent)
 	settingsEndpoint.Get("/committees", controller.ViewSettingsCommittees)
 	settingsEndpoint.Get("/folder", controller.ViewSettingsFolder)
+	settingsEndpoint.Post("/update_folder", controller.UpdateFolder)
+	settingsEndpoint.Post("/remove_folder", controller.RemoveFolder)
 	settingsEndpoint.Post("/insert_committee/", controller.AddCommittee)
 	settingsEndpoint.Post("/remove_committee/", controller.DeleteCommittee)
 

@@ -47,11 +47,13 @@ INNER JOIN divisions div
 ON div.code = usr.division_code
 
 CREATE VIEW view_cabinet AS
-SELECT DISTINCT name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab
-INNER JOIN folders fdr
+SELECT DISTINCT fdr.folder_id, name AS folder, COUNT(cab.doc_id) AS total_files FROM cabinets cab
+RIGHT JOIN folders fdr
 ON fdr.folder_id = cab.folder_id
-GROUP BY name
+GROUP BY name, fdr.folder_id
 
+
+SELECT * FROM folders
 SELECT * FROM filings
 -- TEST QUERY
 SELECT cmtl.list_id, cmtl.item_number FROM committee_lists cmtl
@@ -77,7 +79,7 @@ SELECT * FROM routings
 SELECT * FROM folders
 SELECT * FROM trackings
 SELECT * FROM cabinets
-
+SELECT * FROM view_cabinet
 
 SELECT * FROM committee_lists WHERE item_number = '4411-2312'
 DELETE FROM committee_lists WHERE item_number = '4411-2312'
@@ -130,6 +132,8 @@ INSERT INTO committees (name) VALUES ('Agriculture And Economic Productivity'), 
 
 SELECT COUNT(agenda_id) FROM routings WHERE agenda_id IS NULL
 SELECT COUNT(*) FROM view_committees WHERE committee_id = 
+
+SELECT * FROM filings WHERE doc_id = '1'
 
 SELECT * FROM view_routings WHERE document_tag = 'For Releasing' AND doc_id = 1
 SELECT * FROM view_committees WHERE item_number = '2023-0002'

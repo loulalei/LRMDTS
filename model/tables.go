@@ -216,6 +216,12 @@ type (
 	RequestCommittees struct {
 		Name string `json:"name"`
 	}
+
+	ViewCabinet struct {
+		FolderId   int    `json:"folderId"`
+		Folder     string `json:"folder,omitempty"`
+		TotalFiles int    `json:"totalFiles,omitempty"`
+	}
 )
 
 type (
